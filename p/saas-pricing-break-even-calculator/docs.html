@@ -780,23 +780,55 @@ window.SM = (function(){
     timer = setInterval(function(){ poll(code); }, 4000);
   }
 
+  /**
+   * Buy.
+   *
+   * The checkout is created now, at this product's real price, and we go
+   * straight to it - card fields on the next screen, nothing in between.
+   *
+   * This used to fire the request and then ignore the URL that came back,
+   * following whatever static link had been baked into the page at publish
+   * time instead. A live checkout was created and thrown away on every click.
+   *
+   * The tab is navigated rather than opened: a window.open after an await is
+   * blocked by every popup blocker, because by then the browser no longer
+   * considers it something the person did.
+   */
   link.addEventListener('click', function(e){
-    // Let the payment page open in its own tab either way. If telling the site
-    // first fails, the link still works - they pay, and their access arrives by
-    // email instead of instantly. Never block a purchase on our own bookkeeping.
+    e.preventDefault();
+    say('Opening the payment page…');
+
     fetch(SM_API_BASE + '/api/checkout/start', {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ slug: SM_SLUG })
+      headers: { 'content-type': 'application/json', 'x-sm-session': reads(SESSION_STORE) || '' },
+      body: JSON.stringify({ slug: SM_SLUG, returnTo: location.href.split('?')[0] })
     })
       .then(function(r){ return r.json(); })
       .then(function(data){
         if(data && data.ok && data.code){
+          // Remembered before leaving, so coming back mid-purchase resumes.
           writes(CODE_STORE, data.code);
-          watch(data.code);
         }
+        if(data && data.ok && data.payUrl){
+          location.href = data.payUrl;
+          return;
+        }
+        // No live checkout: fall back to whatever link the page shipped with,
+        // so a purchase is never blocked by our own bookkeeping.
+        if(link.getAttribute('href') && link.getAttribute('href') !== '#'){
+          if(data && data.code) watch(data.code);
+          window.open(link.getAttribute('href'), '_blank', 'noopener');
+          return;
+        }
+        say('Could not open the payment page. Try again in a moment.');
       })
-      .catch(function(){});
+      .catch(function(){
+        if(link.getAttribute('href') && link.getAttribute('href') !== '#'){
+          window.open(link.getAttribute('href'), '_blank', 'noopener');
+          return;
+        }
+        say('Could not reach the server. Try again in a moment.');
+      });
   });
 
   // Came back to the page mid-purchase - carry on waiting where they left off.
