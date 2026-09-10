@@ -3,147 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Painter and Decorator Job Profit Tracker — Log each job with its price, materials and real hours, and see what you actually earned an hour</title>
-<meta name="description" content="Log each job with its price, materials and real hours, and see what you actually earned an hour. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Painter and Decorator Job Profit Tracker — Log each job with its price, materials and real hours, and see what you actually earned an hour">
-<meta property="og:description" content="Log each job with its price, materials and real hours, and see what you actually earned an hour. Free to use, nothing to install, works in your browser.">
+<title>Painters and decorators: the money mistakes that are easy to miss</title>
+<meta name="description" content="A price that felt right in the van turns out to pay less than minimum wage once the hours and materials are counted, and painters and decorators usually f…">
+<meta property="og:title" content="Painters and decorators: the money mistakes that are easy to miss">
+<meta property="og:description" content="A price that felt right in the van turns out to pay less than minimum wage once the hours and materials are counted, and painters and decorators usually f…">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/painter-and-decorator-job-profit-tracker/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Painter and Decorator Job Profit Tracker","description":"Log each job with its price, materials and real hours, and see what you actually earned an hour. Free to use, nothing to install, works in your browser.","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"https://selfmade-engine.github.io/selfmade-site/p/painter-and-decorator-job-profit-tracker/","offers":{"@type":"Offer","price":"15.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
-<link rel="stylesheet" href="./style.css">
+<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/painter-and-decorator-job-profit-tracker/guides/painters-and-decorators-the-money-mistakes-that-are-easy-to-.html">
+
+<link rel="stylesheet" href="../style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
 <body>
 <div class="wrap">
 <header class="site">
-  <a class="brand" href="./">Painter and Decorator Job Profit Tracker</a>
-  <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
+  <a class="brand" href="../">Painter and Decorator Job Profit Tracker</a>
+  <nav><a href="./">Tool</a><a href="../docs.html">Docs</a><a href="../pricing.html">Pricing</a></nav>
 </header>
 
-<h1>Painter and Decorator Job Profit Tracker — Log each job with its price, materials and real hours, and see what you actually earned an hour</h1>
-
-<ul class="checks"><li>Built for painters and decorators</li><li>Fixes: a price that felt right in the van turns out to pay less than minimum wage once the hours and materials are counted, and painters and decorators usually find out too late</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
-<div id="sm-tier" class="tierbar"></div>
-
-<div class="card">
-  <h2>Log a finished job</h2>
-  <p class="sub">What you charged, what the materials cost, and the hours it really took. A three-bed that needed two more coats.</p>
-  <div class="grid cols-3">
-    <div><label for="f-date">Date finished</label><input id="f-date" type="date"></div>
-    <div><label for="f-job">The job</label><input id="f-job" type="text" placeholder="What and where"></div>
-    <div><label for="f-charged">What you charged</label><input id="f-charged" type="number" step="1" min="0" value="0"></div>
-    <div><label for="f-materials">Materials and tip runs</label><input id="f-materials" type="number" step="1" min="0" value="0"></div>
-    <div><label for="f-hours">Hours it really took</label><input id="f-hours" type="number" step="0.5" min="0" value="4"></div>
-    <div><label for="f-category">Kind of job</label><select id="f-category"><option>Small repair</option><option>Half day</option><option>Full day</option><option>Multi-day</option><option>Emergency call-out</option><option>Regular customer</option></select></div>
-  </div>
-  <div class="row">
-    <button id="g-add">Log the job</button>
-    <button id="g-clear" class="secondary">Start again</button>
-    <span id="g-count" class="badge"></span>
-  </div>
-</div>
-<div class="card">
-  <h2>What you actually earn an hour</h2>
-  <div class="grid cols-2">
-    <div><label for="s-target">What you want to earn an hour</label><input id="s-target" type="number" step="1" min="0" value="30"></div>
-  </div>
-  <div class="grid cols-3" id="g-stats"></div>
-  <output id="g-verdict">Log a couple of finished jobs to see the real number.</output>
-</div>
-<div class="card">
-  <h2>Everything you have logged</h2>
-  <div id="g-table"></div>
-</div>
-<div class="card">
-  <h3>Where the money actually goes <span class="badge pro">PRO</span></h3>
-  <p class="sub">Every entry adds up into its own category, biggest first. This is the view that finds the cost you had stopped noticing.</p>
-  <div id="g-breakdown"></div>
-</div>
-<div class="card">
-  <h3>Month by month <span class="badge pro">PRO</span></h3>
-  <p class="sub">Every month side by side, and how this one compares with the last. One month is a number; twelve is a pattern you can do something about.</p>
-  <div id="g-months"></div>
-  <output id="g-trend"></output>
-</div>
-<div class="card">
-  <h3>Keep it, and get it out again <span class="badge pro">PRO</span></h3>
-  <p class="sub">Free covers ten jobs. Pro keeps every job you ever log, which is how you find out that one type of work has been quietly losing you money for a year.</p>
-  <div class="row">
-    <input id="g-save-name" placeholder="Name this set" style="max-width:240px">
-    <button id="g-save" class="secondary">Save</button>
-    <button id="g-export" class="secondary">Download spreadsheet</button>
-  </div>
-  <div id="g-saved" class="row"></div>
-</div>
-<div id="sm-lock" class="lockbox" hidden></div>
-
-<div class="card no-print" id="sm-account" hidden>
-  <h2 id="sm-acc-title">Sign in</h2>
-  <p class="sub" id="sm-acc-sub">Signing in switches Pro on wherever you are — this computer, your phone, anywhere.</p>
-
-  <div id="sm-acc-forms">
-    <div class="grid cols-2">
-      <div><label for="sm-acc-email">Email</label><input id="sm-acc-email" type="email" autocomplete="email" placeholder="you@example.com"></div>
-      <div><label for="sm-acc-pass">Password</label><input id="sm-acc-pass" type="password" autocomplete="current-password" placeholder="Your password"></div>
-    </div>
-    <div class="row">
-      <button id="sm-acc-go">Sign in</button>
-      <button id="sm-acc-new" class="secondary">Create an account</button>
-      <button id="sm-acc-forgot" class="secondary">Forgot password</button>
-    </div>
-    <output id="sm-acc-msg"></output>
-  </div>
-
-  <div id="sm-acc-signedin" hidden>
-    <div class="grid cols-3" id="sm-acc-stats"></div>
-    <div class="row">
-      <button id="sm-acc-out" class="secondary">Sign out</button>
-      <a class="btn-link" id="sm-acc-cancel" href="mailto:selfmade.engine@gmail.com?subject=Cancel%20my%20subscription">Cancel subscription</a>
-    </div>
-    <p class="limit">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for.</p>
-  </div>
-</div>
-
-<div class="card paycard no-print" id="sm-pay">
-  <div class="payhead">
-    <div>
-      <h2>Pro</h2>
-      <p class="sub">This month, free, with no limit on how much you log. Pro takes the limit off and adds what you need when you do this every week.</p>
-    </div>
-    <div class="payprice"><span class="price">$15.00</span><span class="per">/month</span></div>
-  </div>
-  <ul class="checks pro"><li><strong>Where the money actually goes</strong><span class="why">Every entry adds up by category, biggest first. This is the view that finds the cost you had stopped noticing.</span></li><li><strong>Month by month, and against last month</strong><span class="why">One month is a number. Twelve is a pattern, and a pattern is the thing you can act on.</span></li><li><strong>Every month kept, not just this one</strong><span class="why">A suspicion becomes something you can point at once there are six months of it.</span></li></ul>
-  <form id="sm-order" class="grid">
-    <div><label for="sm-order-name">Your name</label><input id="sm-order-name" maxlength="80" placeholder="Optional"></div>
-    <div><label for="sm-order-email">Your email *</label><input id="sm-order-email" type="email" required maxlength="120" placeholder="you@example.com"></div>
-    <div><label for="sm-order-note">Anything we should know?</label><input id="sm-order-note" maxlength="400" placeholder="Optional"></div>
-    <div class="row"><button type="submit">Buy for $15.00</button><span id="sm-order-status" class="badge"></span></div>
-  </form>
-  <p class="notice">Payment is arranged directly rather than through a checkout, so you will get an email with the details shortly. The free version stays free and fully working either way.</p>
-  <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
-  <a href="./pricing.html">See everything in Pro</a></p>
-</div>
-<div class="card">
-  <h2>Who this is for</h2>
-  <p class="sub">painters and decorators</p>
-  <h2>The problem</h2>
-  <p class="sub">A price that felt right in the van turns out to pay less than minimum wage once the hours and materials are counted, and painters and decorators usually find out too late</p>
-  <h2>What it does about it</h2>
-  <p class="sub">Log each job with its price, materials and real hours, and see what you actually earned an hour</p>
-  
-</div>
-<div class="card"><h2>Guides</h2><ul class="checks"><li><a href="./guides/am-i-charging-enough.html">Am I charging enough?</a></li><li><a href="./guides/painters-and-decorators-the-money-mistakes-that-are-easy-to-.html">Painters and decorators: the money mistakes that are easy to miss</a></li></ul></div>
-
-<div class="card no-print">
-  <h2>Did this do what you needed?</h2>
-  <p class="sub">One line of feedback decides what gets built next. Leave an email only if you want a reply.</p>
-  <form id="sm-feedback" class="grid">
-    <div><label for="sm-note">What would make this better?</label><input id="sm-note" name="note" maxlength="500" placeholder="It should also…"></div>
-    <div><label for="sm-email">Email (optional)</label><input id="sm-email" name="email" type="email" placeholder="you@example.com"></div>
-    <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
-  </form>
-</div>
+<h1>Painters and decorators: the money mistakes that are easy to miss</h1>
+<p class="sub">A price that felt right in the van turns out to pay less than minimum wage once the hours and materials are counted, and painters and decorators usually f…</p>
+<div class="card"><h2>Getting the numbers right matters more than it looks</h2><p class="sub">A price that felt right in the van turns out to pay less than minimum wage once the hours and materials are counted, and painters and decorators usually find out too late. None of what follows is complicated. It is all just easy to skip.</p></div>
+<div class="card"><h2>Count the hours honestly</h2><p class="sub">Include the quoting, the collecting of materials, and the tip run. Those hours are real and they are the ones people forget, which is exactly why the rate looks better than it is.</p></div>
+<div class="card"><h2>Trusting your memory over a note</h2><p class="sub">It is genuinely obvious while you are looking at it, and genuinely gone six weeks later. Most of the money painters and decorators lose to this is not lost to a bad decision — it is lost to a good one that nobody wrote down.</p></div>
+<div class="card"><h2>Only counting the obvious costs</h2><p class="sub">The costs that get forgotten are the ones nobody invoices you for — the time spent quoting, the mileage, the thing that got thrown away. Left out, the figures look better than the reality, and decisions get made on them.</p></div>
+<div class="card"><h2>Waiting until the end of the year</h2><p class="sub">Every one of these is easy to fix in the moment and painful to reconstruct in January. Ten seconds at the time is the whole trick.</p></div>
+<div class="card"><h2>Try it</h2><p class="sub">Painter and Decorator Job Profit Tracker does this in your browser, free, with no signup.</p><p><a class="buy" href="../">Open Painter and Decorator Job Profit Tracker</a></p></div>
+<p class="notice">Written by SELFMADE, which also built the tool this page is about. That is a bias worth knowing about while you read it.</p>
 <footer class="site">
   <p>Painter and Decorator Job Profit Tracker — built and operated by SELFMADE, an autonomous business agent.
   Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
@@ -158,295 +44,16 @@ var SM_LICENCE_URL = "http://127.0.0.1:7777/api/licence/verify";
 var SM_USE_URL = "http://127.0.0.1:7777/api/use";
 var SM_ACTIVATE_URL = "http://127.0.0.1:7777/api/activate";
 var SM_API_BASE = "http://127.0.0.1:7777";
-var SM_DAILY_LIMIT = 25;
-var SM_LIMIT_LABEL = "jobs a day";
-var SM_PITCH = "Pro adds where the money actually goes, month by month, and against last month, every month kept, not just this one and the whole year as a spreadsheet.";
+var SM_DAILY_LIMIT = 0;
+var SM_LIMIT_LABEL = "uses";
+var SM_PITCH = "";
 var SM_CONTACT = "selfmade.engine@gmail.com";
 // Where the Upgrade button goes, and what it costs. Straight to checkout when
 // there is one, because a pricing page in between is a step people leave at.
 var SM_BUY_URL = "./pricing.html";
 var SM_PRICE = "$15.00";
 </script>
-<script data-sm="tool">
-function SMN(v){
-  if (typeof v === 'number') return isFinite(v) ? v : 0;
-  var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, ''));
-  return isFinite(x) ? x : 0;
-}
-var CUR = "$";
-function SMD(id){ var e = document.getElementById(id); return e; }
-function SMV(id){ var e = SMD(id); return e ? String(e.value == null ? '' : e.value).trim() : ''; }
-function SMmoney(v){
-  var neg = v < 0;
-  var a = Math.abs(Math.round(v * 100) / 100).toFixed(2);
-  return (neg ? '-' : '') + CUR + a.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-function SMnum(v, dp){
-  var d = dp == null ? 2 : dp;
-  var n = Math.round(SMN(v) * Math.pow(10, d)) / Math.pow(10, d);
-  return d === 0 ? String(n) : n.toFixed(d);
-}
-function SMesc(s){
-  return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
-    return c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&quot;';
-  });
-}
-function SMtable(head, rows){
-  return '<table><tr>' + head.map(function(h){ return '<th>' + h + '</th>'; }).join('') + '</tr>' +
-    rows.map(function(r){ return '<tr>' + r.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>'; }).join('') +
-    '</table>';
-}
-function SMstat(k, v, note){
-  return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
-    (note ? '<div class="k" style="text-transform:none;letter-spacing:0;margin-top:4px">' + note + '</div>' : '') + '</div>';
-}
-/** A dropdown stores its numeric value; the table should show the words. */
-function SMlabel(f, v){
-  if (f && f.options && f.options.length && typeof f.options[0] === 'object') {
-    for (var i = 0; i < f.options.length; i++) {
-      if (String(f.options[i].value) === String(v)) return f.options[i].label;
-    }
-  }
-  return v;
-}
-function SMtoday(){ return new Date().toISOString().slice(0, 10); }
-function SMfmtDate(d){
-  var x = (d instanceof Date) ? d : new Date(d);
-  if (isNaN(x.getTime())) return String(d || '');
-  return x.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
-}
-(function(){
-  var FIELDS = [{"id":"date","label":"Date finished","type":"date"},{"id":"job","label":"The job","type":"text","placeholder":"What and where"},{"id":"charged","label":"What you charged","type":"number","default":0,"min":0,"step":1},{"id":"materials","label":"Materials and tip runs","type":"number","default":0,"min":0,"step":1},{"id":"hours","label":"Hours it really took","type":"number","default":4,"min":0,"step":0.5},{"id":"category","label":"Kind of job","type":"select","options":["Small repair","Half day","Full day","Multi-day","Emergency call-out","Regular customer"]}];
-  // Deliberately no row cap here: this pattern's free tier is capped on how
-  // far back it keeps and what it analyses, not on how much you may log.
-  // Blocking entry would just make the free version annoying without making
-  // the paid one better.
-  var rows = [];
-  try { rows = JSON.parse(localStorage.getItem("sm-decorator--job-profit") || '[]'); } catch(e){ rows = []; }
-  if (!(rows instanceof Array)) rows = [];
-  function persist(){ try { localStorage.setItem("sm-decorator--job-profit", JSON.stringify(rows)); } catch(e){} }
-
-  function derive(r, T){
-    var out = {};
-    for (var k in r) out[k] = r[k];
-    out.kept = (function(r, T){ return SMN(r.charged) - SMN(r.materials); })(out, T);
-    out.perHour = (function(r, T){ return SMN(r.hours) > 0 ? ( SMN(r.charged) - SMN(r.materials) ) / SMN(r.hours) : 0; })(out, T);
-    return out;
-  }
-
-  function settings(){
-    var T = {};
-    T.target = SMN(SMV('s-target'));
-    return T;
-  }
-
-  function compute(){
-    var T = settings();
-    var derivedRows = rows.map(function(r){ return derive(r, T); });
-    (function(rows){
-      T.jobs = rows.length;
-      T.turnover = rows.reduce(function(a, r){ return a + (SMN(r.charged)); }, 0);
-      T.materialsTotal = rows.reduce(function(a, r){ return a + (SMN(r.materials)); }, 0);
-      T.keptTotal = SMN(T.turnover) - SMN(T.materialsTotal);
-      T.hoursTotal = rows.reduce(function(a, r){ return a + (SMN(r.hours)); }, 0);
-      T.realRate = SMN(T.hoursTotal) > 0 ? SMN(T.keptTotal) / SMN(T.hoursTotal) : 0;
-      T.gap = SMN(T.target) - ( SMN(T.hoursTotal) > 0 ? SMN(T.keptTotal) / SMN(T.hoursTotal) : 0 );
-      T.badJobs = rows.reduce(function(a, r){ return a + (SMN(r.perHour) < SMN(T.target) ? 1 : 0); }, 0);
-    })(derivedRows);
-    return { rows: derivedRows, T: T };
-  }
-
-  function paint(){
-    var c = compute();
-    var rowsD = c.rows, T = c.T;
-    SMD('g-count').textContent = rows.length + ' ' + "jobs";
-
-    SMD('g-stats').innerHTML = 3 === 0 ? '' : [
-      SMstat("Charged", SMmoney(T.turnover), ""),
-      SMstat("Kept", SMmoney(T.keptTotal), "after materials"),
-      SMstat("Earned an hour", SMmoney(T.realRate), "across every job")
-    ].join('');
-
-    var out = [];
-    (function(rows){
-      out.push("Across " + SMnum(T.jobs, 0) + " jobs you charged " + SMmoney(T.turnover) + ", spent " + SMmoney(T.materialsTotal) + " on materials, and put in " + SMnum(T.hoursTotal, 1) + " hours.");
-    out.push("That works out at " + SMmoney(T.realRate) + " an hour, once materials are off.");
-    if (SMN(T.gap) > 0) out.push("That is " + SMmoney(T.gap) + " an hour below what you wanted. Over a full week that is a real amount of money, and it usually comes from a couple of jobs rather than all of them.");
-    if (SMN(T.badJobs) > 0) out.push(SMnum(T.badJobs, 0) + " of these jobs came in under your target rate. Those are the ones to look at — either they were underpriced, or they took longer than you allowed for.");
-    if (SMN(T.gap) <= 0 && SMN(T.jobs) > 0) out.push("You are at or above your target rate. Worth keeping an eye on the ones that dip, but the pricing is working.");
-    })(rowsD);
-    SMD('g-verdict').textContent = rows.length ? out.join('\n\n') : "Log a couple of finished jobs to see the real number.";
-
-    if (!rows.length) { SMD('g-table').innerHTML = '<p class="sub">Nothing logged yet.</p>'; return; }
-    var head = FIELDS.map(function(f){ return SMesc(f.label); })
-      .concat(["Kept","An hour"]).concat(['']);
-    var body = rowsD.map(function(r, i){
-      var cells = FIELDS.map(function(f){ return SMesc(SMlabel(f, r[f.id])); });
-      cells.push(SMmoney(r.kept));
-      cells.push(SMmoney(r.perHour));
-      cells.push('<button class="secondary" data-del="' + i + '" style="padding:4px 10px">Remove</button>');
-      return cells;
-    });
-    SMD('g-table').innerHTML = SMtable(head, body);
-    Array.prototype.forEach.call(SMD('g-table').querySelectorAll('[data-del]'), function(b){
-      b.addEventListener('click', function(){
-        rows.splice(Number(b.getAttribute('data-del')), 1);
-        persist(); paint();
-      });
-    });
-
-    paintAnalysis(rowsD, T);
-  }
-
-  /** Which month an entry belongs to. Falls back to now if there is no date. */
-  function monthOf(r){
-    var raw = String(r.date || '');
-    if (/^\d{4}-\d{2}/.test(raw)) return raw.slice(0, 7);
-    return SMtoday().slice(0, 7);
-  }
-
-  function monthName(key){
-    var parts = String(key).split('-');
-    var d = new Date(Number(parts[0]), Number(parts[1]) - 1, 1);
-    return isNaN(d.getTime()) ? key : d.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
-  }
-
-  /**
-   * Where the money goes, month by month, and how this month compares.
-   *
-   * Free shows the current month. Pro shows every month and the breakdown -
-   * which is the analysis, not an artificial cap on a form.
-   */
-  function paintAnalysis(rowsD, T){
-    var breakdown = SMD('g-breakdown');
-    var months = SMD('g-months');
-    var trend = SMD('g-trend');
-    if (!breakdown || !months) return;
-
-    if (!SM.pro()) {
-      var locked = '<p class="sub">Pro shows this. ' +
-        '<a href="' + (window.SM_BUY_URL || './pricing.html') + '">See what it costs</a></p>';
-      breakdown.innerHTML = locked;
-      months.innerHTML = locked;
-      if (trend) trend.textContent = '';
-      return;
-    }
-
-    if (!rowsD.length) {
-      breakdown.innerHTML = '<p class="sub">Nothing logged yet.</p>';
-      months.innerHTML = '';
-      if (trend) trend.textContent = '';
-      return;
-    }
-
-    // ---- by category ----
-    var CAT = "category";
-    var VAL = "kept";
-    if (CAT && VAL) {
-      var byCat = {};
-      rowsD.forEach(function(r){
-        var key = String(r[CAT] == null || r[CAT] === '' ? 'Uncategorised' : r[CAT]);
-        byCat[key] = (byCat[key] || 0) + SMN(r[VAL]);
-      });
-      var cats = Object.keys(byCat).sort(function(a, b){ return Math.abs(byCat[b]) - Math.abs(byCat[a]); });
-      var catTotal = cats.reduce(function(a, k){ return a + Math.abs(byCat[k]); }, 0);
-      breakdown.innerHTML = SMtable(['Category', 'Total', 'Share'], cats.map(function(k){
-        var share = catTotal > 0 ? Math.round(Math.abs(byCat[k]) / catTotal * 100) : 0;
-        return [SMesc(k), SMmoney(byCat[k]), share + '%'];
-      }));
-    } else {
-      breakdown.innerHTML = '<p class="sub">This one has nothing to break down by category.</p>';
-    }
-
-    // ---- month by month ----
-    var byMonth = {};
-    rowsD.forEach(function(r){
-      var m = monthOf(r);
-      if (!byMonth[m]) byMonth[m] = { count: 0, value: 0 };
-      byMonth[m].count += 1;
-      if (VAL) byMonth[m].value += SMN(r[VAL]);
-    });
-    var keys = Object.keys(byMonth).sort();
-    months.innerHTML = SMtable(['Month', 'Entries', VAL ? 'Total' : ''], keys.map(function(k){
-      return [monthName(k), byMonth[k].count, VAL ? SMmoney(byMonth[k].value) : ''];
-    }));
-
-    // ---- this month against last ----
-    if (trend && keys.length >= 2 && VAL) {
-      var thisM = byMonth[keys[keys.length - 1]].value;
-      var lastM = byMonth[keys[keys.length - 2]].value;
-      var diff = thisM - lastM;
-      var pct = lastM !== 0 ? Math.round(Math.abs(diff) / Math.abs(lastM) * 100) : 0;
-      trend.textContent = Math.abs(diff) < 0.005
-        ? monthName(keys[keys.length - 1]) + ' is the same as ' + monthName(keys[keys.length - 2]) + '.'
-        : monthName(keys[keys.length - 1]) + ' is ' + SMmoney(Math.abs(diff)) + (pct ? ' (' + pct + '%)' : '') +
-          (diff > 0 ? ' more than ' : ' less than ') + monthName(keys[keys.length - 2]) + '.';
-    } else if (trend) {
-      trend.textContent = keys.length < 2
-        ? 'Log a second month and this compares them for you.'
-        : '';
-    }
-  }
-
-  SMD('g-add').addEventListener('click', function(){
-    // Free is not capped on how much you log - that would just be an obstacle.
-    // It is capped on how far back it keeps, which is a real difference in what
-    // the thing can do for you.
-    if (!SM.use()) return;
-    var r = {};
-    for (var i = 0; i < FIELDS.length; i++) {
-      var f = FIELDS[i];
-      r[f.id] = SMV('f-' + f.id);
-      if (f.type === 'date' && !r[f.id]) r[f.id] = SMtoday();
-    }
-    rows.push(r);
-    if (SMD('f-job')) SMD('f-job').value = '';
-    persist(); paint();
-  });
-  SMD('g-clear').addEventListener('click', function(){ rows = []; persist(); paint(); });
-  if (SMD('s-target')) SMD('s-target').addEventListener('input', paint);
-  if (SMD('f-date')) SMD('f-date').addEventListener('input', function(){});
-  if (SMD('f-job')) SMD('f-job').addEventListener('input', function(){});
-  if (SMD('f-charged')) SMD('f-charged').addEventListener('input', function(){});
-  if (SMD('f-materials')) SMD('f-materials').addEventListener('input', function(){});
-  if (SMD('f-hours')) SMD('f-hours').addEventListener('input', function(){});
-  if (SMD('f-category')) SMD('f-category').addEventListener('input', function(){});
-
-  // ---- Pro ----
-  function paintSaved(){
-    var box = SMD('g-saved');
-    var list = SM.load('sets');
-    box.innerHTML = list.length
-      ? list.map(function(s, i){ return '<button class="secondary" data-s="' + i + '">' + SMesc(s.name) + '</button>'; }).join(' ')
-      : '<span class="sub">Nothing saved yet.</span>';
-    Array.prototype.forEach.call(box.querySelectorAll('[data-s]'), function(b){
-      b.addEventListener('click', function(){
-        var s = SM.load('sets')[Number(b.getAttribute('data-s'))];
-        if (!s) return;
-        rows = s.rows || [];
-        persist(); paint();
-      });
-    });
-  }
-  SMD('g-save').addEventListener('click', function(){
-    var name = SMV('g-save-name');
-    if (!name) { SMD('g-save-name').placeholder = 'give it a name first'; return; }
-    var list = SM.load('sets');
-    list.push({ name: name, rows: rows.slice() });
-    if (SM.save('sets', list)) { SMD('g-save-name').value = ''; paintSaved(); }
-  });
-  SMD('g-export').addEventListener('click', function(){
-    var c = compute();
-    var head = FIELDS.map(function(f){ return f.label; }).concat(["Kept","An hour"]);
-    var body = c.rows.map(function(r){
-      return FIELDS.map(function(f){ return r[f.id]; }).concat(["kept","perHour"].map(function(id){ return SMnum(r[id]); }));
-    });
-    SM.exportCsv("decorator--job-profit.csv", [head].concat(body));
-  });
-
-  if (SMD('f-date') && !SMD('f-date').value) SMD('f-date').value = SMtoday();
-  paint(); paintSaved();
-})();</script>
+<script data-sm="tool"></script>
 <script>
 window.SM = (function(){
   var KEY_STORE = 'sm_key_' + SM_SLUG;
