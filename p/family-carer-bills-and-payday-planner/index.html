@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Family Carer Bills and Payday Planner — Map your paydays against your bills and get one number: what you can spend today with everything still clearing</title>
+<title>Family Carer Bills and Payday Planner for Someone caring for a</title>
 <meta name="description" content="Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Family Carer Bills and Payday Planner — Map your paydays against your bills and get one number: what you can spend today with everything still clearing">
+<meta property="og:title" content="Family Carer Bills and Payday Planner for Someone caring for a">
 <meta property="og:description" content="Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -21,8 +21,8 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Family Carer Bills and Payday Planner — Map your paydays against your bills and get one number: what you can spend today with everything still clearing</h1>
-
+<h1>Family Carer Bills and Payday Planner for Someone caring for a</h1>
+<p class="sub">Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.</p>
 <ul class="checks"><li>Built for someone caring for a parent — people caring for a parent</li><li>Fixes: the balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
 
@@ -1155,23 +1155,55 @@ window.SM = (function(){
     timer = setInterval(function(){ poll(code); }, 4000);
   }
 
+  /**
+   * Buy.
+   *
+   * The checkout is created now, at this product's real price, and we go
+   * straight to it - card fields on the next screen, nothing in between.
+   *
+   * This used to fire the request and then ignore the URL that came back,
+   * following whatever static link had been baked into the page at publish
+   * time instead. A live checkout was created and thrown away on every click.
+   *
+   * The tab is navigated rather than opened: a window.open after an await is
+   * blocked by every popup blocker, because by then the browser no longer
+   * considers it something the person did.
+   */
   link.addEventListener('click', function(e){
-    // Let the payment page open in its own tab either way. If telling the site
-    // first fails, the link still works - they pay, and their access arrives by
-    // email instead of instantly. Never block a purchase on our own bookkeeping.
+    e.preventDefault();
+    say('Opening the payment page…');
+
     fetch(SM_API_BASE + '/api/checkout/start', {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ slug: SM_SLUG })
+      headers: { 'content-type': 'application/json', 'x-sm-session': reads(SESSION_STORE) || '' },
+      body: JSON.stringify({ slug: SM_SLUG, returnTo: location.href.split('?')[0] })
     })
       .then(function(r){ return r.json(); })
       .then(function(data){
         if(data && data.ok && data.code){
+          // Remembered before leaving, so coming back mid-purchase resumes.
           writes(CODE_STORE, data.code);
-          watch(data.code);
         }
+        if(data && data.ok && data.payUrl){
+          location.href = data.payUrl;
+          return;
+        }
+        // No live checkout: fall back to whatever link the page shipped with,
+        // so a purchase is never blocked by our own bookkeeping.
+        if(link.getAttribute('href') && link.getAttribute('href') !== '#'){
+          if(data && data.code) watch(data.code);
+          window.open(link.getAttribute('href'), '_blank', 'noopener');
+          return;
+        }
+        say('Could not open the payment page. Try again in a moment.');
       })
-      .catch(function(){});
+      .catch(function(){
+        if(link.getAttribute('href') && link.getAttribute('href') !== '#'){
+          window.open(link.getAttribute('href'), '_blank', 'noopener');
+          return;
+        }
+        say('Could not reach the server. Try again in a moment.');
+      });
   });
 
   // Came back to the page mid-purchase - carry on waiting where they left off.
