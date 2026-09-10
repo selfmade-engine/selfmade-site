@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://selfmade-plumber-income-and-tax-tracker.netlify.app/sitemap.xml
