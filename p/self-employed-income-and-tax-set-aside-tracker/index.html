@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Self-Employed Income and Tax Set-Aside Tracker: stop money comes in, gets spent, and the tax bill arrives in january against an empty account</title>
+<title>Self-Employed Income and Tax Set-Aside Tracker — Log income and costs in seconds and always know what to put aside and what is genuinely yours</title>
 <meta name="description" content="Log income and costs in seconds and always know what to put aside and what is genuinely yours. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Self-Employed Income and Tax Set-Aside Tracker: stop money comes in, gets spent, and the tax bill arrives in january against an empty account">
+<meta property="og:title" content="Self-Employed Income and Tax Set-Aside Tracker — Log income and costs in seconds and always know what to put aside and what is genuinely yours">
 <meta property="og:description" content="Log income and costs in seconds and always know what to put aside and what is genuinely yours. Free to use, nothing to install, works in your browser.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -21,8 +21,8 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Self-Employed Income and Tax Set-Aside Tracker: stop money comes in, gets spent, and the tax bill arrives in january against an empty account</h1>
-<p class="sub">Log income and costs in seconds and always know what to put aside and what is genuinely yours. Free to use, nothing to install, works in your browser.</p>
+<h1>Self-Employed Income and Tax Set-Aside Tracker — Log income and costs in seconds and always know what to put aside and what is genuinely yours</h1>
+
 <ul class="checks"><li>Built for freelancers, sole traders, delivery drivers and anyone self-employed for the first time</li><li>Fixes: money comes in, gets spent, and the tax bill arrives in january against an empty account</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
 
@@ -139,13 +139,9 @@
     <div class="payprice"><span class="price">$15.00</span><span class="per">/month</span></div>
   </div>
   <ul class="checks pro"><li><strong>A whole year of records</strong><span class="why">Free holds twenty. A working year is closer to four hundred.</span></li><li><strong>Where the money actually goes</strong><span class="why">Costs by category, which is usually how people find the subscription they forgot about.</span></li><li><strong>A clean spreadsheet for your accountant</strong><span class="why">The thing they ask for in January, ready in October, in the format they want.</span></li></ul>
-  <form id="sm-order" class="grid">
-    <div><label for="sm-order-name">Your name</label><input id="sm-order-name" maxlength="80" placeholder="Optional"></div>
-    <div><label for="sm-order-email">Your email *</label><input id="sm-order-email" type="email" required maxlength="120" placeholder="you@example.com"></div>
-    <div><label for="sm-order-note">Anything we should know?</label><input id="sm-order-note" maxlength="400" placeholder="Optional"></div>
-    <div class="row"><button type="submit">Buy for $15.00</button><span id="sm-order-status" class="badge"></span></div>
-  </form>
-  <p class="notice">Payment is arranged directly rather than through a checkout, so you will get an email with the details shortly. The free version stays free and fully working either way.</p>
+  <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Get Pro — $15.00/month</a></div>
+    <p class="notice" id="sm-buy-note">You will be taken straight to a secure card form. Payment is handled by Stripe — your card details go to them, never to this page. Cancel any time.</p>
+    <p class="notice" id="sm-buy-status" hidden></p>
   <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
   <a href="./pricing.html">See everything in Pro</a></p>
 </div>
