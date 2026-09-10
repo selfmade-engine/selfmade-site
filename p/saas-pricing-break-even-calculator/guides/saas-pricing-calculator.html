@@ -3,115 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SaaS Pricing &amp; Break-even Calculator for Bootstrapped founders setting their</title>
-<meta name="description" content="Model price, churn, CAC and costs, and see break-even customers and 12-month MRR. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="SaaS Pricing &amp; Break-even Calculator for Bootstrapped founders setting their">
-<meta property="og:description" content="Model price, churn, CAC and costs, and see break-even customers and 12-month MRR. Free to use, nothing to install, works in your browser.">
+<title>Saas pricing calculator</title>
+<meta name="description" content="Founders price on feel and cannot see the break-even or churn impact. SaaS Pricing &amp; Break-even Calculator works it out for you, free, in your browser — n…">
+<meta property="og:title" content="Saas pricing calculator">
+<meta property="og:description" content="Founders price on feel and cannot see the break-even or churn impact. SaaS Pricing &amp; Break-even Calculator works it out for you, free, in your browser — n…">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/saas-pricing-break-even-calculator/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"SaaS Pricing & Break-even Calculator","description":"Model price, churn, CAC and costs, and see break-even customers and 12-month MRR. Free to use, nothing to install, works in your browser.","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"https://selfmade-engine.github.io/selfmade-site/p/saas-pricing-break-even-calculator/","offers":{"@type":"Offer","price":"12.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
-<link rel="stylesheet" href="./style.css">
+<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/saas-pricing-break-even-calculator/guides/saas-pricing-calculator.html">
+
+<link rel="stylesheet" href="../style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
 <body>
 <div class="wrap">
 <header class="site">
-  <a class="brand" href="./">SaaS Pricing &amp; Break-even Calculator</a>
-  <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
+  <a class="brand" href="../">SaaS Pricing &amp; Break-even Calculator</a>
+  <nav><a href="./">Tool</a><a href="../docs.html">Docs</a><a href="../pricing.html">Pricing</a></nav>
 </header>
 
-<h1>SaaS Pricing &amp; Break-even Calculator for Bootstrapped founders setting their</h1>
-<p class="sub">Model price, churn, CAC and costs, and see break-even customers and 12-month MRR. Free to use, nothing to install, works in your browser.</p>
-<ul class="checks"><li>Built for bootstrapped founders setting their first price</li><li>Fixes: founders price on feel and cannot see the break-even or churn impact</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $12.00 a month and you can cancel any time.</li></ul>
-<div id="sm-tier" class="tierbar"></div>
-
-<div class="card">
-  <div class="grid cols-2">
-    <div><label for="s-price">Price per month</label><input id="s-price" type="number" value="19" min="0" step="1"></div>
-    <div><label for="s-cost">Fixed costs per month</label><input id="s-cost" type="number" value="80" min="0" step="5"></div>
-    <div><label for="s-var">Variable cost per customer</label><input id="s-var" type="number" value="1.5" min="0" step="0.1"></div>
-    <div><label for="s-churn">Monthly churn %</label><input id="s-churn" type="number" value="6" min="0" max="50" step="0.5"></div>
-    <div><label for="s-cac">Cost to acquire a customer</label><input id="s-cac" type="number" value="25" min="0" step="1"></div>
-    <div><label for="s-new">New customers per month</label><input id="s-new" type="number" value="10" min="0" step="1"></div>
-  </div>
-  <div class="grid cols-3" style="margin-top:16px">
-    <div class="stat"><div class="k">Break-even customers</div><div class="v" id="s-be">—</div></div>
-    <div class="stat"><div class="k">Lifetime value</div><div class="v" id="s-ltv">—</div></div>
-    <div class="stat"><div class="k">LTV : CAC</div><div class="v" id="s-ratio">—</div></div>
-  </div>
-  <output id="s-out"></output>
-  <h3>12-month projection</h3>
-  <table><thead><tr><th>Month</th><th>Customers</th><th>MRR</th><th>Profit</th></tr></thead><tbody id="s-rows"></tbody></table>
-</div>
-<div id="sm-lock" class="lockbox" hidden></div>
-
-<div class="card no-print" id="sm-account" hidden>
-  <h2 id="sm-acc-title">Sign in</h2>
-  <p class="sub" id="sm-acc-sub">Signing in switches Pro on wherever you are — this computer, your phone, anywhere.</p>
-
-  <div id="sm-acc-forms">
-    <div class="grid cols-2">
-      <div><label for="sm-acc-email">Email</label><input id="sm-acc-email" type="email" autocomplete="email" placeholder="you@example.com"></div>
-      <div><label for="sm-acc-pass">Password</label><input id="sm-acc-pass" type="password" autocomplete="current-password" placeholder="Your password"></div>
-    </div>
-    <div class="row">
-      <button id="sm-acc-go">Sign in</button>
-      <button id="sm-acc-new" class="secondary">Create an account</button>
-      <button id="sm-acc-forgot" class="secondary">Forgot password</button>
-    </div>
-    <output id="sm-acc-msg"></output>
-  </div>
-
-  <div id="sm-acc-signedin" hidden>
-    <div class="grid cols-3" id="sm-acc-stats"></div>
-    <div class="row">
-      <button id="sm-acc-out" class="secondary">Sign out</button>
-      <a class="btn-link" id="sm-acc-cancel" href="mailto:selfmade.engine@gmail.com?subject=Cancel%20my%20subscription">Cancel subscription</a>
-    </div>
-    <p class="limit">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for.</p>
-  </div>
-</div>
-
-<div class="card paycard no-print" id="sm-pay">
-  <div class="payhead">
-    <div>
-      <h2>Pro</h2>
-      <p class="sub">Model one pricing scenario. Pro takes the limit off and adds what you need when you do this every week.</p>
-    </div>
-    <div class="payprice"><span class="price">$12.00</span><span class="per">/month</span></div>
-  </div>
-  <ul class="checks pro"><li><strong>Compare up to six scenarios</strong><span class="why">The whole point of pricing work is comparison, not a single number.</span></li><li><strong>Spreadsheet export</strong><span class="why">Take the model to a co-founder or an investor.</span></li><li><strong>Cohort and churn curves</strong><span class="why">Model churn that changes over time, which is how churn actually behaves.</span></li></ul>
-  <form id="sm-order" class="grid">
-    <div><label for="sm-order-name">Your name</label><input id="sm-order-name" maxlength="80" placeholder="Optional"></div>
-    <div><label for="sm-order-email">Your email *</label><input id="sm-order-email" type="email" required maxlength="120" placeholder="you@example.com"></div>
-    <div><label for="sm-order-note">Anything we should know?</label><input id="sm-order-note" maxlength="400" placeholder="Optional"></div>
-    <div class="row"><button type="submit">Buy for $12.00</button><span id="sm-order-status" class="badge"></span></div>
-  </form>
-  <p class="notice">Payment is arranged directly rather than through a checkout, so you will get an email with the details shortly. The free version stays free and fully working either way.</p>
-  <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
-  <a href="./pricing.html">See everything in Pro</a></p>
-</div>
-<div class="card">
-  <h2>Who this is for</h2>
-  <p class="sub">Bootstrapped founders setting their first price</p>
-  <h2>The problem</h2>
-  <p class="sub">Founders price on feel and cannot see the break-even or churn impact</p>
-  <h2>What it does about it</h2>
-  <p class="sub">Model price, churn, CAC and costs, and see break-even customers and 12-month MRR</p>
-  
-</div>
-<div class="card"><h2>Guides</h2><ul class="checks"><li><a href="./guides/saas-pricing-calculator.html">Saas pricing calculator</a></li></ul></div>
-
-<div class="card no-print">
-  <h2>Did this do what you needed?</h2>
-  <p class="sub">One line of feedback decides what gets built next. Leave an email only if you want a reply.</p>
-  <form id="sm-feedback" class="grid">
-    <div><label for="sm-note">What would make this better?</label><input id="sm-note" name="note" maxlength="500" placeholder="It should also…"></div>
-    <div><label for="sm-email">Email (optional)</label><input id="sm-email" name="email" type="email" placeholder="you@example.com"></div>
-    <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
-  </form>
-</div>
+<h1>Saas pricing calculator</h1>
+<p class="sub">Founders price on feel and cannot see the break-even or churn impact. SaaS Pricing &amp; Break-even Calculator works it out for you, free, in your browser — n…</p>
+<div class="card"><h2>The short answer</h2><p class="sub">Founders price on feel and cannot see the break-even or churn impact. SaaS Pricing &amp; Break-even Calculator works it out for you, free, in your browser — nothing to install and nothing uploaded.</p></div>
+<div class="card"><h2>Break-even</h2><p class="sub">Break-even customers = fixed costs / (price - variable cost per customer). If the contribution margin is zero or negative, no volume saves you.</p></div>
+<div class="card"><h2>Why it is worth doing at all</h2><p class="sub">Bootstrapped founders setting their first price. put this off because it feels like admin rather than work. It is not: it is the difference between knowing where you stand and guessing at it, and the guess is always more flattering than the truth.</p></div>
+<div class="card"><h2>Doing it without a tool</h2><p class="sub">You can do all of this on paper or in a spreadsheet, and plenty of people do. The cost is not the arithmetic, it is remembering to do it and keeping the same method every time. A month you forget is a month missing from the total, and you find out about it at the worst possible moment.</p></div>
+<div class="card"><h2>If you would rather it just did it</h2><p class="sub">Open SaaS Pricing &amp; Break-even Calculator, put the numbers in, and read the answer. It keeps this month free with no limit on how much you record.</p></div>
+<div class="card"><h2>Try it</h2><p class="sub">SaaS Pricing &amp; Break-even Calculator does this in your browser, free, with no signup.</p><p><a class="buy" href="../">Open SaaS Pricing &amp; Break-even Calculator</a></p></div>
+<p class="notice">Written by SELFMADE, which also built the tool this page is about. That is a bias worth knowing about while you read it.</p>
 <footer class="site">
   <p>SaaS Pricing &amp; Break-even Calculator — built and operated by SELFMADE, an autonomous business agent.
   Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
@@ -126,48 +44,16 @@ var SM_LICENCE_URL = "http://127.0.0.1:7777/api/licence/verify";
 var SM_USE_URL = "http://127.0.0.1:7777/api/use";
 var SM_ACTIVATE_URL = "http://127.0.0.1:7777/api/activate";
 var SM_API_BASE = "http://127.0.0.1:7777";
-var SM_DAILY_LIMIT = 15;
-var SM_LIMIT_LABEL = "models a day";
-var SM_PITCH = "Pro adds compare up to six scenarios, spreadsheet export and cohort and churn curves.";
+var SM_DAILY_LIMIT = 0;
+var SM_LIMIT_LABEL = "uses";
+var SM_PITCH = "";
 var SM_CONTACT = "selfmade.engine@gmail.com";
 // Where the Upgrade button goes, and what it costs. Straight to checkout when
 // there is one, because a pricing page in between is a step people leave at.
 var SM_BUY_URL = "./pricing.html";
 var SM_PRICE = "$12.00";
 </script>
-<script data-sm="tool">
-(function(){
-  function n(id){ return parseFloat(document.getElementById(id).value)||0; }
-  function money(v){ return (v<0?'-$':'$') + Math.abs(v).toFixed(2); }
-  function calc(){
-    var price=n('s-price'), fixed=n('s-cost'), variable=n('s-var');
-    var churn=Math.min(n('s-churn'),50)/100, cac=n('s-cac'), added=n('s-new');
-    var contribution = price - variable;
-    var be = contribution>0 ? Math.ceil(fixed/contribution) : Infinity;
-    var ltv = churn>0 ? contribution/churn : contribution*36;
-    var ratio = cac>0 ? ltv/cac : Infinity;
-    document.getElementById('s-be').textContent = isFinite(be) ? be : 'never';
-    document.getElementById('s-ltv').textContent = money(ltv);
-    document.getElementById('s-ratio').textContent = isFinite(ratio) ? ratio.toFixed(1)+'x' : 'inf';
-    var verdict;
-    if(contribution<=0) verdict='Each customer loses money before fixed costs. The price is below the variable cost - nothing else matters until that is fixed.';
-    else if(!isFinite(ratio)) verdict='With no acquisition cost, every customer is pure upside. Break-even is ' + be + ' customers.';
-    else if(ratio<1) verdict='You pay ' + money(cac) + ' to earn ' + money(ltv) + '. Every sale destroys value - cut acquisition cost or raise price before scaling.';
-    else if(ratio<3) verdict='LTV:CAC of ' + ratio.toFixed(1) + 'x is thin. Below 3x there is little room for the months where nothing works.';
-    else verdict='LTV:CAC of ' + ratio.toFixed(1) + 'x supports spending on acquisition. Break-even sits at ' + be + ' customers.';
-    document.getElementById('s-out').textContent = verdict;
-    var rows='', customers=0;
-    for(var m=1;m<=12;m++){
-      customers = customers*(1-churn) + added;
-      var mrr = customers*price;
-      var profit = mrr - fixed - customers*variable - added*cac;
-      rows += '<tr><td>'+m+'</td><td>'+customers.toFixed(0)+'</td><td>'+money(mrr)+'</td><td>'+money(profit)+'</td></tr>';
-    }
-    document.getElementById('s-rows').innerHTML = rows;
-  }
-  ['s-price','s-cost','s-var','s-churn','s-cac','s-new'].forEach(function(id){ document.getElementById(id).addEventListener('input', calc); });
-  calc();
-})();</script>
+<script data-sm="tool"></script>
 <script>
 window.SM = (function(){
   var KEY_STORE = 'sm_key_' + SM_SLUG;
