@@ -1,0 +1,1007 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Family Carer Bills and Payday Planner: stop the balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest</title>
+<meta name="description" content="Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.">
+<meta property="og:title" content="Family Carer Bills and Payday Planner: stop the balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest">
+<meta property="og:description" content="Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="http://127.0.0.1:7777/p/family-carer-bills-and-payday-planner/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Family Carer Bills and Payday Planner","description":"Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"http://127.0.0.1:7777/p/family-carer-bills-and-payday-planner/","offers":{"@type":"Offer","price":"9.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
+<link rel="stylesheet" href="./style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
+</head>
+<body>
+<div class="wrap">
+<header class="site">
+  <a class="brand" href="./">Family Carer Bills and Payday Planner</a>
+  <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
+</header>
+
+<h1>Family Carer Bills and Payday Planner: stop the balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest</h1>
+<p class="sub">Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.</p>
+<ul class="checks"><li>Built for someone caring for a parent — people caring for a parent</li><li>Fixes: the balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $9.00 a month and you can cancel any time.</li></ul>
+<div id="sm-tier" class="tierbar"></div>
+
+<div class="card">
+  <h2>Money coming in</h2>
+  <div class="grid cols-3">
+    <div><label for="s-balance">In your account right now</label><input id="s-balance" type="number" step="0.01" value="0"></div>
+    <div><label for="s-pay">How much you get paid</label><input id="s-pay" type="number" step="0.01" min="0" value="1200"></div>
+    <div><label for="s-every">How often (days — 0 for monthly)</label><input id="s-every" type="number" step="7" min="0" value="0"></div>
+    <div><label for="s-nextPay">Next payday</label><input id="s-nextPay" type="date"></div>
+  </div>
+</div>
+<div class="card">
+  <h2>Money going out</h2>
+  <p class="sub">Rent, phone, energy, subscriptions — anything that leaves on its own. Money spent on someone else that never gets counted.</p>
+  <div class="grid cols-3">
+    <div><label for="f-name">What is it</label><input id="f-name" type="text" placeholder="Rent"></div>
+    <div><label for="f-amount">How much</label><input id="f-amount" type="number" step="0.01" min="0" value="0"></div>
+    <div><label for="f-day">Day of the month it goes</label><input id="f-day" type="number" step="1" min="1" max="31" value="1"></div>
+  </div>
+  <div class="row">
+    <button id="g-add">Add this bill</button>
+    <button id="g-clear" class="secondary">Start again</button>
+    <span id="g-count" class="badge"></span>
+  </div>
+  <div id="g-list"></div>
+</div>
+<div class="card">
+  <h2>What you can actually spend</h2>
+  <div class="grid cols-3" id="g-stats"></div>
+  <output id="g-verdict">Put your payday and your bills in above.</output>
+  <div id="g-timeline"></div>
+</div>
+<div class="card">
+  <h3>Look further ahead <span class="badge pro">PRO</span></h3>
+  <p class="sub">Free holds five bills and the next five weeks. Rent, phone, car, energy and two subscriptions is already six, and Pro shows a year ahead so you can see the month that is going to hurt while there is still time.</p>
+  <div class="row">
+    <button id="g-far" class="secondary">Show me a year</button>
+    <button id="g-export" class="secondary">Download it</button>
+  </div>
+  <div id="g-farout"></div>
+</div>
+<div id="sm-lock" class="lockbox" hidden></div>
+
+<div class="card no-print" id="sm-account" hidden>
+  <h2 id="sm-acc-title">Sign in</h2>
+  <p class="sub" id="sm-acc-sub">Signing in switches Pro on wherever you are — this computer, your phone, anywhere.</p>
+
+  <div id="sm-acc-forms">
+    <div class="grid cols-2">
+      <div><label for="sm-acc-email">Email</label><input id="sm-acc-email" type="email" autocomplete="email" placeholder="you@example.com"></div>
+      <div><label for="sm-acc-pass">Password</label><input id="sm-acc-pass" type="password" autocomplete="current-password" placeholder="Your password"></div>
+    </div>
+    <div class="row">
+      <button id="sm-acc-go">Sign in</button>
+      <button id="sm-acc-new" class="secondary">Create an account</button>
+      <button id="sm-acc-forgot" class="secondary">Forgot password</button>
+    </div>
+    <output id="sm-acc-msg"></output>
+  </div>
+
+  <div id="sm-acc-signedin" hidden>
+    <div class="grid cols-3" id="sm-acc-stats"></div>
+    <div class="row">
+      <button id="sm-acc-out" class="secondary">Sign out</button>
+      <a class="btn-link" id="sm-acc-cancel" href="mailto:selfmade.engine@gmail.com?subject=Cancel%20my%20subscription">Cancel subscription</a>
+    </div>
+    <p class="limit">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for.</p>
+  </div>
+</div>
+
+<div class="card paycard no-print" id="sm-pay">
+  <div class="payhead">
+    <div>
+      <h2>Pro</h2>
+      <p class="sub">Track up to 5 bills at a time. Pro takes the limit off and adds what you need when you do this every week.</p>
+    </div>
+    <div class="payprice"><span class="price">$9.00</span><span class="per">/month</span></div>
+  </div>
+  <ul class="checks pro"><li><strong>As many bills as you need</strong><span class="why">Free stops at 5. Anyone doing this for a living passes that in the first week.</span></li><li><strong>Everything kept, not just the last few</strong><span class="why">Months of records in one place, which is what turns a suspicion into a pattern you can point at.</span></li><li><strong>Download it all as a spreadsheet</strong><span class="why">For an accountant, for a payroll query, or just to keep somewhere that is not a browser.</span></li></ul>
+  <form id="sm-order" class="grid">
+    <div><label for="sm-order-name">Your name</label><input id="sm-order-name" maxlength="80" placeholder="Optional"></div>
+    <div><label for="sm-order-email">Your email *</label><input id="sm-order-email" type="email" required maxlength="120" placeholder="you@example.com"></div>
+    <div><label for="sm-order-note">Anything we should know?</label><input id="sm-order-note" maxlength="400" placeholder="Optional"></div>
+    <div class="row"><button type="submit">Buy for $9.00</button><span id="sm-order-status" class="badge"></span></div>
+  </form>
+  <p class="notice">Payment is arranged directly rather than through a checkout, so you will get an email with the details shortly. The free version stays free and fully working either way.</p>
+  <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
+  <a href="./pricing.html">See everything in Pro</a></p>
+</div>
+<div class="card">
+  <h2>Who this is for</h2>
+  <p class="sub">Someone caring for a parent — people caring for a parent</p>
+  <h2>The problem</h2>
+  <p class="sub">The balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest</p>
+  <h2>What it does about it</h2>
+  <p class="sub">Map your paydays against your bills and get one number: what you can spend today with everything still clearing</p>
+  
+</div>
+
+
+<div class="card no-print">
+  <h2>Did this do what you needed?</h2>
+  <p class="sub">One line of feedback decides what gets built next. Leave an email only if you want a reply.</p>
+  <form id="sm-feedback" class="grid">
+    <div><label for="sm-note">What would make this better?</label><input id="sm-note" name="note" maxlength="500" placeholder="It should also…"></div>
+    <div><label for="sm-email">Email (optional)</label><input id="sm-email" name="email" type="email" placeholder="you@example.com"></div>
+    <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
+  </form>
+</div>
+<footer class="site">
+  <p>Family Carer Bills and Payday Planner — built and operated by SELFMADE, an autonomous business agent.
+  Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
+  <p>Everything on this page runs in your browser. Your input is not uploaded or stored.</p>
+</footer>
+</div>
+<script>
+var SM_SLUG = "family-carer-bills-and-payday-planner";
+var SM_TRACK_URL = "http://127.0.0.1:7777/api/track";
+var SM_ORDER_URL = "http://127.0.0.1:7777/api/order";
+var SM_LICENCE_URL = "http://127.0.0.1:7777/api/licence/verify";
+var SM_USE_URL = "http://127.0.0.1:7777/api/use";
+var SM_ACTIVATE_URL = "http://127.0.0.1:7777/api/activate";
+var SM_API_BASE = "http://127.0.0.1:7777";
+var SM_DAILY_LIMIT = 3;
+var SM_LIMIT_LABEL = "bills a day";
+var SM_PITCH = "Pro adds as many bills as you need, everything kept, not just the last few, download it all as a spreadsheet and saved sets.";
+var SM_CONTACT = "selfmade.engine@gmail.com";
+// Where the Upgrade button goes, and what it costs. Straight to checkout when
+// there is one, because a pricing page in between is a step people leave at.
+var SM_BUY_URL = "./pricing.html";
+var SM_PRICE = "$9.00";
+</script>
+<script data-sm="tool">
+function SMN(v){
+  if (typeof v === 'number') return isFinite(v) ? v : 0;
+  var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, ''));
+  return isFinite(x) ? x : 0;
+}
+var CUR = "$";
+function SMD(id){ var e = document.getElementById(id); return e; }
+function SMV(id){ var e = SMD(id); return e ? String(e.value == null ? '' : e.value).trim() : ''; }
+function SMmoney(v){
+  var neg = v < 0;
+  var a = Math.abs(Math.round(v * 100) / 100).toFixed(2);
+  return (neg ? '-' : '') + CUR + a.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+function SMnum(v, dp){
+  var d = dp == null ? 2 : dp;
+  var n = Math.round(SMN(v) * Math.pow(10, d)) / Math.pow(10, d);
+  return d === 0 ? String(n) : n.toFixed(d);
+}
+function SMesc(s){
+  return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
+    return c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&quot;';
+  });
+}
+function SMtable(head, rows){
+  return '<table><tr>' + head.map(function(h){ return '<th>' + h + '</th>'; }).join('') + '</tr>' +
+    rows.map(function(r){ return '<tr>' + r.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>'; }).join('') +
+    '</table>';
+}
+function SMstat(k, v, note){
+  return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
+    (note ? '<div class="k" style="text-transform:none;letter-spacing:0;margin-top:4px">' + note + '</div>' : '') + '</div>';
+}
+/** A dropdown stores its numeric value; the table should show the words. */
+function SMlabel(f, v){
+  if (f && f.options && f.options.length && typeof f.options[0] === 'object') {
+    for (var i = 0; i < f.options.length; i++) {
+      if (String(f.options[i].value) === String(v)) return f.options[i].label;
+    }
+  }
+  return v;
+}
+function SMtoday(){ return new Date().toISOString().slice(0, 10); }
+function SMfmtDate(d){
+  var x = (d instanceof Date) ? d : new Date(d);
+  if (isNaN(x.getTime())) return String(d || '');
+  return x.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+}
+(function(){
+  var FIELDS = [{"id":"name","label":"What is it","type":"text","placeholder":"Rent"},{"id":"amount","label":"How much","type":"number","default":0,"min":0,"step":0.01},{"id":"day","label":"Day of the month it goes","type":"number","default":1,"min":1,"max":31,"step":1}];
+  var FREE_MAX = 5;
+  var items = [];
+  try { items = JSON.parse(localStorage.getItem("sm-carer--bills-vs-pay") || '[]'); } catch(e){ items = []; }
+  if (!(items instanceof Array)) items = [];
+  function persist(){ try { localStorage.setItem("sm-carer--bills-vs-pay", JSON.stringify(items)); } catch(e){} }
+
+  function derive(r, T){
+    var out = {};
+    for (var k in r) out[k] = r[k];
+    
+    return out;
+  }
+  function settings(){
+    var T = {};
+    T.balance = SMN(SMV('s-balance'));
+    T.pay = SMN(SMV('s-pay'));
+    T.every = SMN(SMV('s-every'));
+    T.nextPay = SMN(SMV('s-nextPay'));
+    return T;
+  }
+  function compute(){
+    var T = settings();
+    var rowsD = items.map(function(r){ return derive(r, T); });
+    (function(rows){
+      T.monthly = rows.reduce(function(a, r){ return a + (SMN(r.amount)); }, 0);
+    })(rowsD);
+    return { rows: rowsD, T: T };
+  }
+
+  /**
+   * Walk day by day. Each item lands on its own day of the month, and the
+   * running balance is what actually matters - not the total, the lowest point.
+   */
+  function project(days){
+    var T = settings();
+    var balance = SMN(T.balance);
+    var incomeAmount = SMN(T.pay);
+    var incomeEvery = SMN(T.every);
+    var nextIncome = (SMV('s-nextPay') ? new Date(SMV('s-nextPay') + 'T00:00:00') : null);
+    var out = [];
+    var d = new Date(); d.setHours(0,0,0,0);
+    var lowest = { balance: balance, date: new Date(d.getTime()), why: [] };
+    var T0 = settings();
+    var rowsD = items.map(function(r){ return derive(r, T0); });
+
+    for (var i = 0; i < days; i++) {
+      var inToday = 0, outToday = 0, why = [];
+      if (nextIncome && d.toDateString() === nextIncome.toDateString()) {
+        inToday += incomeAmount;
+        why.push("payday");
+        if (incomeEvery > 0) nextIncome = new Date(nextIncome.getTime() + incomeEvery * 86400000);
+        else { var nx = new Date(nextIncome.getTime()); nx.setMonth(nx.getMonth() + 1); nextIncome = nx; }
+      }
+      for (var k = 0; k < rowsD.length; k++) {
+        var it = rowsD[k];
+        var lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+        var due = Math.min(SMN(it.day), lastDay);
+        if (d.getDate() === due) {
+          outToday += SMN(it.amount);
+          why.push(String(it.name || 'a payment'));
+        }
+      }
+      balance += inToday - outToday;
+      if (balance < lowest.balance) lowest = { balance: balance, date: new Date(d.getTime()), why: why.slice() };
+      out.push({ date: new Date(d.getTime()), in: inToday, out: outToday, balance: balance, why: why });
+      d = new Date(d.getTime() + 86400000);
+    }
+    return { days: out, lowest: lowest, end: balance };
+  }
+
+  function paint(){
+    SMD('g-count').textContent = items.length + ' ' + "bills";
+    var c = compute();
+    var T = c.T;
+    var days = SM.pro() ? 365 : 35;
+    var p = project(days);
+    var safe = p.lowest.balance;
+
+    SMD('g-stats').innerHTML = [
+      SMstat("Safe to spend", SMmoney(Math.max(0, safe)), safe < 0 ? 'you go short before then' : 'and everything still clears'),
+      SMstat('Lowest you go', SMmoney(p.lowest.balance), 'on ' + SMfmtDate(p.lowest.date)),
+      SMstat("Bills a month", SMmoney(T.monthly), "everything on autopilot")
+    ].filter(Boolean).join('');
+
+    var out = [];
+    (function(rows){
+      if (SMN(T.monthly) > 0) out.push("Your bills come to " + SMmoney(T.monthly) + " a month.");
+    })(c.rows);
+    if (safe < 0) {
+      out.unshift('You are heading ' + SMmoney(-safe) + ' short on ' + SMfmtDate(p.lowest.date) +
+        (p.lowest.why.length ? ', because of ' + p.lowest.why.join(' and ') : '') + '.');
+    } else if (items.length) {
+      out.unshift('You can spend up to ' + SMmoney(safe) + ' and everything between now and ' +
+        SMfmtDate(p.days[p.days.length - 1].date) + ' still clears.');
+    }
+    SMD('g-verdict').textContent = items.length ? out.join('\n\n') : "Put your payday and your bills in above.";
+
+    if (!items.length) { SMD('g-list').innerHTML = '<p class="sub">Nothing added yet.</p>'; SMD('g-timeline').innerHTML = ''; return; }
+    var head = FIELDS.map(function(f){ return SMesc(f.label); }).concat(['']);
+    SMD('g-list').innerHTML = SMtable(head, items.map(function(r, i){
+      return FIELDS.map(function(f){ return SMesc(SMlabel(f, r[f.id])); })
+        .concat(['<button class="secondary" data-del="' + i + '" style="padding:4px 10px">Remove</button>']);
+    }));
+    Array.prototype.forEach.call(SMD('g-list').querySelectorAll('[data-del]'), function(b){
+      b.addEventListener('click', function(){ items.splice(Number(b.getAttribute('data-del')), 1); persist(); paint(); });
+    });
+
+    var interesting = p.days.filter(function(x){ return x.in > 0 || x.out > 0; }).slice(0, SM.pro() ? 200 : 12);
+    SMD('g-timeline').innerHTML = interesting.length
+      ? SMtable(['Date', 'In', 'Out', 'Left', 'What'], interesting.map(function(x){
+          return [SMfmtDate(x.date), x.in ? SMmoney(x.in) : '', x.out ? SMmoney(x.out) : '', SMmoney(x.balance), SMesc(x.why.join(', '))];
+        }))
+      : '';
+  }
+
+  SMD('g-add').addEventListener('click', function(){
+    if (!SM.pro() && items.length >= FREE_MAX) { SM.gate('More than ' + FREE_MAX + ' ' + "bills"); return; }
+    if (!SM.use()) return;
+    var r = {};
+    for (var i = 0; i < FIELDS.length; i++) { r[FIELDS[i].id] = SMV('f-' + FIELDS[i].id); }
+    if (!r["name"]) { var el = SMD('f-' + "name"); if (el) el.focus(); return; }
+    items.push(r);
+    if (SMD('f-name')) SMD('f-name').value = '';
+    if (SMD('f-amount')) SMD('f-amount').value = '';
+    persist(); paint();
+  });
+  SMD('g-clear').addEventListener('click', function(){ items = []; persist(); paint(); });
+  if (SMD('s-balance')) { SMD('s-balance').addEventListener('input', paint); SMD('s-balance').addEventListener('change', paint); }
+  if (SMD('s-pay')) { SMD('s-pay').addEventListener('input', paint); SMD('s-pay').addEventListener('change', paint); }
+  if (SMD('s-every')) { SMD('s-every').addEventListener('input', paint); SMD('s-every').addEventListener('change', paint); }
+  if (SMD('s-nextPay')) { SMD('s-nextPay').addEventListener('input', paint); SMD('s-nextPay').addEventListener('change', paint); }
+
+  SMD('g-far').addEventListener('click', function(){
+    if (!SM.gate('The twelve month view')) return;
+    var p = project(365);
+    var byMonth = {};
+    p.days.forEach(function(x){
+      var k = x.date.getFullYear() + '-' + String(x.date.getMonth() + 1);
+      if (!byMonth[k]) byMonth[k] = { label: x.date.toLocaleDateString(undefined, { month: 'long', year: 'numeric' }), in: 0, out: 0, low: Infinity, end: 0 };
+      byMonth[k].in += x.in; byMonth[k].out += x.out; byMonth[k].end = x.balance;
+      if (x.balance < byMonth[k].low) byMonth[k].low = x.balance;
+    });
+    SMD('g-farout').innerHTML = SMtable(['Month', 'In', 'Out', 'Lowest point', 'End of month'],
+      Object.keys(byMonth).map(function(k){
+        var m = byMonth[k];
+        return [m.label, SMmoney(m.in), SMmoney(m.out), SMmoney(m.low), SMmoney(m.end)];
+      }));
+  });
+  SMD('g-export').addEventListener('click', function(){
+    var p = project(SM.pro() ? 365 : 35);
+    SM.exportCsv("carer--bills-vs-pay.csv", [['Date', 'In', 'Out', 'Balance', 'What']].concat(
+      p.days.filter(function(x){ return x.in || x.out; }).map(function(x){
+        return [x.date.toISOString().slice(0,10), x.in.toFixed(2), x.out.toFixed(2), x.balance.toFixed(2), x.why.join('; ')];
+      })));
+  });
+
+  (function(){ var el = SMD('s-nextPay'); if (el && !el.value) { var n = new Date(); n.setDate(n.getDate() + 7); el.value = n.toISOString().slice(0,10); } })();
+  paint();
+})();</script>
+<script>
+window.SM = (function(){
+  var KEY_STORE = 'sm_key_' + SM_SLUG;
+  var USE_STORE = 'sm_uses_' + SM_SLUG;
+  var state = { pro:false, key:null, checked:false, renewsAt:null };
+
+  function today(){ return new Date().toISOString().slice(0,10); }
+  function reads(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+  function writes(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+
+  function usesToday(){
+    try {
+      var raw = JSON.parse(reads(USE_STORE) || '{}');
+      return raw.day === today() ? (raw.n||0) : 0;
+    } catch(e){ return 0; }
+  }
+  function setUses(n){
+    writes(USE_STORE, JSON.stringify({ day: today(), n: n }));
+  }
+  function bump(){ setUses(usesToday()+1); }
+
+  /**
+   * Ask the server how much of today's allowance is actually left.
+   *
+   * This is what makes clearing site data pointless: the browser's own tally is
+   * only a display, and it is corrected from the server on every load.
+   */
+  function syncAllowance(){
+    if(!SM_DAILY_LIMIT || !SM_USE_URL) return;
+    fetch(SM_USE_URL + '?slug=' + encodeURIComponent(SM_SLUG) + '&limit=' + SM_DAILY_LIMIT + '&peek=1')
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if(typeof res.used === 'number'){
+          // The server is the authority in both directions.
+          setUses(res.used);
+          paint();
+        }
+      })
+      .catch(function(){ /* offline: the local tally stands until it can ask */ });
+  }
+
+  /** Tell the server one use has been spent, and obey it if it says no. */
+  function spend(){
+    if(!SM_DAILY_LIMIT || !SM_USE_URL) return;
+    fetch(SM_USE_URL + '?slug=' + encodeURIComponent(SM_SLUG) + '&limit=' + SM_DAILY_LIMIT)
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if(typeof res.used === 'number') setUses(res.used);
+        if(res.allowed === false){ lock('Unlimited use'); }
+        paint();
+      })
+      .catch(function(){});
+  }
+
+  function paint(){
+    var bar = document.getElementById('sm-tier');
+    if(!bar) return;
+    var pay = document.getElementById('sm-pay');
+    var navbuy = document.getElementById('sm-navbuy');
+
+    if(state.pro){
+      bar.innerHTML = '<span class="badge pro">PRO</span> Unlimited, all features on.'
+        + (state.renewsAt ? ' <span class="dim">Renews ' + state.renewsAt.slice(0,10) + '</span>' : '');
+      bar.className = 'tierbar pro';
+      // Somebody who has paid should never be asked again. Everything selling
+      // the upgrade comes off the page entirely.
+      if(pay) pay.hidden = true;
+      if(navbuy) navbuy.hidden = true;
+      return;
+    }
+
+    if(pay) pay.hidden = false;
+    if(navbuy) navbuy.hidden = false;
+
+    if (SM_DAILY_LIMIT) {
+      var left = Math.max(0, SM_DAILY_LIMIT - usesToday());
+      bar.innerHTML = left > 0
+        ? '<span class="badge">FREE</span> ' + left + ' of ' + SM_DAILY_LIMIT + ' ' + SM_LIMIT_LABEL + ' left today.'
+        : '<span class="badge">FREE</span> That is your ' + SM_DAILY_LIMIT + ' ' + SM_LIMIT_LABEL + ' for today. It resets tomorrow.';
+      bar.className = 'tierbar' + (left === 0 ? ' spent' : '');
+    }
+  }
+
+
+  /**
+   * Just back from paying. Turn everything on without asking for anything.
+   *
+   * The reference in the URL is only a lookup - the server will not hand over a
+   * subscription for it unless the payment platform has already confirmed the
+   * payment over a signed webhook. So a made-up reference gets nothing.
+   */
+  function claimPayment(reference){
+    var tries = 0;
+    say('Setting up your subscription…');
+
+    function attempt(){
+      tries += 1;
+      fetch(SM_ACTIVATE_URL + '?ref=' + encodeURIComponent(reference) + '&slug=' + encodeURIComponent(SM_SLUG))
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if(res.ok && res.key){
+            state.pro = true; state.key = res.key;
+            writes(KEY_STORE, res.key);
+            say('You are all set — Pro is on. Nothing else to do.', 'good');
+            cleanUrl();
+            paint();
+            return;
+          }
+          // The webhook is usually a moment behind the redirect.
+          if(res.status === 'pending' && tries < 6){
+            setTimeout(attempt, 1500);
+            return;
+          }
+          if(res.status === 'not_configured'){
+            say('Your payment went through. Your access link is in your email — open it on this device and you are done.', 'warn');
+          } else if(res.status === 'wrong_product'){
+            say('That payment was for a different tool. Open the link in your email for the right one.', 'warn');
+          } else {
+            say('Your payment went through, but this page could not switch Pro on yet. Check your email for the access link, or contact ' + SM_CONTACT + ' and it will be sorted.', 'warn');
+          }
+          cleanUrl();
+        })
+        .catch(function(){
+          if(tries < 6){ setTimeout(attempt, 1500); return; }
+          say('Your payment went through. Your access link is in your email.', 'warn');
+          cleanUrl();
+        });
+    }
+    attempt();
+  }
+
+  /** A quiet line at the top of the page, not an alert box. */
+  function say(text, tone){
+    var el = document.getElementById('sm-welcome');
+    if(!el){
+      el = document.createElement('div');
+      el.id = 'sm-welcome';
+      el.className = 'tierbar';
+      var first = document.querySelector('h1');
+      if(first && first.parentNode) first.parentNode.insertBefore(el, first);
+      else document.body.insertBefore(el, document.body.firstChild);
+    }
+    el.className = 'tierbar' + (tone === 'good' ? ' pro' : tone === 'warn' ? ' spent' : '');
+    el.textContent = text;
+  }
+
+  /** Take the payment reference out of the address bar. */
+  function cleanUrl(){
+    try {
+      var u = new URL(location.href);
+      u.searchParams.delete('paid');
+      u.searchParams.delete('key');
+      history.replaceState({}, '', u.pathname + (u.searchParams.toString() ? '?' + u.searchParams : '') + u.hash);
+    } catch(e){}
+  }
+
+  function lock(featureName){
+    var box = document.getElementById('sm-lock');
+    if(!box) return;
+    // The moment somebody actually wants the thing is the moment to offer it,
+    // and the button belongs here rather than a page away.
+    box.innerHTML = '<strong>' + featureName + ' is part of Pro.</strong> ' + SM_PITCH
+      + '<div class="row"><a class="buy" href="' + SM_BUY_URL + '">Get Pro — ' + SM_PRICE + '/month</a></div>'
+      + '<div class="row"><input id="sm-key" placeholder="Already subscribed? Paste your key" style="max-width:280px">'
+      + '<button id="sm-key-go" class="secondary">Unlock</button><span id="sm-key-msg" class="badge"></span></div>';
+    box.hidden = false;
+    var go = document.getElementById('sm-key-go');
+    if(go) go.addEventListener('click', function(){ SM.activate(document.getElementById('sm-key').value); });
+  }
+
+  var SM = {
+    /** Is Pro on? */
+    pro: function(){ return state.pro; },
+
+    /**
+     * Switch Pro on because the signed-in ACCOUNT is entitled to it.
+     * This is the path that matters now; the key is the fallback.
+     */
+    grant: function(key, renewsAt){
+      state.pro = true;
+      state.key = key || state.key;
+      state.renewsAt = renewsAt || state.renewsAt;
+      if(key) writes(KEY_STORE, key);
+      paint();
+    },
+
+    /** Gate a Pro-only feature. Returns false and shows the upsell if not Pro. */
+    gate: function(featureName){
+      if(state.pro) return true;
+      lock(featureName);
+      return false;
+    },
+
+    /** Count one use of the free tier. Returns false once the daily limit is hit. */
+    use: function(){
+      if(state.pro) return true;
+      if(!SM_DAILY_LIMIT) return true;
+      if(usesToday() >= SM_DAILY_LIMIT){
+        lock('Unlimited use');
+        paint();
+        return false;
+      }
+      // Count it here so the number moves at once, and tell the server, which
+      // is the one that actually decides and will correct this if it disagrees.
+      bump();
+      spend();
+      paint();
+      return true;
+    },
+
+    /** Check a key with the server and turn Pro on if it is good. */
+    activate: function(key){
+      var msg = document.getElementById('sm-key-msg');
+      var clean = (key||'').trim();
+      if(!clean){ if(msg) msg.textContent = 'paste a key first'; return; }
+      if(msg) msg.textContent = 'checking...';
+      fetch(SM_LICENCE_URL + '?key=' + encodeURIComponent(clean) + '&slug=' + encodeURIComponent(SM_SLUG))
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if(res.valid){
+            state.pro = true; state.key = clean; state.renewsAt = res.renewsAt;
+            writes(KEY_STORE, clean);
+            if(msg) msg.textContent = 'Pro is on';
+            var box = document.getElementById('sm-lock'); if(box) box.hidden = true;
+            paint();
+          } else {
+            if(msg) msg.textContent = res.reason === 'expired' ? 'that subscription has lapsed'
+              : res.reason === 'wrong_product' ? 'that key is for a different tool'
+              : 'key not recognised';
+          }
+        })
+        .catch(function(){ if(msg) msg.textContent = 'could not check right now'; });
+    },
+
+    init: function(){
+      var params = new URLSearchParams(location.search);
+      paint();
+      syncAllowance();
+
+      // Straight back from a checkout: switch everything on, ask for nothing.
+      var paid = params.get('paid');
+      if(paid){ claimPayment(paid); return; }
+
+      var key = params.get('key') || reads(KEY_STORE);
+      if(!key) return;
+
+      function confirm(){
+        fetch(SM_LICENCE_URL + '?key=' + encodeURIComponent(key) + '&slug=' + encodeURIComponent(SM_SLUG))
+          .then(function(r){ return r.json(); })
+          .then(function(res){
+            state.checked = true;
+            if(res.valid){
+              state.pro = true; state.key = key; state.renewsAt = res.renewsAt;
+              writes(KEY_STORE, key);
+            } else {
+              // Cancelled, lapsed, or used on too many devices. Pro goes off
+              // now rather than lasting until the tab is closed.
+              state.pro = false;
+              if(res.reason === 'too_many_devices') state.deviceProblem = true;
+            }
+            paint();
+          })
+          .catch(function(){
+            // No answer means no Pro. Failing open here would make the paid
+            // tier optional for anyone willing to go offline.
+            state.pro = false;
+            paint();
+          });
+      }
+
+      confirm();
+      // A subscription that was cancelled this morning should not still work
+      // this afternoon on a tab nobody closed.
+      setInterval(confirm, 60 * 60000);
+    }
+  };
+
+  if(document.readyState !== 'loading') SM.init();
+  else document.addEventListener('DOMContentLoaded', function(){ SM.init(); });
+  return SM;
+})();
+</script>
+<script>
+(function(){
+  var SESSION_STORE = 'sm_session_' + SM_SLUG;
+  function reads(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+  function writes(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+  function drops(k){ try { localStorage.removeItem(k); } catch(e){} }
+  function el(id){ return document.getElementById(id); }
+  function say(text){ var m = el('sm-acc-msg'); if(m) m.textContent = text || ''; }
+
+  function open(){
+    var box = el('sm-account');
+    if(box){ box.hidden = false; box.scrollIntoView({ block: 'center' }); }
+  }
+
+  function post(path, payload){
+    return fetch(SM_API_BASE + path, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-sm-session': reads(SESSION_STORE) || '' },
+      body: JSON.stringify(payload || {})
+    }).then(function(r){ return r.json(); });
+  }
+
+  function paintAccount(data){
+    var forms = el('sm-acc-forms');
+    var inside = el('sm-acc-signedin');
+    if(!forms || !inside) return;
+
+    if(!data || !data.signedIn){
+      forms.hidden = false;
+      inside.hidden = true;
+      if(el('sm-acc-title')) el('sm-acc-title').textContent = 'Sign in';
+      return;
+    }
+
+    forms.hidden = true;
+    inside.hidden = false;
+    if(el('sm-acc-title')) el('sm-acc-title').textContent = 'Your account';
+    if(el('sm-acc-sub')) el('sm-acc-sub').textContent = data.account.email;
+
+    var mine = (data.entitlements || []).filter(function(e){ return e.slug === SM_SLUG; })[0];
+    var stats = el('sm-acc-stats');
+    if(stats){
+      stats.innerHTML = mine
+        ? '<div class="stat"><div class="k">Plan</div><div class="v">' + (mine.active ? 'Pro' : 'Ending') + '</div></div>'
+          + '<div class="stat"><div class="k">You pay</div><div class="v">' + SM_PRICE + '</div><div class="k" style="text-transform:none">a month</div></div>'
+          + '<div class="stat"><div class="k">' + (mine.status === 'CANCELLED' ? 'Access ends' : 'Renews') + '</div><div class="v">' + String(mine.renewsAt || '').slice(0,10) + '</div></div>'
+        : '<div class="stat"><div class="k">Plan</div><div class="v">Free</div><div class="k" style="text-transform:none">no subscription on this tool</div></div>';
+    }
+
+    // This is the bit that matters: Pro follows the account.
+    if(mine && mine.active && window.SM && SM.grant) SM.grant(mine.key, mine.renewsAt);
+  }
+
+  function refresh(){
+    var token = reads(SESSION_STORE);
+    if(!token){ paintAccount(null); return; }
+    fetch(SM_API_BASE + '/api/account/me', { headers: { 'x-sm-session': token } })
+      .then(function(r){ return r.json(); })
+      .then(paintAccount)
+      .catch(function(){ paintAccount(null); });
+  }
+
+  function afterSignIn(res){
+    if(res.sessionToken) writes(SESSION_STORE, res.sessionToken);
+    say('');
+    refresh();
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    var link = el('sm-navsignin');
+    if(link) link.addEventListener('click', function(e){ e.preventDefault(); open(); });
+
+    var go = el('sm-acc-go');
+    if(go) go.addEventListener('click', function(){
+      say('Checking…');
+      post('/api/account/signin', { email: (el('sm-acc-email')||{}).value, password: (el('sm-acc-pass')||{}).value })
+        .then(function(res){
+          if(res.ok) return afterSignIn(res);
+          say(res.reason || 'That did not work.');
+        })
+        .catch(function(){ say('Could not reach the server.'); });
+    });
+
+    var make = el('sm-acc-new');
+    if(make) make.addEventListener('click', function(){
+      say('Creating…');
+      post('/api/account/signup', { email: (el('sm-acc-email')||{}).value, password: (el('sm-acc-pass')||{}).value, slug: SM_SLUG })
+        .then(function(res){ say(res.reason || res.message || 'Check your email.'); })
+        .catch(function(){ say('Could not reach the server.'); });
+    });
+
+    var forgot = el('sm-acc-forgot');
+    if(forgot) forgot.addEventListener('click', function(){
+      say('Sending…');
+      post('/api/account/password/request', { email: (el('sm-acc-email')||{}).value, slug: SM_SLUG })
+        .then(function(res){ say(res.message || 'Check your email.'); })
+        .catch(function(){ say('Could not reach the server.'); });
+    });
+
+    var out = el('sm-acc-out');
+    if(out) out.addEventListener('click', function(){
+      post('/api/account/signout', {}).then(function(){ drops(SESSION_STORE); refresh(); });
+    });
+
+    // Arriving from a link in an email.
+    var params = new URLSearchParams(location.search);
+    var confirmToken = params.get('confirm');
+    var setToken = params.get('setpassword');
+
+    if(confirmToken){
+      open();
+      say('Confirming your email…');
+      post('/api/account/verify', { token: confirmToken }).then(function(res){
+        say(res.ok ? 'Email confirmed — you are signed in.' : (res.reason || 'That link did not work.'));
+        if(res.ok) afterSignIn(res);
+      });
+    } else if(setToken){
+      open();
+      if(el('sm-acc-title')) el('sm-acc-title').textContent = 'Choose a password';
+      if(el('sm-acc-sub')) el('sm-acc-sub').textContent = 'Pick something you will remember. At least 8 characters.';
+      if(el('sm-acc-email')) el('sm-acc-email').hidden = true;
+      if(go) go.textContent = 'Save password';
+      if(make) make.hidden = true;
+      if(forgot) forgot.hidden = true;
+      go.onclick = function(){
+        say('Saving…');
+        post('/api/account/password/reset', { token: setToken, password: (el('sm-acc-pass')||{}).value })
+          .then(function(res){
+            if(res.ok){ say('Done — you are signed in.'); afterSignIn(res); }
+            else say(res.reason || 'That did not work.');
+          });
+      };
+    }
+
+    refresh();
+  });
+})();
+</script>
+<script>
+(function(){
+  if(!window.SM) return;
+
+  function store(name){ return 'sm_pro_' + SM_SLUG + '_' + name; }
+
+  SM.save = function(name, list){
+    if(!SM.gate('Saving')) return false;
+    try { localStorage.setItem(store(name), JSON.stringify(list)); return true; } catch(e){ return false; }
+  };
+
+  SM.load = function(name){
+    try { return JSON.parse(localStorage.getItem(store(name)) || '[]'); } catch(e){ return []; }
+  };
+
+  /** Download rows as CSV. Pro only. */
+  SM.exportCsv = function(filename, rows){
+    if(!SM.gate('CSV export')) return false;
+    var csv = rows.map(function(r){
+      return r.map(function(cell){
+        var v = String(cell == null ? '' : cell);
+        return /[",\n]/.test(v) ? '"' + v.replace(/"/g,'""') + '"' : v;
+      }).join(',');
+    }).join('\n');
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    return true;
+  };
+
+  /** Copy text, no gate - free users get this too. */
+  SM.copy = function(text, btn){
+    navigator.clipboard.writeText(text);
+    if(btn){ var old = btn.textContent; btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = old; }, 1500); }
+  };
+
+  /**
+   * Renders a bulk panel: many inputs in, many results out.
+   * cfg = { mount, placeholder, hint, run(lineArray) -> rowsArray, header }
+   */
+  SM.bulk = function(cfg){
+    var mount = document.getElementById(cfg.mount);
+    if(!mount) return;
+    mount.innerHTML =
+      '<h3>Bulk mode <span class="badge pro">PRO</span></h3>'
+      + '<p class="sub">' + cfg.hint + '</p>'
+      + '<textarea id="' + cfg.mount + '-in" placeholder="' + cfg.placeholder + '"></textarea>'
+      + '<div class="row"><button id="' + cfg.mount + '-go">Run all</button>'
+      + '<button id="' + cfg.mount + '-csv" class="secondary">Download CSV</button>'
+      + '<span id="' + cfg.mount + '-count" class="badge"></span></div>'
+      + '<output id="' + cfg.mount + '-out"></output>';
+
+    var rows = [];
+    function run(){
+      if(!SM.gate('Bulk mode')) return;
+      var lines = (document.getElementById(cfg.mount + '-in').value || '')
+        .split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
+      if(!lines.length){ document.getElementById(cfg.mount + '-out').textContent = 'Paste one per line above.'; return; }
+      rows = cfg.run(lines);
+      document.getElementById(cfg.mount + '-count').textContent = rows.length + ' done';
+      document.getElementById(cfg.mount + '-out').textContent =
+        rows.slice(0, 50).map(function(r){ return r.join('  ->  '); }).join('\n')
+        + (rows.length > 50 ? '\n... and ' + (rows.length - 50) + ' more in the CSV' : '');
+    }
+    document.getElementById(cfg.mount + '-go').addEventListener('click', run);
+    document.getElementById(cfg.mount + '-csv').addEventListener('click', function(){
+      if(!rows.length) run();
+      if(rows.length) SM.exportCsv(SM_SLUG + '-bulk.csv', [cfg.header].concat(rows));
+    });
+  };
+})();
+</script>
+<script>
+(function(){
+  var form = document.getElementById('sm-feedback');
+  if(!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var email = (document.getElementById('sm-email')||{}).value || '';
+    var note = (document.getElementById('sm-note')||{}).value || '';
+    var status = document.getElementById('sm-status');
+    status.textContent = 'Sending...';
+    fetch(SM_TRACK_URL, {
+      method:'POST',
+      headers:{'content-type':'application/json'},
+      body: JSON.stringify({slug: SM_SLUG, event:'lead', email: email, note: note})
+    }).then(function(r){ return r.json(); }).then(function(){
+      status.textContent = 'Thanks - that came straight through to the inbox.';
+      form.reset();
+    }).catch(function(){
+      status.textContent = 'Could not send. Email us instead: ' + SM_CONTACT;
+    });
+  });
+})();</script>
+<script>
+(function(){
+  var form = document.getElementById('sm-order');
+  if(!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var status = document.getElementById('sm-order-status');
+    var email = (document.getElementById('sm-order-email')||{}).value || '';
+    if(!email){ status.textContent = 'email required'; return; }
+    status.textContent = 'sending...';
+    fetch(SM_ORDER_URL, {
+      method:'POST',
+      headers:{'content-type':'application/json'},
+      body: JSON.stringify({
+        slug: SM_SLUG,
+        email: email,
+        name: (document.getElementById('sm-order-name')||{}).value || '',
+        note: (document.getElementById('sm-order-note')||{}).value || ''
+      })
+    }).then(function(r){ return r.json(); }).then(function(res){
+      if(res.ok){
+        form.innerHTML = '<p class="sub">Thanks - check your email shortly for payment details.</p>';
+      } else {
+        status.textContent = res.error || 'could not send';
+      }
+    }).catch(function(){
+      status.textContent = 'could not send - email ' + SM_CONTACT;
+    });
+  });
+})();</script>
+<script>
+(function(){
+  var link = document.getElementById('sm-buy');
+  if(!link) return;
+
+  var SESSION_STORE = 'sm_session_' + SM_SLUG;
+  var CODE_STORE = 'sm_buying_' + SM_SLUG;
+  var status = document.getElementById('sm-buy-status');
+  var timer = null;
+  var started = 0;
+
+  function reads(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+  function writes(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+  function drops(k){ try { localStorage.removeItem(k); } catch(e){} }
+
+  function say(text, done){
+    if(!status) return;
+    status.hidden = !text;
+    status.textContent = text || '';
+    status.style.color = done ? 'var(--ok, #0a7)' : '';
+  }
+
+  function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+  /**
+   * Their payment landed: turn everything on where they are standing.
+   *
+   * The session token is the real unlock - it is their account, so it follows
+   * them to a phone as well. The licence key is written alongside it so the
+   * tool works even if they later sign out. Reloading is what makes the whole
+   * page agree, rather than trying to repaint each part by hand.
+   */
+  function unlock(data){
+    stop();
+    drops(CODE_STORE);
+    if(data.sessionToken) writes(SESSION_STORE, data.sessionToken);
+    if(data.key) writes('sm_key_' + SM_SLUG, data.key);
+    say('Payment received — everything is unlocked. Thank you.', true);
+    setTimeout(function(){ location.reload(); }, 1200);
+  }
+
+  function poll(code){
+    fetch(SM_API_BASE + '/api/checkout/waiting?code=' + encodeURIComponent(code))
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if(data.status === 'paid') return unlock(data);
+        if(data.status === 'unknown'){ stop(); drops(CODE_STORE); say(data.message); return; }
+        // Give up watching after a while rather than polling this forever. The
+        // email is already on its way, so nothing is lost by stopping.
+        if(Date.now() - started > 20 * 60 * 1000){
+          stop();
+          say('Still waiting. If you have paid, your access is on its way by email — you can close this.');
+          return;
+        }
+        say(data.message);
+      })
+      .catch(function(){});
+  }
+
+  function watch(code){
+    started = Date.now();
+    stop();
+    say('Waiting for the payment to come through…');
+    poll(code);
+    timer = setInterval(function(){ poll(code); }, 4000);
+  }
+
+  link.addEventListener('click', function(e){
+    // Let the payment page open in its own tab either way. If telling the site
+    // first fails, the link still works - they pay, and their access arrives by
+    // email instead of instantly. Never block a purchase on our own bookkeeping.
+    fetch(SM_API_BASE + '/api/checkout/start', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ slug: SM_SLUG })
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if(data && data.ok && data.code){
+          writes(CODE_STORE, data.code);
+          watch(data.code);
+        }
+      })
+      .catch(function(){});
+  });
+
+  // Came back to the page mid-purchase - carry on waiting where they left off.
+  var pending = reads(CODE_STORE);
+  if(pending) watch(pending);
+})();</script>
+</body>
+</html>

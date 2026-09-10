@@ -1,0 +1,74 @@
+:root{
+  --bg:#0b0d10; --panel:#14181d; --panel-2:#1b2027; --line:#2a313a;
+  --text:#e7ecf2; --muted:#9aa7b6; --accent:#4ade80; --accent-2:#38bdf8; --danger:#f87171;
+  --radius:14px; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:light){:root{
+  --bg:#f6f8fb; --panel:#ffffff; --panel-2:#f0f3f7; --line:#dde3ea;
+  --text:#111820; --muted:#5b6775; --accent:#059669; --accent-2:#0284c7;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-text-size-adjust:100%}
+a{color:var(--accent-2)}
+.wrap{max-width:900px;margin:0 auto;padding:24px 18px 72px}
+header.site{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--line)}
+header.site .brand{font-weight:700;letter-spacing:-.02em;font-size:18px;text-decoration:none;color:var(--text)}
+header.site nav{display:flex;gap:14px;flex-wrap:wrap}
+header.site nav a{font-size:14px;text-decoration:none;color:var(--muted)}
+header.site nav a:hover,header.site nav a[aria-current]{color:var(--text)}
+h1{font-size:clamp(26px,5vw,40px);line-height:1.15;letter-spacing:-.03em;margin:28px 0 10px}
+h2{font-size:20px;margin:32px 0 10px;letter-spacing:-.01em}
+h3{font-size:16px;margin:20px 0 6px}
+.sub{color:var(--muted);font-size:17px;max-width:62ch;margin:0 0 20px}
+ul.checks{list-style:none;padding:0;margin:0 0 24px;display:grid;gap:8px}
+ul.checks li{padding-left:26px;position:relative;color:var(--muted)}
+ul.checks li:before{content:"";position:absolute;left:0;top:.55em;width:12px;height:7px;border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:18px 0}
+.grid{display:grid;gap:14px}
+@media(min-width:640px){.grid.cols-2{grid-template-columns:1fr 1fr}.grid.cols-3{grid-template-columns:repeat(3,1fr)}}
+label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+input,select,textarea{width:100%;padding:11px 12px;background:var(--panel-2);color:var(--text);border:1px solid var(--line);border-radius:10px;font:inherit;font-size:15px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent-2);outline-offset:1px}
+textarea{min-height:150px;font-family:var(--mono);font-size:13px}
+button{appearance:none;border:0;border-radius:10px;padding:12px 18px;font:inherit;font-weight:600;cursor:pointer;background:var(--accent);color:#04140b}
+button.secondary{background:var(--panel-2);color:var(--text);border:1px solid var(--line)}
+.tierbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--muted);
+  background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin:16px 0}
+.tierbar.pro{border-color:var(--accent);color:var(--text)}
+.tierbar.spent{border-color:var(--danger)}
+.tierbar .dim{color:var(--muted)}
+.badge.pro{background:var(--accent);color:#04140b;border-color:transparent}
+.lockbox{background:var(--panel-2);border:1px solid var(--accent-2);border-radius:12px;padding:16px;margin:16px 0;font-size:14px}
+.lockbox .row{margin-top:12px}
+.per{font-size:15px;font-weight:600;color:var(--muted);letter-spacing:0}
+.limit{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px;margin-top:12px}
+.card.featured{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.badge-pro{background:var(--accent);color:#04140b;border-color:transparent}
+ul.checks.pro li{color:var(--text)}
+ul.checks.pro .why{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+.buy{display:inline-block;background:var(--accent);color:#04140b;padding:14px 26px;border-radius:10px;font-weight:700;font-size:17px;text-decoration:none}
+/* The Upgrade button in the header: present on every page, never in the way. */
+.navbuy{background:var(--accent);color:#04140b!important;padding:7px 14px;border-radius:8px;font-weight:700;margin-left:4px}
+.navbuy:hover{filter:brightness(1.08)}
+/* The plan card. Bordered rather than loud - it should read as an option, not a demand. */
+.paycard{border-color:var(--accent)}
+.paycard .payhead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.paycard .payhead h2{margin-top:0}
+.paycard .payhead .sub{margin-bottom:8px}
+.paycard .payprice{white-space:nowrap;text-align:right}
+.lockbox .buy{margin-top:4px}
+.buy:hover{filter:brightness(1.08)}
+button:active{transform:translateY(1px)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+output,.out{display:block;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:14px;font-family:var(--mono);font-size:13px;white-space:pre-wrap;word-break:break-word;margin-top:14px;min-height:48px}
+.stat{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:14px}
+.stat .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.stat .v{font-size:24px;font-weight:700;letter-spacing:-.02em;margin-top:4px}
+.badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 8px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);color:var(--muted)}
+.price{font-size:34px;font-weight:800;letter-spacing:-.03em}
+footer.site{border-top:1px solid var(--line);margin-top:48px;padding-top:18px;color:var(--muted);font-size:13px}
+.notice{font-size:13px;color:var(--muted);border-left:3px solid var(--accent-2);padding-left:12px;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:14px;overflow-x:auto;display:block}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+@media print{header.site,footer.site,.no-print{display:none!important}body{background:#fff;color:#000}.card{border-color:#ccc}}
