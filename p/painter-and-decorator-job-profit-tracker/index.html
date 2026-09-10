@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Painter and Decorator Job Profit Tracker — Log each job with its price, materials and real hours, and see what you actually earned an hour</title>
+<title>Painter and Decorator Job Profit Tracker for painters and decorators</title>
 <meta name="description" content="Log each job with its price, materials and real hours, and see what you actually earned an hour. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Painter and Decorator Job Profit Tracker — Log each job with its price, materials and real hours, and see what you actually earned an hour">
+<meta property="og:title" content="Painter and Decorator Job Profit Tracker for painters and decorators">
 <meta property="og:description" content="Log each job with its price, materials and real hours, and see what you actually earned an hour. Free to use, nothing to install, works in your browser.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -21,8 +21,8 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Painter and Decorator Job Profit Tracker — Log each job with its price, materials and real hours, and see what you actually earned an hour</h1>
-
+<h1>Painter and Decorator Job Profit Tracker for painters and decorators</h1>
+<p class="sub">Log each job with its price, materials and real hours, and see what you actually earned an hour. Free to use, nothing to install, works in your browser.</p>
 <ul class="checks"><li>Built for painters and decorators</li><li>Fixes: a price that felt right in the van turns out to pay less than minimum wage once the hours and materials are counted, and painters and decorators usually find out too late</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
 
@@ -148,13 +148,9 @@
     <div class="payprice"><span class="price">$15.00</span><span class="per">/month</span></div>
   </div>
   <ul class="checks pro"><li><strong>Where the money actually goes</strong><span class="why">Every entry adds up by category, biggest first. This is the view that finds the cost you had stopped noticing.</span></li><li><strong>Month by month, and against last month</strong><span class="why">One month is a number. Twelve is a pattern, and a pattern is the thing you can act on.</span></li><li><strong>Every month kept, not just this one</strong><span class="why">A suspicion becomes something you can point at once there are six months of it.</span></li></ul>
-  <form id="sm-order" class="grid">
-    <div><label for="sm-order-name">Your name</label><input id="sm-order-name" maxlength="80" placeholder="Optional"></div>
-    <div><label for="sm-order-email">Your email *</label><input id="sm-order-email" type="email" required maxlength="120" placeholder="you@example.com"></div>
-    <div><label for="sm-order-note">Anything we should know?</label><input id="sm-order-note" maxlength="400" placeholder="Optional"></div>
-    <div class="row"><button type="submit">Buy for $15.00</button><span id="sm-order-status" class="badge"></span></div>
-  </form>
-  <p class="notice">Payment is arranged directly rather than through a checkout, so you will get an email with the details shortly. The free version stays free and fully working either way.</p>
+  <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Get Pro — $15.00/month</a></div>
+    <p class="notice" id="sm-buy-note">You will be taken straight to a secure card form. Payment is handled by Stripe — your card details go to them, never to this page. Cancel any time.</p>
+    <p class="notice" id="sm-buy-status" hidden></p>
   <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
   <a href="./pricing.html">See everything in Pro</a></p>
 </div>

@@ -36,13 +36,8 @@
     <div class="price">$15.00<span class="per">/month</span></div>
     <p class="sub">Everything in Free, no limit, plus:</p>
     <ul class="checks pro"><li><strong>Where the money actually goes</strong><span class="why">Every entry adds up by category, biggest first. This is the view that finds the cost you had stopped noticing.</span></li><li><strong>Month by month, and against last month</strong><span class="why">One month is a number. Twelve is a pattern, and a pattern is the thing you can act on.</span></li><li><strong>Every month kept, not just this one</strong><span class="why">A suspicion becomes something you can point at once there are six months of it.</span></li><li><strong>The whole year as a spreadsheet</strong><span class="why">What an accountant asks for in January, ready in October, in the format they want.</span></li></ul>
-    <form id="sm-order" class="grid">
-    <div><label for="sm-order-name">Your name</label><input id="sm-order-name" maxlength="80" placeholder="Optional"></div>
-    <div><label for="sm-order-email">Your email *</label><input id="sm-order-email" type="email" required maxlength="120" placeholder="you@example.com"></div>
-    <div><label for="sm-order-note">Anything we should know?</label><input id="sm-order-note" maxlength="400" placeholder="Optional"></div>
-    <div class="row"><button type="submit">Buy for $15.00</button><span id="sm-order-status" class="badge"></span></div>
-  </form>
-  <p class="notice">Payment is arranged directly rather than through a checkout, so you will get an email with the details shortly. The free version stays free and fully working either way.</p>
+    <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Subscribe — $15.00/month</a></div>
+    <p class="notice">You will be taken straight to a secure card form. Payment is handled by Stripe — your card details go to them, never to this page.</p>
     <p class="notice"><strong>Cancel any time</strong> from the link in your receipt. You keep Pro until the end of the month you have paid for, then it simply stops — no further charge.</p>
   </div>
 </div>
