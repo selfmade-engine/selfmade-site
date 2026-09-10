@@ -62,6 +62,34 @@ button:active{transform:translateY(1px)}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
 output,.out{display:block;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:14px;font-family:var(--mono);font-size:13px;white-space:pre-wrap;word-break:break-word;margin-top:14px;min-height:48px}
 .stat{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:14px}
+
+/* ---- signing in ----
+   Narrow and centred on purpose. An account form spread across the full width
+   of a page reads as one more section to skim; a column the width of a card
+   reads as a thing to do, and there is only ever one thing to do on it. */
+.sm-auth{max-width:420px;margin-left:auto;margin-right:auto}
+.sm-auth-head{text-align:center;margin-bottom:20px}
+.sm-auth-head h2{margin:0 0 6px}
+.sm-auth-head .sub{margin:0}
+.sm-auth-fields{display:flex;flex-direction:column;gap:4px;margin-bottom:16px}
+.sm-auth-fields label{font-size:13px;font-weight:600;color:var(--muted);margin-top:10px}
+.sm-auth-fields input{width:100%;box-sizing:border-box}
+.sm-hint{font-weight:400;color:var(--muted);margin-left:6px}
+.sm-auth-primary{width:100%;padding:13px;font-size:15px;font-weight:650}
+.sm-auth-msg{display:block;min-height:20px;margin-top:12px;text-align:center;font-size:14px;color:var(--muted)}
+.sm-auth-msg.bad{color:var(--warn,#c0392b)}
+.sm-auth-alt{margin-top:14px;text-align:center;font-size:14px}
+.sm-auth-dot{color:var(--muted);margin:0 8px}
+button.linkish{background:none;border:none;padding:0;color:var(--accent);font:inherit;font-size:14px;cursor:pointer;text-decoration:underline}
+button.linkish:hover{opacity:.8}
+button.linkish.sm-danger{color:var(--muted)}
+
+/* The code is the whole point of that screen, so it is the biggest thing on it
+   and spaced like something you read off a phone one character at a time. */
+.sm-code{width:100%;box-sizing:border-box;text-align:center;font-size:32px;font-weight:700;
+  letter-spacing:12px;padding:16px 10px;margin-bottom:14px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.sm-code::placeholder{letter-spacing:12px;opacity:.25;font-weight:400}
 .stat .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
 .stat .v{font-size:24px;font-weight:700;letter-spacing:-.02em;margin-top:4px}
 .badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 8px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);color:var(--muted)}
