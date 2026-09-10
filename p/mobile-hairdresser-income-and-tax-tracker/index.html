@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mobile Hairdresser Income and Tax Tracker: stop money comes in and gets spent, and the tax bill arrives against an empty account — mobile hairdressers are hit by this every single year</title>
+<title>Mobile Hairdresser Income and Tax Tracker — Log what comes in and what goes out in seconds, and always know what to put aside and what is genuinely yours</title>
 <meta name="description" content="Log what comes in and what goes out in seconds, and always know what to put aside and what is genuinely yours. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Mobile Hairdresser Income and Tax Tracker: stop money comes in and gets spent, and the tax bill arrives against an empty account — mobile hairdressers are hit by this every single year">
+<meta property="og:title" content="Mobile Hairdresser Income and Tax Tracker — Log what comes in and what goes out in seconds, and always know what to put aside and what is genuinely yours">
 <meta property="og:description" content="Log what comes in and what goes out in seconds, and always know what to put aside and what is genuinely yours. Free to use, nothing to install, works in your browser.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -21,8 +21,8 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="https://ko-fi.com/s/abc123def4" rel="noopener">Upgrade</a></nav>
 </header>
 
-<h1>Mobile Hairdresser Income and Tax Tracker: stop money comes in and gets spent, and the tax bill arrives against an empty account — mobile hairdressers are hit by this every single year</h1>
-<p class="sub">Log what comes in and what goes out in seconds, and always know what to put aside and what is genuinely yours. Free to use, nothing to install, works in your browser.</p>
+<h1>Mobile Hairdresser Income and Tax Tracker — Log what comes in and what goes out in seconds, and always know what to put aside and what is genuinely yours</h1>
+
 <ul class="checks"><li>Built for mobile hairdresser — mobile hairdressers</li><li>Fixes: money comes in and gets spent, and the tax bill arrives against an empty account — mobile hairdressers are hit by this every single year</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
 
@@ -168,6 +168,38 @@ function SMN(v){
   if (typeof v === 'number') return isFinite(v) ? v : 0;
   var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, ''));
   return isFinite(x) ? x : 0;
+}
+/**
+ * Whole days from today until a date. Negative once it has gone past.
+ *
+ * Both ends are flattened to midnight first, so "tomorrow" is 1 all day rather
+ * than 0 in the evening and 1 in the morning - a countdown that changes with
+ * the time of day reads as broken.
+ */
+function SMdays(v){
+  if (!v) return 0;
+  var text = String(v).trim();
+  var b = null;
+  // A plain "2026-04-01" is parsed as UTC midnight by the browser, which reads
+  // back as the day BEFORE anywhere west of Greenwich. Somebody typing a date
+  // means that date where they are, so it is built locally instead.
+  //
+  // Split rather than matched, because a regular expression written inside a
+  // template literal has to survive two rounds of escaping and quietly loses
+  // its backslashes if it does not.
+  var bits = text.split('-');
+  if (bits.length === 3 && bits[0].length === 4) {
+    var y = Number(bits[0]), mo = Number(bits[1]), da = Number(bits[2].slice(0, 2));
+    if (y && mo && da) b = new Date(y, mo - 1, da);
+  }
+  if (!b) {
+    var parsed = new Date(text);
+    if (isNaN(parsed.getTime())) return 0;
+    b = new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+  }
+  if (isNaN(b.getTime())) return 0;
+  var a = new Date(); a.setHours(0,0,0,0);
+  return Math.round((b - a) / 86400000);
 }
 var CUR = "$";
 function SMD(id){ var e = document.getElementById(id); return e; }
