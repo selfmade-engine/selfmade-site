@@ -18,7 +18,7 @@
 <div class="wrap">
 <header class="site">
   <a class="brand" href="./">Plumber Income and Tax Tracker</a>
-  <nav><a href="./">Tool</a><a href="./docs.html" aria-current="page">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="https://usethishere" rel="noopener">Upgrade</a></nav>
+  <nav><a href="./">Tool</a><a href="./docs.html" aria-current="page">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
 <h1>Documentation</h1>
@@ -52,7 +52,7 @@ var SM_PITCH = "Pro adds as many records as you need, everything kept, not just 
 var SM_CONTACT = "selfmade.engine@gmail.com";
 // Where the Upgrade button goes, and what it costs. Straight to checkout when
 // there is one, because a pricing page in between is a step people leave at.
-var SM_BUY_URL = "https://usethishere";
+var SM_BUY_URL = "./pricing.html";
 var SM_PRICE = "$15.00";
 </script>
 <script data-sm="tool"></script>
@@ -341,11 +341,34 @@ window.SM = (function(){
 <script>
 (function(){
   var SESSION_STORE = 'sm_session_' + SM_SLUG;
+  var PENDING_STORE = 'sm_pending_' + SM_SLUG;
+
   function reads(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
   function writes(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
   function drops(k){ try { localStorage.removeItem(k); } catch(e){} }
   function el(id){ return document.getElementById(id); }
-  function say(text){ var m = el('sm-acc-msg'); if(m) m.textContent = text || ''; }
+
+  function say(text, bad){
+    var m = el('sm-acc-msg');
+    if(!m) return;
+    m.textContent = text || '';
+    m.className = 'sm-auth-msg' + (bad ? ' bad' : '');
+  }
+  function sayConfirm(text, bad){
+    var m = el('sm-acc-confirmmsg');
+    if(!m) return;
+    m.textContent = text || '';
+    m.className = 'sm-auth-msg' + (bad ? ' bad' : '');
+  }
+
+  /** Only ever one of the three visible. */
+  function show(which){
+    var screens = ['sm-acc-choose','sm-acc-confirm','sm-acc-signedin'];
+    for(var i=0;i<screens.length;i++){
+      var box = el(screens[i]);
+      if(box) box.hidden = screens[i] !== which;
+    }
+  }
 
   function open(){
     var box = el('sm-account');
@@ -360,35 +383,27 @@ window.SM = (function(){
     }).then(function(r){ return r.json(); });
   }
 
+  /** Where a confirmation link should come back to. */
+  function here(){ return location.href.split('?')[0].split('#')[0]; }
+
+  /* ---------------- signed in ---------------- */
+
   function paintAccount(data){
-    var forms = el('sm-acc-forms');
-    var inside = el('sm-acc-signedin');
-    if(!forms || !inside) return;
-
-    if(!data || !data.signedIn){
-      forms.hidden = false;
-      inside.hidden = true;
-      if(el('sm-acc-title')) el('sm-acc-title').textContent = 'Sign in';
-      return;
-    }
-
-    forms.hidden = true;
-    inside.hidden = false;
-    if(el('sm-acc-title')) el('sm-acc-title').textContent = 'Your account';
-    if(el('sm-acc-sub')) el('sm-acc-sub').textContent = data.account.email;
+    if(!data || !data.signedIn){ show('sm-acc-choose'); return; }
+    show('sm-acc-signedin');
 
     var mine = (data.entitlements || []).filter(function(e){ return e.slug === SM_SLUG; })[0];
     var stats = el('sm-acc-stats');
     if(stats){
-      stats.innerHTML = mine
-        ? '<div class="stat"><div class="k">Plan</div><div class="v">' + (mine.active ? 'Pro' : 'Ending') + '</div></div>'
-          + '<div class="stat"><div class="k">You pay</div><div class="v">' + SM_PRICE + '</div><div class="k" style="text-transform:none">a month</div></div>'
-          + '<div class="stat"><div class="k">' + (mine.status === 'CANCELLED' ? 'Access ends' : 'Renews') + '</div><div class="v">' + String(mine.renewsAt || '').slice(0,10) + '</div></div>'
-        : '<div class="stat"><div class="k">Plan</div><div class="v">Free</div><div class="k" style="text-transform:none">no subscription on this tool</div></div>';
+      stats.innerHTML =
+        '<div class="stat"><div class="k">Signed in as</div><div class="v">' + (data.account.email||'') + '</div></div>' +
+        '<div class="stat"><div class="k">This tool</div><div class="v">' + (mine ? 'Pro' : 'Free') + '</div></div>' +
+        (mine && mine.renews_at
+          ? '<div class="stat"><div class="k">Renews</div><div class="v">' + String(mine.renews_at).slice(0,10) + '</div></div>'
+          : '');
     }
-
-    // This is the bit that matters: Pro follows the account.
-    if(mine && mine.active && window.SM && SM.grant) SM.grant(mine.key, mine.renewsAt);
+    var cancel = el('sm-acc-cancel');
+    if(cancel) cancel.hidden = !mine;
   }
 
   function refresh(){
@@ -400,82 +415,176 @@ window.SM = (function(){
       .catch(function(){ paintAccount(null); });
   }
 
-  function afterSignIn(res){
+  /**
+   * They are in. Reload rather than repaint.
+   *
+   * Signing in changes what half the page is allowed to show, and every locked
+   * panel decides that when it starts. Repainting this one card would leave
+   * somebody signed in and still looking at a locked tool, wondering what they
+   * paid for. A reload opens all of it at once.
+   */
+  function landInAccount(res){
     if(res.sessionToken) writes(SESSION_STORE, res.sessionToken);
-    say('');
-    refresh();
+    drops(PENDING_STORE);
+    var mine = (res.entitlements || []).filter(function(e){ return e.slug === SM_SLUG; })[0];
+    say(mine ? 'Signed in. Pro is on — one moment.' : 'Signed in — one moment.');
+    sayConfirm('Confirmed. Signing you in…');
+    setTimeout(function(){ location.reload(); }, 700);
   }
+
+  /* ---------------- confirming ---------------- */
+
+  function askToConfirm(email, note){
+    writes(PENDING_STORE, email);
+    var to = el('sm-acc-sentto');
+    if(to) to.textContent = email;
+    show('sm-acc-confirm');
+    sayConfirm(note || '');
+    var code = el('sm-acc-code');
+    if(code){ code.value = ''; code.focus(); }
+  }
+
+  function confirmWith(value){
+    var email = reads(PENDING_STORE) || (el('sm-acc-email') ? el('sm-acc-email').value.trim() : '');
+    var given = String(value || '').replace(/[^0-9a-zA-Z_-]/g, '');
+    if(!given){ sayConfirm('Type the code from the email.', true); return; }
+    sayConfirm('Checking…');
+    post('/api/account/verify', { email: email, code: given, slug: SM_SLUG })
+      .then(function(res){
+        if(res.ok) return landInAccount(res);
+        sayConfirm(res.reason || 'That code is not right.', true);
+        if(res.expired){
+          var again = el('sm-acc-resend');
+          if(again) again.focus();
+        }
+      })
+      .catch(function(){ sayConfirm('Could not reach the server. Try again in a moment.', true); });
+  }
+
+  /* ---------------- wiring ---------------- */
 
   document.addEventListener('DOMContentLoaded', function(){
     var link = el('sm-navsignin');
     if(link) link.addEventListener('click', function(e){ e.preventDefault(); open(); });
 
+    // Arrived from the link in the email: confirm it and get out of the way.
+    var params = new URLSearchParams(location.search);
+    var confirmToken = params.get('confirm');
+    if(confirmToken){
+      var who = params.get('email') || reads(PENDING_STORE) || '';
+      open();
+      askToConfirm(who, 'Confirming…');
+      post('/api/account/verify', { email: who, token: confirmToken, slug: SM_SLUG })
+        .then(function(res){
+          if(res.ok) return landInAccount(res);
+          sayConfirm(res.reason || 'That link is not valid any more. Ask for a new code.', true);
+        })
+        .catch(function(){ sayConfirm('Could not reach the server. Try the code instead.', true); });
+      return;
+    }
+
+    // Came back to a half-finished sign-up.
+    var pending = reads(PENDING_STORE);
+    if(pending && !reads(SESSION_STORE)) askToConfirm(pending, 'Still waiting on that code.');
+
     var go = el('sm-acc-go');
     if(go) go.addEventListener('click', function(){
-      say('Checking…');
-      post('/api/account/signin', { email: (el('sm-acc-email')||{}).value, password: (el('sm-acc-pass')||{}).value })
+      var email = el('sm-acc-email').value.trim();
+      var pass = el('sm-acc-pass').value;
+      if(!email || !pass){ say('Email and password, please.', true); return; }
+      say('Signing in…');
+      post('/api/account/signin', { email: email, password: pass, slug: SM_SLUG })
         .then(function(res){
-          if(res.ok) return afterSignIn(res);
-          say(res.reason || 'That did not work.');
+          if(res.ok) return landInAccount(res);
+          say(res.reason || 'That email and password do not match.', true);
         })
-        .catch(function(){ say('Could not reach the server.'); });
+        .catch(function(){ say('Could not reach the server. Try again in a moment.', true); });
+    });
+
+    // Enter submits, from either field.
+    ['sm-acc-email','sm-acc-pass'].forEach(function(id){
+      var field = el(id);
+      if(field) field.addEventListener('keydown', function(e){
+        if(e.key === 'Enter'){ e.preventDefault(); el('sm-acc-go').click(); }
+      });
     });
 
     var make = el('sm-acc-new');
     if(make) make.addEventListener('click', function(){
-      say('Creating…');
-      post('/api/account/signup', { email: (el('sm-acc-email')||{}).value, password: (el('sm-acc-pass')||{}).value, slug: SM_SLUG })
-        .then(function(res){ say(res.reason || res.message || 'Check your email.'); })
-        .catch(function(){ say('Could not reach the server.'); });
+      var email = el('sm-acc-email').value.trim();
+      var pass = el('sm-acc-pass').value;
+      if(!email || pass.length < 8){ say('An email, and a password of at least 8 characters.', true); return; }
+      say('Making your account…');
+      post('/api/account/signup', { email: email, password: pass, slug: SM_SLUG, returnTo: here() })
+        .then(function(res){
+          if(!res.ok){ say(res.reason || 'Could not make that account.', true); return; }
+          askToConfirm(email, res.sent === false
+            ? 'Account made. The email is on its way — it can take a few minutes.'
+            : '');
+        })
+        .catch(function(){ say('Could not reach the server. Try again in a moment.', true); });
+    });
+
+    var confirmGo = el('sm-acc-confirmgo');
+    if(confirmGo) confirmGo.addEventListener('click', function(){
+      confirmWith(el('sm-acc-code').value);
+    });
+
+    var code = el('sm-acc-code');
+    if(code){
+      code.addEventListener('keydown', function(e){
+        if(e.key === 'Enter'){ e.preventDefault(); confirmWith(code.value); }
+      });
+      // Six digits pasted or typed is unambiguous, so do not make them click.
+      code.addEventListener('input', function(){
+        var digits = code.value.replace(/[^0-9]/g, '');
+        if(digits.length === 6){ code.value = digits; confirmWith(digits); }
+      });
+    }
+
+    var resend = el('sm-acc-resend');
+    if(resend) resend.addEventListener('click', function(){
+      sayConfirm('Sending another…');
+      post('/api/account/resend', { email: reads(PENDING_STORE), slug: SM_SLUG, returnTo: here() })
+        .then(function(res){
+          sayConfirm(res.sent === false
+            ? 'On its way. It can take a few minutes.'
+            : 'Sent. Check your email again.');
+        })
+        .catch(function(){ sayConfirm('Could not reach the server.', true); });
+    });
+
+    var abandon = el('sm-acc-abandon');
+    if(abandon) abandon.addEventListener('click', function(){
+      var email = reads(PENDING_STORE);
+      post('/api/account/cancel-signup', { email: email }).catch(function(){});
+      drops(PENDING_STORE);
+      show('sm-acc-choose');
+      say('Stopped. Nothing was kept.');
+      if(el('sm-acc-pass')) el('sm-acc-pass').value = '';
     });
 
     var forgot = el('sm-acc-forgot');
     if(forgot) forgot.addEventListener('click', function(){
+      var email = el('sm-acc-email').value.trim();
+      if(!email){ say('Put your email in first.', true); return; }
       say('Sending…');
-      post('/api/account/password/request', { email: (el('sm-acc-email')||{}).value, slug: SM_SLUG })
-        .then(function(res){ say(res.message || 'Check your email.'); })
-        .catch(function(){ say('Could not reach the server.'); });
+      post('/api/account/password/request', { email: email, slug: SM_SLUG, returnTo: here() })
+        .then(function(res){ say(res.message || 'If that address has an account, a link is on its way.'); })
+        .catch(function(){ say('Could not reach the server.', true); });
     });
 
     var out = el('sm-acc-out');
     if(out) out.addEventListener('click', function(){
-      post('/api/account/signout', {}).then(function(){ drops(SESSION_STORE); refresh(); });
+      post('/api/account/signout', {}).catch(function(){});
+      drops(SESSION_STORE);
+      drops('sm_key_' + SM_SLUG);
+      location.reload();
     });
-
-    // Arriving from a link in an email.
-    var params = new URLSearchParams(location.search);
-    var confirmToken = params.get('confirm');
-    var setToken = params.get('setpassword');
-
-    if(confirmToken){
-      open();
-      say('Confirming your email…');
-      post('/api/account/verify', { token: confirmToken }).then(function(res){
-        say(res.ok ? 'Email confirmed — you are signed in.' : (res.reason || 'That link did not work.'));
-        if(res.ok) afterSignIn(res);
-      });
-    } else if(setToken){
-      open();
-      if(el('sm-acc-title')) el('sm-acc-title').textContent = 'Choose a password';
-      if(el('sm-acc-sub')) el('sm-acc-sub').textContent = 'Pick something you will remember. At least 8 characters.';
-      if(el('sm-acc-email')) el('sm-acc-email').hidden = true;
-      if(go) go.textContent = 'Save password';
-      if(make) make.hidden = true;
-      if(forgot) forgot.hidden = true;
-      go.onclick = function(){
-        say('Saving…');
-        post('/api/account/password/reset', { token: setToken, password: (el('sm-acc-pass')||{}).value })
-          .then(function(res){
-            if(res.ok){ say('Done — you are signed in.'); afterSignIn(res); }
-            else say(res.reason || 'That did not work.');
-          });
-      };
-    }
 
     refresh();
   });
-})();
-</script>
+})();</script>
 <script>
 (function(){
   if(!window.SM) return;
