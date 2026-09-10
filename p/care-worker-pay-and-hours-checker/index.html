@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Care Worker Pay and Hours Checker — Log what you actually worked, see what you are owed, and compare it against what landed in your account</title>
+<title>Care Worker Pay and Hours Checker for Care worker — care</title>
 <meta name="description" content="Log what you actually worked, see what you are owed, and compare it against what landed in your account. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Care Worker Pay and Hours Checker — Log what you actually worked, see what you are owed, and compare it against what landed in your account">
+<meta property="og:title" content="Care Worker Pay and Hours Checker for Care worker — care">
 <meta property="og:description" content="Log what you actually worked, see what you are owed, and compare it against what landed in your account. Free to use, nothing to install, works in your browser.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -21,8 +21,8 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Care Worker Pay and Hours Checker — Log what you actually worked, see what you are owed, and compare it against what landed in your account</h1>
-
+<h1>Care Worker Pay and Hours Checker for Care worker — care</h1>
+<p class="sub">Log what you actually worked, see what you are owed, and compare it against what landed in your account. Free to use, nothing to install, works in your browser.</p>
 <ul class="checks"><li>Built for care worker — care workers</li><li>Fixes: payslips come up short by half an hour here and a break there, and care workers have no record to point at</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
 
@@ -149,13 +149,9 @@
     <div class="payprice"><span class="price">$15.00</span><span class="per">/month</span></div>
   </div>
   <ul class="checks pro"><li><strong>As many shifts as you need</strong><span class="why">Free stops at 5. Anyone doing this for a living passes that in the first week.</span></li><li><strong>Everything kept, not just the last few</strong><span class="why">Months of records in one place, which is what turns a suspicion into a pattern you can point at.</span></li><li><strong>Download it all as a spreadsheet</strong><span class="why">For an accountant, for a payroll query, or just to keep somewhere that is not a browser.</span></li></ul>
-  <form id="sm-order" class="grid">
-    <div><label for="sm-order-name">Your name</label><input id="sm-order-name" maxlength="80" placeholder="Optional"></div>
-    <div><label for="sm-order-email">Your email *</label><input id="sm-order-email" type="email" required maxlength="120" placeholder="you@example.com"></div>
-    <div><label for="sm-order-note">Anything we should know?</label><input id="sm-order-note" maxlength="400" placeholder="Optional"></div>
-    <div class="row"><button type="submit">Buy for $15.00</button><span id="sm-order-status" class="badge"></span></div>
-  </form>
-  <p class="notice">Payment is arranged directly rather than through a checkout, so you will get an email with the details shortly. The free version stays free and fully working either way.</p>
+  <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Get Pro — $15.00/month</a></div>
+    <p class="notice" id="sm-buy-note">You will be taken straight to a secure card form. Payment is handled by Stripe — your card details go to them, never to this page. Cancel any time.</p>
+    <p class="notice" id="sm-buy-status" hidden></p>
   <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
   <a href="./pricing.html">See everything in Pro</a></p>
 </div>
