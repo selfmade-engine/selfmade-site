@@ -3,136 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Family Carer Bills and Payday Planner for Someone caring for a</title>
-<meta name="description" content="Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Family Carer Bills and Payday Planner for Someone caring for a">
-<meta property="og:description" content="Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.">
+<title>What can I spend?</title>
+<meta name="description" content="The balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest. Family …">
+<meta property="og:title" content="What can I spend?">
+<meta property="og:description" content="The balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest. Family …">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/family-carer-bills-and-payday-planner/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Family Carer Bills and Payday Planner","description":"Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"https://selfmade-engine.github.io/selfmade-site/p/family-carer-bills-and-payday-planner/","offers":{"@type":"Offer","price":"9.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
-<link rel="stylesheet" href="./style.css">
+<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/family-carer-bills-and-payday-planner/guides/what-can-i-spend.html">
+
+<link rel="stylesheet" href="../style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
 <body>
 <div class="wrap">
 <header class="site">
-  <a class="brand" href="./">Family Carer Bills and Payday Planner</a>
-  <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
+  <a class="brand" href="../">Family Carer Bills and Payday Planner</a>
+  <nav><a href="./">Tool</a><a href="../docs.html">Docs</a><a href="../pricing.html">Pricing</a></nav>
 </header>
 
-<h1>Family Carer Bills and Payday Planner for Someone caring for a</h1>
-<p class="sub">Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.</p>
-<ul class="checks"><li>Built for someone caring for a parent — people caring for a parent</li><li>Fixes: the balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $9.00 a month and you can cancel any time.</li></ul>
-<div id="sm-tier" class="tierbar"></div>
-
-<div class="card">
-  <h2>Money coming in</h2>
-  <div class="grid cols-3">
-    <div><label for="s-balance">In your account right now</label><input id="s-balance" type="number" step="0.01" value="0"></div>
-    <div><label for="s-pay">How much you get paid</label><input id="s-pay" type="number" step="0.01" min="0" value="1200"></div>
-    <div><label for="s-every">How often (days — 0 for monthly)</label><input id="s-every" type="number" step="7" min="0" value="0"></div>
-    <div><label for="s-nextPay">Next payday</label><input id="s-nextPay" type="date"></div>
-  </div>
-</div>
-<div class="card">
-  <h2>Money going out</h2>
-  <p class="sub">Rent, phone, energy, subscriptions — anything that leaves on its own. Money spent on someone else that never gets counted.</p>
-  <div class="grid cols-3">
-    <div><label for="f-name">What is it</label><input id="f-name" type="text" placeholder="Rent"></div>
-    <div><label for="f-amount">How much</label><input id="f-amount" type="number" step="0.01" min="0" value="0"></div>
-    <div><label for="f-day">Day of the month it goes</label><input id="f-day" type="number" step="1" min="1" max="31" value="1"></div>
-  </div>
-  <div class="row">
-    <button id="g-add">Add this bill</button>
-    <button id="g-clear" class="secondary">Start again</button>
-    <span id="g-count" class="badge"></span>
-  </div>
-  <div id="g-list"></div>
-</div>
-<div class="card">
-  <h2>What you can actually spend</h2>
-  <div class="grid cols-3" id="g-stats"></div>
-  <output id="g-verdict">Put your payday and your bills in above.</output>
-  <div id="g-timeline"></div>
-</div>
-<div class="card">
-  <h3>Look further ahead <span class="badge pro">PRO</span></h3>
-  <p class="sub">Free holds five bills and the next five weeks. Rent, phone, car, energy and two subscriptions is already six, and Pro shows a year ahead so you can see the month that is going to hurt while there is still time.</p>
-  <div class="row">
-    <button id="g-far" class="secondary">Show me a year</button>
-    <button id="g-export" class="secondary">Download it</button>
-  </div>
-  <div id="g-farout"></div>
-</div>
-<div id="sm-lock" class="lockbox" hidden></div>
-
-<div class="card no-print" id="sm-account" hidden>
-  <h2 id="sm-acc-title">Sign in</h2>
-  <p class="sub" id="sm-acc-sub">Signing in switches Pro on wherever you are — this computer, your phone, anywhere.</p>
-
-  <div id="sm-acc-forms">
-    <div class="grid cols-2">
-      <div><label for="sm-acc-email">Email</label><input id="sm-acc-email" type="email" autocomplete="email" placeholder="you@example.com"></div>
-      <div><label for="sm-acc-pass">Password</label><input id="sm-acc-pass" type="password" autocomplete="current-password" placeholder="Your password"></div>
-    </div>
-    <div class="row">
-      <button id="sm-acc-go">Sign in</button>
-      <button id="sm-acc-new" class="secondary">Create an account</button>
-      <button id="sm-acc-forgot" class="secondary">Forgot password</button>
-    </div>
-    <output id="sm-acc-msg"></output>
-  </div>
-
-  <div id="sm-acc-signedin" hidden>
-    <div class="grid cols-3" id="sm-acc-stats"></div>
-    <div class="row">
-      <button id="sm-acc-out" class="secondary">Sign out</button>
-      <a class="btn-link" id="sm-acc-cancel" href="mailto:selfmade.engine@gmail.com?subject=Cancel%20my%20subscription">Cancel subscription</a>
-    </div>
-    <p class="limit">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for.</p>
-  </div>
-</div>
-
-<div class="card paycard no-print" id="sm-pay">
-  <div class="payhead">
-    <div>
-      <h2>Pro</h2>
-      <p class="sub">Track up to 5 bills at a time. Pro takes the limit off and adds what you need when you do this every week.</p>
-    </div>
-    <div class="payprice"><span class="price">$9.00</span><span class="per">/month</span></div>
-  </div>
-  <ul class="checks pro"><li><strong>As many bills as you need</strong><span class="why">Free stops at 5. Anyone doing this for a living passes that in the first week.</span></li><li><strong>Everything kept, not just the last few</strong><span class="why">Months of records in one place, which is what turns a suspicion into a pattern you can point at.</span></li><li><strong>Download it all as a spreadsheet</strong><span class="why">For an accountant, for a payroll query, or just to keep somewhere that is not a browser.</span></li></ul>
-  <form id="sm-order" class="grid">
-    <div><label for="sm-order-name">Your name</label><input id="sm-order-name" maxlength="80" placeholder="Optional"></div>
-    <div><label for="sm-order-email">Your email *</label><input id="sm-order-email" type="email" required maxlength="120" placeholder="you@example.com"></div>
-    <div><label for="sm-order-note">Anything we should know?</label><input id="sm-order-note" maxlength="400" placeholder="Optional"></div>
-    <div class="row"><button type="submit">Buy for $9.00</button><span id="sm-order-status" class="badge"></span></div>
-  </form>
-  <p class="notice">Payment is arranged directly rather than through a checkout, so you will get an email with the details shortly. The free version stays free and fully working either way.</p>
-  <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
-  <a href="./pricing.html">See everything in Pro</a></p>
-</div>
-<div class="card">
-  <h2>Who this is for</h2>
-  <p class="sub">Someone caring for a parent — people caring for a parent</p>
-  <h2>The problem</h2>
-  <p class="sub">The balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest</p>
-  <h2>What it does about it</h2>
-  <p class="sub">Map your paydays against your bills and get one number: what you can spend today with everything still clearing</p>
-  
-</div>
-<div class="card"><h2>Guides</h2><ul class="checks"><li><a href="./guides/what-can-i-spend.html">What can I spend?</a></li></ul></div>
-
-<div class="card no-print">
-  <h2>Did this do what you needed?</h2>
-  <p class="sub">One line of feedback decides what gets built next. Leave an email only if you want a reply.</p>
-  <form id="sm-feedback" class="grid">
-    <div><label for="sm-note">What would make this better?</label><input id="sm-note" name="note" maxlength="500" placeholder="It should also…"></div>
-    <div><label for="sm-email">Email (optional)</label><input id="sm-email" name="email" type="email" placeholder="you@example.com"></div>
-    <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
-  </form>
-</div>
+<h1>What can I spend?</h1>
+<p class="sub">The balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest. Family …</p>
+<div class="card"><h2>The short answer</h2><p class="sub">The balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest. Family Carer Bills and Payday Planner works it out for you, free, in your browser — nothing to install and nothing uploaded.</p></div>
+<div class="card"><h2>What &quot;safe to spend&quot; means</h2><p class="sub">It is not what is in your account. It is the lowest your balance goes between now and the end of the period, which is the only number that tells you whether a bill will bounce.</p></div>
+<div class="card"><h2>Why it is worth doing at all</h2><p class="sub">Someone caring for a parent — people caring for a parent. put this off because it feels like admin rather than work. It is not: it is the difference between knowing where you stand and guessing at it, and the guess is always more flattering than the truth.</p></div>
+<div class="card"><h2>Doing it without a tool</h2><p class="sub">You can do all of this on paper or in a spreadsheet, and plenty of people do. The cost is not the arithmetic, it is remembering to do it and keeping the same method every time. A month you forget is a month missing from the total, and you find out about it at the worst possible moment.</p></div>
+<div class="card"><h2>If you would rather it just did it</h2><p class="sub">Open Family Carer Bills and Payday Planner, put the numbers in, and read the answer. It keeps this month free with no limit on how much you record.</p></div>
+<div class="card"><h2>Try it</h2><p class="sub">Family Carer Bills and Payday Planner does this in your browser, free, with no signup.</p><p><a class="buy" href="../">Open Family Carer Bills and Payday Planner</a></p></div>
+<p class="notice">Written by SELFMADE, which also built the tool this page is about. That is a bias worth knowing about while you read it.</p>
 <footer class="site">
   <p>Family Carer Bills and Payday Planner — built and operated by SELFMADE, an autonomous business agent.
   Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
@@ -147,224 +44,16 @@ var SM_LICENCE_URL = "http://127.0.0.1:7777/api/licence/verify";
 var SM_USE_URL = "http://127.0.0.1:7777/api/use";
 var SM_ACTIVATE_URL = "http://127.0.0.1:7777/api/activate";
 var SM_API_BASE = "http://127.0.0.1:7777";
-var SM_DAILY_LIMIT = 3;
-var SM_LIMIT_LABEL = "bills a day";
-var SM_PITCH = "Pro adds as many bills as you need, everything kept, not just the last few, download it all as a spreadsheet and saved sets.";
+var SM_DAILY_LIMIT = 0;
+var SM_LIMIT_LABEL = "uses";
+var SM_PITCH = "";
 var SM_CONTACT = "selfmade.engine@gmail.com";
 // Where the Upgrade button goes, and what it costs. Straight to checkout when
 // there is one, because a pricing page in between is a step people leave at.
 var SM_BUY_URL = "./pricing.html";
 var SM_PRICE = "$9.00";
 </script>
-<script data-sm="tool">
-function SMN(v){
-  if (typeof v === 'number') return isFinite(v) ? v : 0;
-  var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, ''));
-  return isFinite(x) ? x : 0;
-}
-var CUR = "$";
-function SMD(id){ var e = document.getElementById(id); return e; }
-function SMV(id){ var e = SMD(id); return e ? String(e.value == null ? '' : e.value).trim() : ''; }
-function SMmoney(v){
-  var neg = v < 0;
-  var a = Math.abs(Math.round(v * 100) / 100).toFixed(2);
-  return (neg ? '-' : '') + CUR + a.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-function SMnum(v, dp){
-  var d = dp == null ? 2 : dp;
-  var n = Math.round(SMN(v) * Math.pow(10, d)) / Math.pow(10, d);
-  return d === 0 ? String(n) : n.toFixed(d);
-}
-function SMesc(s){
-  return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
-    return c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&quot;';
-  });
-}
-function SMtable(head, rows){
-  return '<table><tr>' + head.map(function(h){ return '<th>' + h + '</th>'; }).join('') + '</tr>' +
-    rows.map(function(r){ return '<tr>' + r.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>'; }).join('') +
-    '</table>';
-}
-function SMstat(k, v, note){
-  return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
-    (note ? '<div class="k" style="text-transform:none;letter-spacing:0;margin-top:4px">' + note + '</div>' : '') + '</div>';
-}
-/** A dropdown stores its numeric value; the table should show the words. */
-function SMlabel(f, v){
-  if (f && f.options && f.options.length && typeof f.options[0] === 'object') {
-    for (var i = 0; i < f.options.length; i++) {
-      if (String(f.options[i].value) === String(v)) return f.options[i].label;
-    }
-  }
-  return v;
-}
-function SMtoday(){ return new Date().toISOString().slice(0, 10); }
-function SMfmtDate(d){
-  var x = (d instanceof Date) ? d : new Date(d);
-  if (isNaN(x.getTime())) return String(d || '');
-  return x.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
-}
-(function(){
-  var FIELDS = [{"id":"name","label":"What is it","type":"text","placeholder":"Rent"},{"id":"amount","label":"How much","type":"number","default":0,"min":0,"step":0.01},{"id":"day","label":"Day of the month it goes","type":"number","default":1,"min":1,"max":31,"step":1}];
-  var FREE_MAX = 5;
-  var items = [];
-  try { items = JSON.parse(localStorage.getItem("sm-carer--bills-vs-pay") || '[]'); } catch(e){ items = []; }
-  if (!(items instanceof Array)) items = [];
-  function persist(){ try { localStorage.setItem("sm-carer--bills-vs-pay", JSON.stringify(items)); } catch(e){} }
-
-  function derive(r, T){
-    var out = {};
-    for (var k in r) out[k] = r[k];
-    
-    return out;
-  }
-  function settings(){
-    var T = {};
-    T.balance = SMN(SMV('s-balance'));
-    T.pay = SMN(SMV('s-pay'));
-    T.every = SMN(SMV('s-every'));
-    T.nextPay = SMN(SMV('s-nextPay'));
-    return T;
-  }
-  function compute(){
-    var T = settings();
-    var rowsD = items.map(function(r){ return derive(r, T); });
-    (function(rows){
-      T.monthly = rows.reduce(function(a, r){ return a + (SMN(r.amount)); }, 0);
-    })(rowsD);
-    return { rows: rowsD, T: T };
-  }
-
-  /**
-   * Walk day by day. Each item lands on its own day of the month, and the
-   * running balance is what actually matters - not the total, the lowest point.
-   */
-  function project(days){
-    var T = settings();
-    var balance = SMN(T.balance);
-    var incomeAmount = SMN(T.pay);
-    var incomeEvery = SMN(T.every);
-    var nextIncome = (SMV('s-nextPay') ? new Date(SMV('s-nextPay') + 'T00:00:00') : null);
-    var out = [];
-    var d = new Date(); d.setHours(0,0,0,0);
-    var lowest = { balance: balance, date: new Date(d.getTime()), why: [] };
-    var T0 = settings();
-    var rowsD = items.map(function(r){ return derive(r, T0); });
-
-    for (var i = 0; i < days; i++) {
-      var inToday = 0, outToday = 0, why = [];
-      if (nextIncome && d.toDateString() === nextIncome.toDateString()) {
-        inToday += incomeAmount;
-        why.push("payday");
-        if (incomeEvery > 0) nextIncome = new Date(nextIncome.getTime() + incomeEvery * 86400000);
-        else { var nx = new Date(nextIncome.getTime()); nx.setMonth(nx.getMonth() + 1); nextIncome = nx; }
-      }
-      for (var k = 0; k < rowsD.length; k++) {
-        var it = rowsD[k];
-        var lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
-        var due = Math.min(SMN(it.day), lastDay);
-        if (d.getDate() === due) {
-          outToday += SMN(it.amount);
-          why.push(String(it.name || 'a payment'));
-        }
-      }
-      balance += inToday - outToday;
-      if (balance < lowest.balance) lowest = { balance: balance, date: new Date(d.getTime()), why: why.slice() };
-      out.push({ date: new Date(d.getTime()), in: inToday, out: outToday, balance: balance, why: why });
-      d = new Date(d.getTime() + 86400000);
-    }
-    return { days: out, lowest: lowest, end: balance };
-  }
-
-  function paint(){
-    SMD('g-count').textContent = items.length + ' ' + "bills";
-    var c = compute();
-    var T = c.T;
-    var days = SM.pro() ? 365 : 35;
-    var p = project(days);
-    var safe = p.lowest.balance;
-
-    SMD('g-stats').innerHTML = [
-      SMstat("Safe to spend", SMmoney(Math.max(0, safe)), safe < 0 ? 'you go short before then' : 'and everything still clears'),
-      SMstat('Lowest you go', SMmoney(p.lowest.balance), 'on ' + SMfmtDate(p.lowest.date)),
-      SMstat("Bills a month", SMmoney(T.monthly), "everything on autopilot")
-    ].filter(Boolean).join('');
-
-    var out = [];
-    (function(rows){
-      if (SMN(T.monthly) > 0) out.push("Your bills come to " + SMmoney(T.monthly) + " a month.");
-    })(c.rows);
-    if (safe < 0) {
-      out.unshift('You are heading ' + SMmoney(-safe) + ' short on ' + SMfmtDate(p.lowest.date) +
-        (p.lowest.why.length ? ', because of ' + p.lowest.why.join(' and ') : '') + '.');
-    } else if (items.length) {
-      out.unshift('You can spend up to ' + SMmoney(safe) + ' and everything between now and ' +
-        SMfmtDate(p.days[p.days.length - 1].date) + ' still clears.');
-    }
-    SMD('g-verdict').textContent = items.length ? out.join('\n\n') : "Put your payday and your bills in above.";
-
-    if (!items.length) { SMD('g-list').innerHTML = '<p class="sub">Nothing added yet.</p>'; SMD('g-timeline').innerHTML = ''; return; }
-    var head = FIELDS.map(function(f){ return SMesc(f.label); }).concat(['']);
-    SMD('g-list').innerHTML = SMtable(head, items.map(function(r, i){
-      return FIELDS.map(function(f){ return SMesc(SMlabel(f, r[f.id])); })
-        .concat(['<button class="secondary" data-del="' + i + '" style="padding:4px 10px">Remove</button>']);
-    }));
-    Array.prototype.forEach.call(SMD('g-list').querySelectorAll('[data-del]'), function(b){
-      b.addEventListener('click', function(){ items.splice(Number(b.getAttribute('data-del')), 1); persist(); paint(); });
-    });
-
-    var interesting = p.days.filter(function(x){ return x.in > 0 || x.out > 0; }).slice(0, SM.pro() ? 200 : 12);
-    SMD('g-timeline').innerHTML = interesting.length
-      ? SMtable(['Date', 'In', 'Out', 'Left', 'What'], interesting.map(function(x){
-          return [SMfmtDate(x.date), x.in ? SMmoney(x.in) : '', x.out ? SMmoney(x.out) : '', SMmoney(x.balance), SMesc(x.why.join(', '))];
-        }))
-      : '';
-  }
-
-  SMD('g-add').addEventListener('click', function(){
-    if (!SM.pro() && items.length >= FREE_MAX) { SM.gate('More than ' + FREE_MAX + ' ' + "bills"); return; }
-    if (!SM.use()) return;
-    var r = {};
-    for (var i = 0; i < FIELDS.length; i++) { r[FIELDS[i].id] = SMV('f-' + FIELDS[i].id); }
-    if (!r["name"]) { var el = SMD('f-' + "name"); if (el) el.focus(); return; }
-    items.push(r);
-    if (SMD('f-name')) SMD('f-name').value = '';
-    if (SMD('f-amount')) SMD('f-amount').value = '';
-    persist(); paint();
-  });
-  SMD('g-clear').addEventListener('click', function(){ items = []; persist(); paint(); });
-  if (SMD('s-balance')) { SMD('s-balance').addEventListener('input', paint); SMD('s-balance').addEventListener('change', paint); }
-  if (SMD('s-pay')) { SMD('s-pay').addEventListener('input', paint); SMD('s-pay').addEventListener('change', paint); }
-  if (SMD('s-every')) { SMD('s-every').addEventListener('input', paint); SMD('s-every').addEventListener('change', paint); }
-  if (SMD('s-nextPay')) { SMD('s-nextPay').addEventListener('input', paint); SMD('s-nextPay').addEventListener('change', paint); }
-
-  SMD('g-far').addEventListener('click', function(){
-    if (!SM.gate('The twelve month view')) return;
-    var p = project(365);
-    var byMonth = {};
-    p.days.forEach(function(x){
-      var k = x.date.getFullYear() + '-' + String(x.date.getMonth() + 1);
-      if (!byMonth[k]) byMonth[k] = { label: x.date.toLocaleDateString(undefined, { month: 'long', year: 'numeric' }), in: 0, out: 0, low: Infinity, end: 0 };
-      byMonth[k].in += x.in; byMonth[k].out += x.out; byMonth[k].end = x.balance;
-      if (x.balance < byMonth[k].low) byMonth[k].low = x.balance;
-    });
-    SMD('g-farout').innerHTML = SMtable(['Month', 'In', 'Out', 'Lowest point', 'End of month'],
-      Object.keys(byMonth).map(function(k){
-        var m = byMonth[k];
-        return [m.label, SMmoney(m.in), SMmoney(m.out), SMmoney(m.low), SMmoney(m.end)];
-      }));
-  });
-  SMD('g-export').addEventListener('click', function(){
-    var p = project(SM.pro() ? 365 : 35);
-    SM.exportCsv("carer--bills-vs-pay.csv", [['Date', 'In', 'Out', 'Balance', 'What']].concat(
-      p.days.filter(function(x){ return x.in || x.out; }).map(function(x){
-        return [x.date.toISOString().slice(0,10), x.in.toFixed(2), x.out.toFixed(2), x.balance.toFixed(2), x.why.join('; ')];
-      })));
-  });
-
-  (function(){ var el = SMD('s-nextPay'); if (el && !el.value) { var n = new Date(); n.setDate(n.getDate() + 7); el.value = n.toISOString().slice(0,10); } })();
-  paint();
-})();</script>
+<script data-sm="tool"></script>
 <script>
 window.SM = (function(){
   var KEY_STORE = 'sm_key_' + SM_SLUG;
