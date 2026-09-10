@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>http://127.0.0.1:7777/p/shift-and-overtime-pay-checker/</loc><changefreq>weekly</changefreq></url>
-  <url><loc>http://127.0.0.1:7777/p/shift-and-overtime-pay-checker/docs.html</loc><changefreq>weekly</changefreq></url>
-  <url><loc>http://127.0.0.1:7777/p/shift-and-overtime-pay-checker/pricing.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://selfmade-engine.github.io/selfmade-site/p/shift-and-overtime-pay-checker/</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://selfmade-engine.github.io/selfmade-site/p/shift-and-overtime-pay-checker/docs.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://selfmade-engine.github.io/selfmade-site/p/shift-and-overtime-pay-checker/pricing.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://selfmade-engine.github.io/selfmade-site/p/shift-and-overtime-pay-checker/guides/overtime-calculator.html</loc><changefreq>monthly</changefreq></url>
 </urlset>

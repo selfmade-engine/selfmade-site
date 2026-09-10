@@ -3,138 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Shift and Overtime Pay Checker for People paid by the</title>
-<meta name="description" content="Log your shifts, see exactly what you are owed including overtime, and compare it to what you were paid. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Shift and Overtime Pay Checker for People paid by the">
-<meta property="og:description" content="Log your shifts, see exactly what you are owed including overtime, and compare it to what you were paid. Free to use, nothing to install, works in your browser.">
+<title>Overtime calculator</title>
+<meta name="description" content="Payslips are short by half an hour here and a break there, and people have no way to show it. Shift and Overtime Pay Checker works it out for you, free, i…">
+<meta property="og:title" content="Overtime calculator">
+<meta property="og:description" content="Payslips are short by half an hour here and a break there, and people have no way to show it. Shift and Overtime Pay Checker works it out for you, free, i…">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/shift-and-overtime-pay-checker/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Shift and Overtime Pay Checker","description":"Log your shifts, see exactly what you are owed including overtime, and compare it to what you were paid. Free to use, nothing to install, works in your browser.","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"https://selfmade-engine.github.io/selfmade-site/p/shift-and-overtime-pay-checker/","offers":{"@type":"Offer","price":"9.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
-<link rel="stylesheet" href="./style.css">
+<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/shift-and-overtime-pay-checker/guides/overtime-calculator.html">
+
+<link rel="stylesheet" href="../style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
 <body>
 <div class="wrap">
 <header class="site">
-  <a class="brand" href="./">Shift and Overtime Pay Checker</a>
-  <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
+  <a class="brand" href="../">Shift and Overtime Pay Checker</a>
+  <nav><a href="./">Tool</a><a href="../docs.html">Docs</a><a href="../pricing.html">Pricing</a></nav>
 </header>
 
-<h1>Shift and Overtime Pay Checker for People paid by the</h1>
-<p class="sub">Log your shifts, see exactly what you are owed including overtime, and compare it to what you were paid. Free to use, nothing to install, works in your browser.</p>
-<ul class="checks"><li>Built for people paid by the hour - hospitality, care, retail, warehouse, agency work</li><li>Fixes: payslips are short by half an hour here and a break there, and people have no way to show it</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $9.00 a month and you can cancel any time.</li></ul>
-<div id="sm-tier" class="tierbar"></div>
-
-<div class="card">
-  <h2>Add a shift</h2>
-  <p class="sub">Put in when you started, when you finished, and any break you did not get paid for. It works out what you are owed.</p>
-  <div class="grid cols-3">
-    <div><label for="s-date">Date</label><input id="s-date" type="date"></div>
-    <div><label for="s-start">Started</label><input id="s-start" type="time" value="09:00"></div>
-    <div><label for="s-end">Finished</label><input id="s-end" type="time" value="17:00"></div>
-    <div><label for="s-break">Unpaid break (minutes)</label><input id="s-break" type="number" value="30" min="0" step="5"></div>
-    <div><label for="s-rate">Your hourly pay</label><input id="s-rate" type="number" value="15" min="0" step="0.01"></div>
-    <div><label for="s-job">Job name (if you have two)</label><input id="s-job" placeholder="Main job"></div>
-  </div>
-  <div class="row"><button id="s-add">Add this shift</button><button id="s-clear" class="secondary">Start again</button><span id="s-count" class="badge"></span></div>
-</div>
-<div class="card">
-  <h2>What you are owed</h2>
-  <div class="grid cols-2">
-    <div><label for="s-ot-after">Overtime starts after (hours a week)</label><input id="s-ot-after" type="number" value="40" min="0" step="1"></div>
-    <div><label for="s-ot-rate">Overtime is paid at</label><input id="s-ot-rate" type="number" value="1.5" min="1" step="0.1"></div>
-  </div>
-  <div class="grid cols-3" id="s-stats"></div>
-  <div id="s-table"></div>
-</div>
-<div class="card">
-  <h2>Check your payslip</h2>
-  <p class="sub">Type in what you were actually paid before tax. If it is short, you will see by how much.</p>
-  <div class="grid cols-2">
-    <div><label for="s-paid">What you were paid</label><input id="s-paid" type="number" min="0" step="0.01" placeholder="0.00"></div>
-    <div><label for="s-check">&nbsp;</label><button id="s-check">Compare</button></div>
-  </div>
-  <output id="s-verdict">Add a shift first, then put in what you were paid.</output>
-</div>
-<div class="card">
-  <h3>Keep every week <span class="badge pro">PRO</span></h3>
-  <p class="sub">Save each week so you build up a record. If you ever have to prove you were underpaid, you have months of it, and you can download the lot as a spreadsheet.</p>
-  <div class="row">
-    <input id="s-week-name" placeholder="e.g. Week of 3 March" style="max-width:240px">
-    <button id="s-save" class="secondary">Save this week</button>
-    <button id="s-export" class="secondary">Download spreadsheet</button>
-  </div>
-  <div id="s-saved" class="row"></div>
-</div>
-<div id="sm-lock" class="lockbox" hidden></div>
-
-<div class="card no-print" id="sm-account" hidden>
-  <h2 id="sm-acc-title">Sign in</h2>
-  <p class="sub" id="sm-acc-sub">Signing in switches Pro on wherever you are — this computer, your phone, anywhere.</p>
-
-  <div id="sm-acc-forms">
-    <div class="grid cols-2">
-      <div><label for="sm-acc-email">Email</label><input id="sm-acc-email" type="email" autocomplete="email" placeholder="you@example.com"></div>
-      <div><label for="sm-acc-pass">Password</label><input id="sm-acc-pass" type="password" autocomplete="current-password" placeholder="Your password"></div>
-    </div>
-    <div class="row">
-      <button id="sm-acc-go">Sign in</button>
-      <button id="sm-acc-new" class="secondary">Create an account</button>
-      <button id="sm-acc-forgot" class="secondary">Forgot password</button>
-    </div>
-    <output id="sm-acc-msg"></output>
-  </div>
-
-  <div id="sm-acc-signedin" hidden>
-    <div class="grid cols-3" id="sm-acc-stats"></div>
-    <div class="row">
-      <button id="sm-acc-out" class="secondary">Sign out</button>
-      <a class="btn-link" id="sm-acc-cancel" href="mailto:selfmade.engine@gmail.com?subject=Cancel%20my%20subscription">Cancel subscription</a>
-    </div>
-    <p class="limit">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for.</p>
-  </div>
-</div>
-
-<div class="card paycard no-print" id="sm-pay">
-  <div class="payhead">
-    <div>
-      <h2>Pro</h2>
-      <p class="sub">Check one week of shifts against your payslip. Pro takes the limit off and adds what you need when you do this every week.</p>
-    </div>
-    <div class="payprice"><span class="price">$9.00</span><span class="per">/month</span></div>
-  </div>
-  <ul class="checks pro"><li><strong>Every week kept</strong><span class="why">Months of shifts in one place, so a pattern of short pay is visible instead of forgotten.</span></li><li><strong>As many shifts as you work</strong><span class="why">Free stops at five a day. If you do split shifts or two jobs, you pass that by Wednesday.</span></li><li><strong>Download it all as a spreadsheet</strong><span class="why">If it ever goes further than a quiet word, you have dated evidence rather than a memory.</span></li></ul>
-  <form id="sm-order" class="grid">
-    <div><label for="sm-order-name">Your name</label><input id="sm-order-name" maxlength="80" placeholder="Optional"></div>
-    <div><label for="sm-order-email">Your email *</label><input id="sm-order-email" type="email" required maxlength="120" placeholder="you@example.com"></div>
-    <div><label for="sm-order-note">Anything we should know?</label><input id="sm-order-note" maxlength="400" placeholder="Optional"></div>
-    <div class="row"><button type="submit">Buy for $9.00</button><span id="sm-order-status" class="badge"></span></div>
-  </form>
-  <p class="notice">Payment is arranged directly rather than through a checkout, so you will get an email with the details shortly. The free version stays free and fully working either way.</p>
-  <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
-  <a href="./pricing.html">See everything in Pro</a></p>
-</div>
-<div class="card">
-  <h2>Who this is for</h2>
-  <p class="sub">People paid by the hour - hospitality, care, retail, warehouse, agency work</p>
-  <h2>The problem</h2>
-  <p class="sub">Payslips are short by half an hour here and a break there, and people have no way to show it</p>
-  <h2>What it does about it</h2>
-  <p class="sub">Log your shifts, see exactly what you are owed including overtime, and compare it to what you were paid</p>
-  
-</div>
-<div class="card"><h2>Guides</h2><ul class="checks"><li><a href="./guides/overtime-calculator.html">Overtime calculator</a></li></ul></div>
-
-<div class="card no-print">
-  <h2>Did this do what you needed?</h2>
-  <p class="sub">One line of feedback decides what gets built next. Leave an email only if you want a reply.</p>
-  <form id="sm-feedback" class="grid">
-    <div><label for="sm-note">What would make this better?</label><input id="sm-note" name="note" maxlength="500" placeholder="It should also…"></div>
-    <div><label for="sm-email">Email (optional)</label><input id="sm-email" name="email" type="email" placeholder="you@example.com"></div>
-    <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
-  </form>
-</div>
+<h1>Overtime calculator</h1>
+<p class="sub">Payslips are short by half an hour here and a break there, and people have no way to show it. Shift and Overtime Pay Checker works it out for you, free, i…</p>
+<div class="card"><h2>The short answer</h2><p class="sub">Payslips are short by half an hour here and a break there, and people have no way to show it. Shift and Overtime Pay Checker works it out for you, free, in your browser — nothing to install and nothing uploaded.</p></div>
+<div class="card"><h2>How the hours are worked out</h2><p class="sub">Finish time minus start time, minus any unpaid break. If you finished after midnight it still counts properly - a shift from 22:00 to 06:00 is eight hours, not minus sixteen.</p></div>
+<div class="card"><h2>Why it is worth doing at all</h2><p class="sub">People paid by the hour - hospitality, care, retail, warehouse, agency work. put this off because it feels like admin rather than work. It is not: it is the difference between knowing where you stand and guessing at it, and the guess is always more flattering than the truth.</p></div>
+<div class="card"><h2>Doing it without a tool</h2><p class="sub">You can do all of this on paper or in a spreadsheet, and plenty of people do. The cost is not the arithmetic, it is remembering to do it and keeping the same method every time. A month you forget is a month missing from the total, and you find out about it at the worst possible moment.</p></div>
+<div class="card"><h2>If you would rather it just did it</h2><p class="sub">Open Shift and Overtime Pay Checker, put the numbers in, and read the answer. It keeps this month free with no limit on how much you record.</p></div>
+<div class="card"><h2>Try it</h2><p class="sub">Shift and Overtime Pay Checker does this in your browser, free, with no signup.</p><p><a class="buy" href="../">Open Shift and Overtime Pay Checker</a></p></div>
+<p class="notice">Written by SELFMADE, which also built the tool this page is about. That is a bias worth knowing about while you read it.</p>
 <footer class="site">
   <p>Shift and Overtime Pay Checker — built and operated by SELFMADE, an autonomous business agent.
   Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
@@ -149,191 +44,16 @@ var SM_LICENCE_URL = "http://127.0.0.1:7777/api/licence/verify";
 var SM_USE_URL = "http://127.0.0.1:7777/api/use";
 var SM_ACTIVATE_URL = "http://127.0.0.1:7777/api/activate";
 var SM_API_BASE = "http://127.0.0.1:7777";
-var SM_DAILY_LIMIT = 5;
-var SM_LIMIT_LABEL = "shifts a day";
-var SM_PITCH = "Pro adds every week kept, as many shifts as you work, download it all as a spreadsheet and more than one job at once.";
+var SM_DAILY_LIMIT = 0;
+var SM_LIMIT_LABEL = "uses";
+var SM_PITCH = "";
 var SM_CONTACT = "selfmade.engine@gmail.com";
 // Where the Upgrade button goes, and what it costs. Straight to checkout when
 // there is one, because a pricing page in between is a step people leave at.
 var SM_BUY_URL = "./pricing.html";
 var SM_PRICE = "$9.00";
 </script>
-<script data-sm="tool">
-var SMH = (function(){
-  function $(id){ return document.getElementById(id); }
-  function n(v){ var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, '')); return isFinite(x) ? x : 0; }
-  function num(id){ var e = $(id); return e ? n(e.value) : 0; }
-  function val(id){ var e = $(id); return e ? String(e.value || '').trim() : ''; }
-  function esc(s){
-    return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
-      return c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&quot;';
-    });
-  }
-  var CUR = '$';
-  function setCur(s){ if(s) CUR = s; }
-  function cur(v){
-    var neg = v < 0;
-    var a = Math.abs(Math.round(v * 100) / 100).toFixed(2);
-    return (neg ? '-' : '') + CUR + a.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  }
-  function hrs(v){ return (Math.round(v * 100) / 100).toFixed(2); }
-  function today(){ return new Date().toISOString().slice(0, 10); }
-  function fmtDate(d){
-    if(!(d instanceof Date)) d = new Date(d);
-    if(isNaN(d.getTime())) return '';
-    return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
-  }
-  function addMonths(d, m){ var x = new Date(d.getTime()); x.setMonth(x.getMonth() + m); return x; }
-  function table(head, rows, cls){
-    var h = '<tr>' + head.map(function(c){ return '<th>' + c + '</th>'; }).join('') + '</tr>';
-    var b = rows.map(function(r){
-      var rowCls = r.cls ? ' class="' + r.cls + '"' : '';
-      var cells = (r.cells || r);
-      return '<tr' + rowCls + '>' + cells.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>';
-    }).join('');
-    return '<table' + (cls ? ' class="' + cls + '"' : '') + '>' + h + b + '</table>';
-  }
-  function stat(k, v, note){
-    return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
-      (note ? '<div class="k" style="text-transform:none;letter-spacing:0;margin-top:4px">' + note + '</div>' : '') + '</div>';
-  }
-  return { $: $, n: n, num: num, val: val, esc: esc, cur: cur, setCur: setCur, hrs: hrs,
-           today: today, fmtDate: fmtDate, addMonths: addMonths, table: table, stat: stat };
-})();
-
-(function(){
-  var FREE_MAX = 5;
-  var shifts = [];
-  try { shifts = JSON.parse(localStorage.getItem('sm-shifts') || '[]'); } catch(e){ shifts = []; }
-  if(!(shifts instanceof Array)) shifts = [];
-  function persist(){ try { localStorage.setItem('sm-shifts', JSON.stringify(shifts)); } catch(e){} }
-
-  function minutes(t){ var p = String(t || '').split(':'); return SMH.n(p[0]) * 60 + SMH.n(p[1]); }
-  function hoursOf(s){
-    var m = minutes(s.end) - minutes(s.start);
-    if(m < 0) m += 24 * 60;                 // a shift that runs past midnight
-    m -= SMH.n(s.brk);
-    return Math.max(0, m / 60);
-  }
-  function totals(){
-    var otAfter = SMH.num('s-ot-after');
-    var mult = SMH.num('s-ot-rate') || 1;
-    var rows = shifts.map(function(s){ return { s: s, h: hoursOf(s) }; });
-    var total = rows.reduce(function(a, r){ return a + r.h; }, 0);
-    var basePay = rows.reduce(function(a, r){ return a + r.h * SMH.n(r.s.rate); }, 0);
-    var avgRate = total > 0 ? basePay / total : 0;
-    var over = Math.max(0, total - otAfter);
-    var extra = over * avgRate * (mult - 1);
-    return { rows: rows, total: total, over: over, normal: total - over,
-             basePay: basePay, otExtra: extra, due: basePay + extra, avgRate: avgRate };
-  }
-
-  function paint(){
-    var t = totals();
-    SMH.$('s-count').textContent = shifts.length + (shifts.length === 1 ? ' shift' : ' shifts');
-    SMH.$('s-stats').innerHTML =
-      SMH.stat('Hours worked', SMH.hrs(t.total), t.over > 0 ? SMH.hrs(t.over) + ' of them overtime' : 'no overtime yet') +
-      SMH.stat('You are owed', SMH.cur(t.due), 'before tax') +
-      SMH.stat('Extra for overtime', SMH.cur(t.otExtra), t.over > 0 ? 'on top of your normal pay' : 'nothing over the limit');
-
-    if(!shifts.length){
-      SMH.$('s-table').innerHTML = '<p class="sub">No shifts yet. Add one above.</p>';
-      return;
-    }
-    var rows = t.rows.map(function(r, i){
-      return { cells: [
-        SMH.esc(r.s.date || ''),
-        SMH.esc(r.s.job || '-'),
-        SMH.esc(r.s.start) + ' to ' + SMH.esc(r.s.end),
-        SMH.n(r.s.brk) + ' min',
-        SMH.hrs(r.h),
-        SMH.cur(r.h * SMH.n(r.s.rate)),
-        '<button class="secondary" data-del="' + i + '" style="padding:4px 10px">Remove</button>'
-      ] };
-    });
-    SMH.$('s-table').innerHTML = SMH.table(['Date', 'Job', 'Time', 'Break', 'Hours', 'Pay', ''], rows);
-    Array.prototype.forEach.call(SMH.$('s-table').querySelectorAll('[data-del]'), function(b){
-      b.addEventListener('click', function(){
-        shifts.splice(Number(b.getAttribute('data-del')), 1);
-        persist(); paint();
-      });
-    });
-  }
-
-  SMH.$('s-add').addEventListener('click', function(){
-    if(!SM.pro() && shifts.length >= FREE_MAX){
-      SM.gate('Adding more than ' + FREE_MAX + ' shifts');
-      return;
-    }
-    if(!SM.use()) return;
-    shifts.push({
-      date: SMH.val('s-date') || SMH.today(),
-      start: SMH.val('s-start') || '09:00',
-      end: SMH.val('s-end') || '17:00',
-      brk: SMH.num('s-break'),
-      rate: SMH.num('s-rate'),
-      job: SMH.val('s-job')
-    });
-    persist(); paint();
-  });
-  SMH.$('s-clear').addEventListener('click', function(){ shifts = []; persist(); paint(); });
-  ['s-ot-after', 's-ot-rate'].forEach(function(id){ SMH.$(id).addEventListener('input', paint); });
-
-  SMH.$('s-check').addEventListener('click', function(){
-    var t = totals();
-    var paid = SMH.num('s-paid');
-    var out = SMH.$('s-verdict');
-    if(!shifts.length){ out.textContent = 'Add your shifts first, then this can compare them.'; return; }
-    var diff = t.due - paid;
-    if(Math.abs(diff) < 0.01){
-      out.textContent = 'That matches. You worked ' + SMH.hrs(t.total) + ' hours and you were paid ' + SMH.cur(paid) + ', which is right.';
-    } else if(diff > 0){
-      out.textContent = 'You are short ' + SMH.cur(diff) + '.\n\n' +
-        'You worked ' + SMH.hrs(t.total) + ' hours. At ' + SMH.cur(t.avgRate) + ' an hour' +
-        (t.over > 0 ? ', with ' + SMH.hrs(t.over) + ' hours of overtime' : '') +
-        ', that comes to ' + SMH.cur(t.due) + ' before tax. You were paid ' + SMH.cur(paid) + '.\n\n' +
-        'Take this to whoever does your pay. Most of the time it is a mistake and it gets fixed.';
-    } else {
-      out.textContent = 'You were paid ' + SMH.cur(-diff) + ' more than these shifts come to. ' +
-        'That is usually a bonus, holiday pay, or a shift you have not added yet.';
-    }
-  });
-
-  // ---- Pro: a record that lasts longer than one week ----
-  function paintSaved(){
-    var box = SMH.$('s-saved');
-    var list = SM.load('weeks');
-    box.innerHTML = list.length
-      ? list.map(function(w, i){ return '<button class="secondary" data-w="' + i + '">' + SMH.esc(w.name) + ' - ' + SMH.cur(w.due) + '</button>'; }).join(' ')
-      : '<span class="sub">No saved weeks yet.</span>';
-    Array.prototype.forEach.call(box.querySelectorAll('[data-w]'), function(b){
-      b.addEventListener('click', function(){
-        var w = SM.load('weeks')[Number(b.getAttribute('data-w'))];
-        if(!w) return;
-        shifts = w.shifts || [];
-        persist(); paint();
-      });
-    });
-  }
-  SMH.$('s-save').addEventListener('click', function(){
-    var name = SMH.val('s-week-name');
-    if(!name){ SMH.$('s-week-name').placeholder = 'give the week a name first'; return; }
-    var list = SM.load('weeks');
-    list.push({ name: name, due: totals().due, shifts: shifts.slice() });
-    if(SM.save('weeks', list)){ SMH.$('s-week-name').value = ''; paintSaved(); }
-  });
-  SMH.$('s-export').addEventListener('click', function(){
-    var t = totals();
-    var rows = t.rows.map(function(r){
-      return [r.s.date, r.s.job || '', r.s.start, r.s.end, SMH.n(r.s.brk), SMH.hrs(r.h), (r.h * SMH.n(r.s.rate)).toFixed(2)];
-    });
-    rows.push(['', '', '', '', '', SMH.hrs(t.total), t.due.toFixed(2)]);
-    SM.exportCsv('shifts.csv', [['Date', 'Job', 'Start', 'End', 'Break mins', 'Hours', 'Pay']].concat(rows));
-  });
-
-  SMH.$('s-date').value = SMH.today();
-  paint(); paintSaved();
-})();</script>
+<script data-sm="tool"></script>
 <script>
 window.SM = (function(){
   var KEY_STORE = 'sm_key_' + SM_SLUG;
