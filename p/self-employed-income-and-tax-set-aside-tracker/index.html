@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Self-Employed Income and Tax Set-Aside Tracker — Log income and costs in seconds and always know what to put aside and what is genuinely yours</title>
+<title>Self-Employed Income and Tax Set-Aside Tracker for Freelancers, sole traders, delivery</title>
 <meta name="description" content="Log income and costs in seconds and always know what to put aside and what is genuinely yours. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Self-Employed Income and Tax Set-Aside Tracker — Log income and costs in seconds and always know what to put aside and what is genuinely yours">
+<meta property="og:title" content="Self-Employed Income and Tax Set-Aside Tracker for Freelancers, sole traders, delivery">
 <meta property="og:description" content="Log income and costs in seconds and always know what to put aside and what is genuinely yours. Free to use, nothing to install, works in your browser.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -21,8 +21,8 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Self-Employed Income and Tax Set-Aside Tracker — Log income and costs in seconds and always know what to put aside and what is genuinely yours</h1>
-
+<h1>Self-Employed Income and Tax Set-Aside Tracker for Freelancers, sole traders, delivery</h1>
+<p class="sub">Log income and costs in seconds and always know what to put aside and what is genuinely yours. Free to use, nothing to install, works in your browser.</p>
 <ul class="checks"><li>Built for freelancers, sole traders, delivery drivers and anyone self-employed for the first time</li><li>Fixes: money comes in, gets spent, and the tax bill arrives in january against an empty account</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
 
@@ -179,7 +179,7 @@ var SM_LICENCE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/licen
 var SM_USE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/use";
 var SM_ACTIVATE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/activate";
 var SM_API_BASE = "https://selfmade-api.selfmade-engine.workers.dev";
-var SM_DAILY_LIMIT = 20;
+var SM_DAILY_LIMIT = 3;
 var SM_LIMIT_LABEL = "records a day";
 var SM_PITCH = "Pro adds a whole year of records, where the money actually goes, a clean spreadsheet for your accountant and previous years kept.";
 var SM_CONTACT = "selfmade.engine@gmail.com";
@@ -232,7 +232,7 @@ var SMH = (function(){
 })();
 
 (function(){
-  var FREE_MAX = 20;
+  var FREE_MAX = 3;
   var items = [];
   try { items = JSON.parse(localStorage.getItem('sm-books') || '[]'); } catch(e){ items = []; }
   if(!(items instanceof Array)) items = [];
@@ -711,6 +711,16 @@ window.SM = (function(){
     sayConfirm('Checking…');
     post('/api/account/verify', { email: email, code: given, slug: SM_SLUG })
       .then(function(res){
+        // Confirmed but no session: the address was already confirmed, so a
+        // code cannot let anybody in. Send them to sign in rather than
+        // reloading into a page that claims they are signed in and is not.
+        if(res.ok && !res.sessionToken){
+          drops(PENDING_STORE);
+          show('sm-acc-choose');
+          say(res.reason || 'That address is already confirmed. Sign in with your password.');
+          if(el('sm-acc-pass')) el('sm-acc-pass').focus();
+          return;
+        }
         if(res.ok) return landInAccount(res);
         sayConfirm(res.reason || 'That code is not right.', true);
         if(res.expired){
@@ -736,6 +746,12 @@ window.SM = (function(){
       askToConfirm(who, 'Confirming…');
       post('/api/account/verify', { email: who, token: confirmToken, slug: SM_SLUG })
         .then(function(res){
+          if(res.ok && !res.sessionToken){
+            drops(PENDING_STORE);
+            show('sm-acc-choose');
+            say(res.reason || 'That address is already confirmed. Sign in with your password.');
+            return;
+          }
           if(res.ok) return landInAccount(res);
           sayConfirm(res.reason || 'That link is not valid any more. Ask for a new code.', true);
         })
