@@ -28,7 +28,7 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Stop guessing: Log each job with its price, materials and real hours, and see what you actually earned an hour</h1>
+<h1>Painter and Decorator Job Profit Tracker — Log each job with its price, materials and real hours, and see what you actually earned an hour</h1>
 
 <ul class="checks"><li>Built for painters and decorators</li><li>Fixes: a price that felt right in the van turns out to pay less than minimum wage once the hours and materials are counted, and painters and decorators usually find out too late</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
@@ -140,9 +140,11 @@
     <div class="grid cols-3" id="sm-acc-stats"></div>
     <div class="row">
       <button id="sm-acc-out" class="secondary">Sign out</button>
-      <a class="btn-link" id="sm-acc-cancel" href="mailto:selfmade.engine@gmail.com?subject=Cancel%20my%20subscription">Cancel subscription</a>
+      <button id="sm-acc-cancel" class="linkish sm-danger" hidden>Cancel subscription</button>
     </div>
-    <p class="limit">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for.</p>
+    <output id="sm-acc-cancelmsg" class="sm-auth-msg"></output>
+    <p class="limit" id="sm-acc-cancelnote" hidden></p>
+    <p class="limit">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for, and your account stays exactly as it is.</p>
   </div>
 </div>
 
@@ -155,7 +157,8 @@
     <div class="payprice"><span class="price">$15.00</span><span class="per">/month</span></div>
   </div>
   <ul class="checks pro"><li><strong>Where the money actually goes</strong><span class="why">Every entry adds up by category, biggest first. This is the view that finds the cost you had stopped noticing.</span></li><li><strong>Month by month, and against last month</strong><span class="why">One month is a number. Twelve is a pattern, and a pattern is the thing you can act on.</span></li><li><strong>Every month kept, not just this one</strong><span class="why">A suspicion becomes something you can point at once there are six months of it.</span></li></ul>
-  <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Get Pro — $15.00/month</a></div>
+  <p class="sm-on-pro" id="sm-already-pro" hidden></p>
+    <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Get Pro — $15.00/month</a></div>
     <p class="notice" id="sm-buy-note">You will be taken straight to a secure card form. Payment is handled by Stripe — your card details go to them, never to this page. Cancel any time.</p>
     <p class="notice" id="sm-buy-status" hidden></p>
   <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
@@ -185,6 +188,13 @@
   <p>Painter and Decorator Job Profit Tracker — built and operated by SELFMADE, an autonomous business agent.
   Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
   <p>Everything on this page runs in your browser. Your input is not uploaded or stored.</p>
+  <!-- Small, at the bottom, on every page. Stripe expects a customer to be
+       able to find the terms and the privacy policy from anywhere they might
+       be asked to pay, and so does anybody sensible. -->
+  <p class="legal"><a href="https://selfmade-api.selfmade-engine.workers.dev/privacy.html">Privacy</a>
+  · <a href="https://selfmade-api.selfmade-engine.workers.dev/terms.html">Terms &amp; refunds</a>
+  · <a href="./pricing.html">Pricing</a>
+  · Payments handled by Stripe. Card details never touch this page.</p>
 </footer>
 </div>
 <script>
@@ -977,7 +987,11 @@ function SMfmtDate(d){
     var box = el('sm-account');
     if(!box) return false;
     box.hidden = false;
-    show('sm-acc-choose');
+    // Signed in: show the account. This always showed the sign-in form, so
+    // after paying, "Account" opened a login box, the account view with Sign
+    // out and Cancel was unreachable, and it looked like signing in was broken.
+    if(reads(SESSION_STORE) && !why){ show('sm-acc-signedin'); refresh(); }
+    else show('sm-acc-choose');
 
     // Retitle the card when it has been opened on the way to paying, so the
     // reason is the first thing read rather than a line under the fields.
@@ -1024,22 +1038,87 @@ function SMfmtDate(d){
 
   /* ---------------- signed in ---------------- */
 
+  /**
+   * Show the account, and let the rest of the page know what it is.
+   *
+   * Everything that depends on being Pro reads the same answer from here:
+   * the Buy button, the nav link, and the account card itself. They used to
+   * decide separately, which is how a subscriber was still shown Subscribe.
+   */
   function paintAccount(data){
-    if(!data || !data.signedIn){ show('sm-acc-choose'); return; }
+    var signedIn = Boolean(data && data.signedIn);
+    var mine = signedIn
+      ? (data.entitlements || []).filter(function(e){ return e.slug === SM_SLUG; })[0]
+      : null;
+
+    // Per product, deliberately. Paying for one tool is paying for one tool.
+    var cancelled = mine && String(mine.status || '').toUpperCase() === 'CANCELLED';
+    window.SMstate = { signedIn: signedIn, pro: Boolean(mine), cancelled: cancelled, mine: mine || null };
+
+    // This is what carries Pro to another browser, a phone, a laptop. The
+    // server had already said this account is entitled - the answer came back
+    // on every sign-in - and nothing ever switched the tool on, so a paying
+    // customer signing in anywhere new was shown the free version and asked to
+    // pay again. The entitlement is server-checked; the key is re-verified
+    // (device limit included) on the next load.
+    if(mine && window.SM && window.SM.grant) window.SM.grant(mine.key, mine.renews_at);
+    tellThePage();
+
+    // The nav link says what it does: sign in, or open the account.
+    var nav = el('sm-navsignin');
+    if(nav) nav.textContent = signedIn ? 'Account' : 'Sign in';
+
+    if(!signedIn){ show('sm-acc-choose'); return; }
     show('sm-acc-signedin');
 
-    var mine = (data.entitlements || []).filter(function(e){ return e.slug === SM_SLUG; })[0];
     var stats = el('sm-acc-stats');
     if(stats){
       stats.innerHTML =
         '<div class="stat"><div class="k">Signed in as</div><div class="v">' + (data.account.email||'') + '</div></div>' +
-        '<div class="stat"><div class="k">This tool</div><div class="v">' + (mine ? 'Pro' : 'Free') + '</div></div>' +
+        '<div class="stat"><div class="k">This tool</div><div class="v">' + (mine ? (cancelled ? 'Pro, ending' : 'Pro') : 'Free') + '</div></div>' +
         (mine && mine.renews_at
-          ? '<div class="stat"><div class="k">Renews</div><div class="v">' + String(mine.renews_at).slice(0,10) + '</div></div>'
+          ? '<div class="stat"><div class="k">' + (cancelled ? 'Ends' : 'Renews') + '</div><div class="v">' + String(mine.renews_at).slice(0,10) + '</div></div>'
           : '');
     }
+
+    // Cancelling belongs here, next to the subscription, not in an email
+    // somebody has to go and find.
     var cancel = el('sm-acc-cancel');
-    if(cancel) cancel.hidden = !mine;
+    if(cancel){
+      cancel.hidden = !mine || cancelled;
+      cancel.textContent = 'Cancel subscription';
+    }
+    var note = el('sm-acc-cancelnote');
+    if(note){
+      note.hidden = !cancelled;
+      if(cancelled && mine.renews_at){
+        note.textContent = 'Cancelled. Pro stays on until ' + String(mine.renews_at).slice(0,10)
+          + ', then this goes back to the free version. Your account and everything in it stays.';
+      }
+    }
+  }
+
+  /**
+   * Tell the rest of the page whether this is a Pro subscriber.
+   *
+   * Offering Subscribe to somebody already subscribed is the single most
+   * common complaint about a page like this, and it happened because the Buy
+   * button never asked.
+   */
+  function tellThePage(){
+    var s = window.SMstate || { pro: false };
+    var buy = document.getElementById('sm-buy');
+    var already = document.getElementById('sm-already-pro');
+
+    if(buy) buy.hidden = Boolean(s.pro);
+    if(already){
+      already.hidden = !s.pro;
+      already.textContent = s.cancelled
+        ? 'You are on Pro until the end of this month.'
+        : 'You are on Pro. Everything here is unlocked.';
+    }
+    var note = document.getElementById('sm-buy-note');
+    if(note) note.hidden = Boolean(s.pro);
   }
 
   function refresh(){
@@ -1129,7 +1208,12 @@ function SMfmtDate(d){
     window.SMaccount = { open: open, signedIn: function(){ return Boolean(reads(SESSION_STORE)); } };
 
     var link = el('sm-navsignin');
-    if(link) link.addEventListener('click', function(e){ e.preventDefault(); open(); });
+    // A page with no account card (pricing, docs) sends you to the one that has
+    // it, instead of a link that does nothing.
+    if(link) link.addEventListener('click', function(e){
+      e.preventDefault();
+      if(!open()) location.href = './?account=1';
+    });
 
     // Arrived from the link in the email: confirm it and get out of the way.
     var params = new URLSearchParams(location.search);
@@ -1154,8 +1238,10 @@ function SMfmtDate(d){
     }
 
     // Sent here from the pricing page to sign in before paying.
-    if(params.get('signin')){
+    if(params.get('signin') && !reads(SESSION_STORE)){
       open('Create an account or sign in, and payment opens straight after.');
+    } else if(params.get('account') || params.get('signin')){
+      open();
     }
 
     // Came back to a half-finished sign-up.
@@ -1247,6 +1333,25 @@ function SMfmtDate(d){
       post('/api/account/password/request', { email: email, slug: SM_SLUG, returnTo: here() })
         .then(function(res){ say(res.message || 'If that address has an account, a link is on its way.'); })
         .catch(function(){ say('Could not reach the server.', true); });
+    });
+
+    var cancelSub = el('sm-acc-cancel');
+    if(cancelSub) cancelSub.addEventListener('click', function(){
+      var sure = window.confirm('Cancel your Pro subscription for this tool? You will not be charged again. You keep Pro until the end of the month you have paid for, and your account stays.');
+      if(!sure) return;
+      var msg = el('sm-acc-cancelmsg');
+      if(msg){ msg.textContent = 'Cancelling…'; msg.className = 'sm-auth-msg'; }
+      cancelSub.disabled = true;
+      post('/api/account/cancel-subscription', { slug: SM_SLUG })
+        .then(function(res){
+          cancelSub.disabled = false;
+          if(msg){ msg.textContent = res.message || res.reason || ''; msg.className = 'sm-auth-msg' + (res.ok ? '' : ' bad'); }
+          if(res.ok) refresh();
+        })
+        .catch(function(){
+          cancelSub.disabled = false;
+          if(msg){ msg.textContent = 'Could not reach the server. Nothing has changed - try again in a moment.'; msg.className = 'sm-auth-msg bad'; }
+        });
     });
 
     var out = el('sm-acc-out');
