@@ -28,7 +28,7 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Map your paydays against your bills and get one number: what you can spend today with everything still clearing</h1>
+<h1>Stop guessing: Map your paydays against your bills and get one number: what you can spend today with everything still clearing</h1>
 
 <ul class="checks"><li>Built for someone caring for a parent — people caring for a parent</li><li>Fixes: the balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
@@ -193,247 +193,10 @@ var SM_CONTACT = "selfmade.engine@gmail.com";
 var SM_BUY_URL = "./pricing.html";
 var SM_PRICE = "$15.00";
 </script>
-<script data-sm="tool">
-function SMN(v){
-  if (typeof v === 'number') return isFinite(v) ? v : 0;
-  var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, ''));
-  return isFinite(x) ? x : 0;
-}
-/**
- * Whole days from today until a date. Negative once it has gone past.
- *
- * Both ends are flattened to midnight first, so "tomorrow" is 1 all day rather
- * than 0 in the evening and 1 in the morning - a countdown that changes with
- * the time of day reads as broken.
- */
-function SMdays(v){
-  if (!v) return 0;
-  var text = String(v).trim();
-  var b = null;
-  // A plain "2026-04-01" is parsed as UTC midnight by the browser, which reads
-  // back as the day BEFORE anywhere west of Greenwich. Somebody typing a date
-  // means that date where they are, so it is built locally instead.
-  //
-  // Split rather than matched, because a regular expression written inside a
-  // template literal has to survive two rounds of escaping and quietly loses
-  // its backslashes if it does not.
-  var bits = text.split('-');
-  if (bits.length === 3 && bits[0].length === 4) {
-    var y = Number(bits[0]), mo = Number(bits[1]), da = Number(bits[2].slice(0, 2));
-    if (y && mo && da) b = new Date(y, mo - 1, da);
-  }
-  if (!b) {
-    var parsed = new Date(text);
-    if (isNaN(parsed.getTime())) return 0;
-    b = new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
-  }
-  if (isNaN(b.getTime())) return 0;
-  var a = new Date(); a.setHours(0,0,0,0);
-  return Math.round((b - a) / 86400000);
-}
-var CUR = "$";
-function SMD(id){ var e = document.getElementById(id); return e; }
-function SMV(id){ var e = SMD(id); return e ? String(e.value == null ? '' : e.value).trim() : ''; }
-function SMmoney(v){
-  var neg = v < 0;
-  var a = Math.abs(Math.round(v * 100) / 100).toFixed(2);
-  return (neg ? '-' : '') + CUR + a.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-function SMnum(v, dp){
-  var d = dp == null ? 2 : dp;
-  var n = Math.round(SMN(v) * Math.pow(10, d)) / Math.pow(10, d);
-  return d === 0 ? String(n) : n.toFixed(d);
-}
-function SMesc(s){
-  return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
-    return c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&quot;';
-  });
-}
-function SMtable(head, rows){
-  return '<table><tr>' + head.map(function(h){ return '<th>' + h + '</th>'; }).join('') + '</tr>' +
-    rows.map(function(r){ return '<tr>' + r.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>'; }).join('') +
-    '</table>';
-}
-function SMstat(k, v, note){
-  return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
-    (note ? '<div class="k" style="text-transform:none;letter-spacing:0;margin-top:4px">' + note + '</div>' : '') + '</div>';
-}
-/** A dropdown stores its numeric value; the table should show the words. */
-function SMlabel(f, v){
-  if (f && f.options && f.options.length && typeof f.options[0] === 'object') {
-    for (var i = 0; i < f.options.length; i++) {
-      if (String(f.options[i].value) === String(v)) return f.options[i].label;
-    }
-  }
-  return v;
-}
-function SMtoday(){ return new Date().toISOString().slice(0, 10); }
-function SMfmtDate(d){
-  var x = (d instanceof Date) ? d : new Date(d);
-  if (isNaN(x.getTime())) return String(d || '');
-  return x.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
-}
-(function(){
-  var FIELDS = [{"id":"name","label":"What is it","type":"text","placeholder":"Rent"},{"id":"amount","label":"How much","type":"number","default":0,"min":0,"step":0.01},{"id":"day","label":"Day of the month it goes","type":"number","default":1,"min":1,"max":31,"step":1}];
-  var FREE_MAX = 3;
-  var items = [];
-  try { items = JSON.parse(localStorage.getItem("sm-carer--bills-vs-pay") || '[]'); } catch(e){ items = []; }
-  if (!(items instanceof Array)) items = [];
-  function persist(){ try { localStorage.setItem("sm-carer--bills-vs-pay", JSON.stringify(items)); } catch(e){} }
-
-  function derive(r, T){
-    var out = {};
-    for (var k in r) out[k] = r[k];
-    
-    return out;
-  }
-  function settings(){
-    var T = {};
-    T.balance = SMN(SMV('s-balance'));
-    T.pay = SMN(SMV('s-pay'));
-    T.every = SMN(SMV('s-every'));
-    T.nextPay = SMN(SMV('s-nextPay'));
-    return T;
-  }
-  function compute(){
-    var T = settings();
-    var rowsD = items.map(function(r){ return derive(r, T); });
-    (function(rows){
-      T.monthly = rows.reduce(function(a, r){ return a + (SMN(r.amount)); }, 0);
-    })(rowsD);
-    return { rows: rowsD, T: T };
-  }
-
-  /**
-   * Walk day by day. Each item lands on its own day of the month, and the
-   * running balance is what actually matters - not the total, the lowest point.
-   */
-  function project(days){
-    var T = settings();
-    var balance = SMN(T.balance);
-    var incomeAmount = SMN(T.pay);
-    var incomeEvery = SMN(T.every);
-    var nextIncome = (SMV('s-nextPay') ? new Date(SMV('s-nextPay') + 'T00:00:00') : null);
-    var out = [];
-    var d = new Date(); d.setHours(0,0,0,0);
-    var lowest = { balance: balance, date: new Date(d.getTime()), why: [] };
-    var T0 = settings();
-    var rowsD = items.map(function(r){ return derive(r, T0); });
-
-    for (var i = 0; i < days; i++) {
-      var inToday = 0, outToday = 0, why = [];
-      if (nextIncome && d.toDateString() === nextIncome.toDateString()) {
-        inToday += incomeAmount;
-        why.push("payday");
-        if (incomeEvery > 0) nextIncome = new Date(nextIncome.getTime() + incomeEvery * 86400000);
-        else { var nx = new Date(nextIncome.getTime()); nx.setMonth(nx.getMonth() + 1); nextIncome = nx; }
-      }
-      for (var k = 0; k < rowsD.length; k++) {
-        var it = rowsD[k];
-        var lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
-        var due = Math.min(SMN(it.day), lastDay);
-        if (d.getDate() === due) {
-          outToday += SMN(it.amount);
-          why.push(String(it.name || 'a payment'));
-        }
-      }
-      balance += inToday - outToday;
-      if (balance < lowest.balance) lowest = { balance: balance, date: new Date(d.getTime()), why: why.slice() };
-      out.push({ date: new Date(d.getTime()), in: inToday, out: outToday, balance: balance, why: why });
-      d = new Date(d.getTime() + 86400000);
-    }
-    return { days: out, lowest: lowest, end: balance };
-  }
-
-  function paint(){
-    SMD('g-count').textContent = items.length + ' ' + "bills";
-    var c = compute();
-    var T = c.T;
-    var days = SM.pro() ? 365 : 7;
-    var p = project(days);
-    var safe = p.lowest.balance;
-
-    SMD('g-stats').innerHTML = [
-      SMstat("Safe to spend", SMmoney(Math.max(0, safe)), safe < 0 ? 'you go short before then' : 'and everything still clears'),
-      SMstat('Lowest you go', SMmoney(p.lowest.balance), 'on ' + SMfmtDate(p.lowest.date)),
-      SMstat("Bills a month", SMmoney(T.monthly), "everything on autopilot")
-    ].filter(Boolean).join('');
-
-    var out = [];
-    (function(rows){
-      if (SMN(T.monthly) > 0) out.push("Your bills come to " + SMmoney(T.monthly) + " a month.");
-    })(c.rows);
-    if (safe < 0) {
-      out.unshift('You are heading ' + SMmoney(-safe) + ' short on ' + SMfmtDate(p.lowest.date) +
-        (p.lowest.why.length ? ', because of ' + p.lowest.why.join(' and ') : '') + '.');
-    } else if (items.length) {
-      out.unshift('You can spend up to ' + SMmoney(safe) + ' and everything between now and ' +
-        SMfmtDate(p.days[p.days.length - 1].date) + ' still clears.');
-    }
-    SMD('g-verdict').textContent = items.length ? out.join('\n\n') : "Put your payday and your bills in above.";
-
-    if (!items.length) { SMD('g-list').innerHTML = '<p class="sub">Nothing added yet.</p>'; SMD('g-timeline').innerHTML = ''; return; }
-    var head = FIELDS.map(function(f){ return SMesc(f.label); }).concat(['']);
-    SMD('g-list').innerHTML = SMtable(head, items.map(function(r, i){
-      return FIELDS.map(function(f){ return SMesc(SMlabel(f, r[f.id])); })
-        .concat(['<button class="secondary" data-del="' + i + '" style="padding:4px 10px">Remove</button>']);
-    }));
-    Array.prototype.forEach.call(SMD('g-list').querySelectorAll('[data-del]'), function(b){
-      b.addEventListener('click', function(){ items.splice(Number(b.getAttribute('data-del')), 1); persist(); paint(); });
-    });
-
-    var interesting = p.days.filter(function(x){ return x.in > 0 || x.out > 0; }).slice(0, SM.pro() ? 200 : 12);
-    SMD('g-timeline').innerHTML = interesting.length
-      ? SMtable(['Date', 'In', 'Out', 'Left', 'What'], interesting.map(function(x){
-          return [SMfmtDate(x.date), x.in ? SMmoney(x.in) : '', x.out ? SMmoney(x.out) : '', SMmoney(x.balance), SMesc(x.why.join(', '))];
-        }))
-      : '';
-  }
-
-  SMD('g-add').addEventListener('click', function(){
-    if (!SM.pro() && items.length >= FREE_MAX) { SM.limit(); return; }
-    if (!SM.use()) return;
-    var r = {};
-    for (var i = 0; i < FIELDS.length; i++) { r[FIELDS[i].id] = SMV('f-' + FIELDS[i].id); }
-    if (!r["name"]) { var el = SMD('f-' + "name"); if (el) el.focus(); return; }
-    items.push(r);
-    if (SMD('f-name')) SMD('f-name').value = '';
-    if (SMD('f-amount')) SMD('f-amount').value = '';
-    persist(); paint();
-  });
-  SMD('g-clear').addEventListener('click', function(){ items = []; persist(); paint(); });
-  if (SMD('s-balance')) { SMD('s-balance').addEventListener('input', paint); SMD('s-balance').addEventListener('change', paint); }
-  if (SMD('s-pay')) { SMD('s-pay').addEventListener('input', paint); SMD('s-pay').addEventListener('change', paint); }
-  if (SMD('s-every')) { SMD('s-every').addEventListener('input', paint); SMD('s-every').addEventListener('change', paint); }
-  if (SMD('s-nextPay')) { SMD('s-nextPay').addEventListener('input', paint); SMD('s-nextPay').addEventListener('change', paint); }
-
-  SMD('g-far').addEventListener('click', function(){
-    if (!SM.gate('The twelve month view')) return;
-    var p = project(365);
-    var byMonth = {};
-    p.days.forEach(function(x){
-      var k = x.date.getFullYear() + '-' + String(x.date.getMonth() + 1);
-      if (!byMonth[k]) byMonth[k] = { label: x.date.toLocaleDateString(undefined, { month: 'long', year: 'numeric' }), in: 0, out: 0, low: Infinity, end: 0 };
-      byMonth[k].in += x.in; byMonth[k].out += x.out; byMonth[k].end = x.balance;
-      if (x.balance < byMonth[k].low) byMonth[k].low = x.balance;
-    });
-    SMD('g-farout').innerHTML = SMtable(['Month', 'In', 'Out', 'Lowest point', 'End of month'],
-      Object.keys(byMonth).map(function(k){
-        var m = byMonth[k];
-        return [m.label, SMmoney(m.in), SMmoney(m.out), SMmoney(m.low), SMmoney(m.end)];
-      }));
-  });
-  SMD('g-export').addEventListener('click', function(){
-    var p = project(SM.pro() ? 365 : 7);
-    SM.exportCsv("carer--bills-vs-pay.csv", [['Date', 'In', 'Out', 'Balance', 'What']].concat(
-      p.days.filter(function(x){ return x.in || x.out; }).map(function(x){
-        return [x.date.toISOString().slice(0,10), x.in.toFixed(2), x.out.toFixed(2), x.balance.toFixed(2), x.why.join('; ')];
-      })));
-  });
-
-  (function(){ var el = SMD('s-nextPay'); if (el && !el.value) { var n = new Date(); n.setDate(n.getDate() + 7); el.value = n.toISOString().slice(0,10); } })();
-  paint();
-})();</script>
+<!-- LICENCE_JS first: it defines window.SM, and the tool calls SM.load() and
+     SM.pro() while it is painting for the first time. The other way round threw
+     "SM is not defined" on every single page load, which killed the rest of
+     that paint - the saved-sets panel simply never appeared. -->
 <script>
 window.SM = (function(){
   var KEY_STORE = 'sm_key_' + SM_SLUG;
@@ -765,6 +528,247 @@ window.SM = (function(){
   return SM;
 })();
 </script>
+<script data-sm="tool">
+function SMN(v){
+  if (typeof v === 'number') return isFinite(v) ? v : 0;
+  var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, ''));
+  return isFinite(x) ? x : 0;
+}
+/**
+ * Whole days from today until a date. Negative once it has gone past.
+ *
+ * Both ends are flattened to midnight first, so "tomorrow" is 1 all day rather
+ * than 0 in the evening and 1 in the morning - a countdown that changes with
+ * the time of day reads as broken.
+ */
+function SMdays(v){
+  if (!v) return 0;
+  var text = String(v).trim();
+  var b = null;
+  // A plain "2026-04-01" is parsed as UTC midnight by the browser, which reads
+  // back as the day BEFORE anywhere west of Greenwich. Somebody typing a date
+  // means that date where they are, so it is built locally instead.
+  //
+  // Split rather than matched, because a regular expression written inside a
+  // template literal has to survive two rounds of escaping and quietly loses
+  // its backslashes if it does not.
+  var bits = text.split('-');
+  if (bits.length === 3 && bits[0].length === 4) {
+    var y = Number(bits[0]), mo = Number(bits[1]), da = Number(bits[2].slice(0, 2));
+    if (y && mo && da) b = new Date(y, mo - 1, da);
+  }
+  if (!b) {
+    var parsed = new Date(text);
+    if (isNaN(parsed.getTime())) return 0;
+    b = new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+  }
+  if (isNaN(b.getTime())) return 0;
+  var a = new Date(); a.setHours(0,0,0,0);
+  return Math.round((b - a) / 86400000);
+}
+var CUR = "$";
+function SMD(id){ var e = document.getElementById(id); return e; }
+function SMV(id){ var e = SMD(id); return e ? String(e.value == null ? '' : e.value).trim() : ''; }
+function SMmoney(v){
+  var neg = v < 0;
+  var a = Math.abs(Math.round(v * 100) / 100).toFixed(2);
+  return (neg ? '-' : '') + CUR + a.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+function SMnum(v, dp){
+  var d = dp == null ? 2 : dp;
+  var n = Math.round(SMN(v) * Math.pow(10, d)) / Math.pow(10, d);
+  return d === 0 ? String(n) : n.toFixed(d);
+}
+function SMesc(s){
+  return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
+    return c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&quot;';
+  });
+}
+function SMtable(head, rows){
+  return '<table><tr>' + head.map(function(h){ return '<th>' + h + '</th>'; }).join('') + '</tr>' +
+    rows.map(function(r){ return '<tr>' + r.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>'; }).join('') +
+    '</table>';
+}
+function SMstat(k, v, note){
+  return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
+    (note ? '<div class="k" style="text-transform:none;letter-spacing:0;margin-top:4px">' + note + '</div>' : '') + '</div>';
+}
+/** A dropdown stores its numeric value; the table should show the words. */
+function SMlabel(f, v){
+  if (f && f.options && f.options.length && typeof f.options[0] === 'object') {
+    for (var i = 0; i < f.options.length; i++) {
+      if (String(f.options[i].value) === String(v)) return f.options[i].label;
+    }
+  }
+  return v;
+}
+function SMtoday(){ return new Date().toISOString().slice(0, 10); }
+function SMfmtDate(d){
+  var x = (d instanceof Date) ? d : new Date(d);
+  if (isNaN(x.getTime())) return String(d || '');
+  return x.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+}
+(function(){
+  var FIELDS = [{"id":"name","label":"What is it","type":"text","placeholder":"Rent"},{"id":"amount","label":"How much","type":"number","default":0,"min":0,"step":0.01},{"id":"day","label":"Day of the month it goes","type":"number","default":1,"min":1,"max":31,"step":1}];
+  var FREE_MAX = 3;
+  var items = [];
+  try { items = JSON.parse(localStorage.getItem("sm-carer--bills-vs-pay") || '[]'); } catch(e){ items = []; }
+  if (!(items instanceof Array)) items = [];
+  function persist(){ try { localStorage.setItem("sm-carer--bills-vs-pay", JSON.stringify(items)); } catch(e){} }
+
+  function derive(r, T){
+    var out = {};
+    for (var k in r) out[k] = r[k];
+    
+    return out;
+  }
+  function settings(){
+    var T = {};
+    T.balance = SMN(SMV('s-balance'));
+    T.pay = SMN(SMV('s-pay'));
+    T.every = SMN(SMV('s-every'));
+    T.nextPay = SMN(SMV('s-nextPay'));
+    return T;
+  }
+  function compute(){
+    var T = settings();
+    var rowsD = items.map(function(r){ return derive(r, T); });
+    (function(rows){
+      T.monthly = rows.reduce(function(a, r){ return a + (SMN(r.amount)); }, 0);
+    })(rowsD);
+    return { rows: rowsD, T: T };
+  }
+
+  /**
+   * Walk day by day. Each item lands on its own day of the month, and the
+   * running balance is what actually matters - not the total, the lowest point.
+   */
+  function project(days){
+    var T = settings();
+    var balance = SMN(T.balance);
+    var incomeAmount = SMN(T.pay);
+    var incomeEvery = SMN(T.every);
+    var nextIncome = (SMV('s-nextPay') ? new Date(SMV('s-nextPay') + 'T00:00:00') : null);
+    var out = [];
+    var d = new Date(); d.setHours(0,0,0,0);
+    var lowest = { balance: balance, date: new Date(d.getTime()), why: [] };
+    var T0 = settings();
+    var rowsD = items.map(function(r){ return derive(r, T0); });
+
+    for (var i = 0; i < days; i++) {
+      var inToday = 0, outToday = 0, why = [];
+      if (nextIncome && d.toDateString() === nextIncome.toDateString()) {
+        inToday += incomeAmount;
+        why.push("payday");
+        if (incomeEvery > 0) nextIncome = new Date(nextIncome.getTime() + incomeEvery * 86400000);
+        else { var nx = new Date(nextIncome.getTime()); nx.setMonth(nx.getMonth() + 1); nextIncome = nx; }
+      }
+      for (var k = 0; k < rowsD.length; k++) {
+        var it = rowsD[k];
+        var lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+        var due = Math.min(SMN(it.day), lastDay);
+        if (d.getDate() === due) {
+          outToday += SMN(it.amount);
+          why.push(String(it.name || 'a payment'));
+        }
+      }
+      balance += inToday - outToday;
+      if (balance < lowest.balance) lowest = { balance: balance, date: new Date(d.getTime()), why: why.slice() };
+      out.push({ date: new Date(d.getTime()), in: inToday, out: outToday, balance: balance, why: why });
+      d = new Date(d.getTime() + 86400000);
+    }
+    return { days: out, lowest: lowest, end: balance };
+  }
+
+  function paint(){
+    SMD('g-count').textContent = items.length + ' ' + "bills";
+    var c = compute();
+    var T = c.T;
+    var days = SM.pro() ? 365 : 7;
+    var p = project(days);
+    var safe = p.lowest.balance;
+
+    SMD('g-stats').innerHTML = [
+      SMstat("Safe to spend", SMmoney(Math.max(0, safe)), safe < 0 ? 'you go short before then' : 'and everything still clears'),
+      SMstat('Lowest you go', SMmoney(p.lowest.balance), 'on ' + SMfmtDate(p.lowest.date)),
+      SMstat("Bills a month", SMmoney(T.monthly), "everything on autopilot")
+    ].filter(Boolean).join('');
+
+    var out = [];
+    (function(rows){
+      if (SMN(T.monthly) > 0) out.push("Your bills come to " + SMmoney(T.monthly) + " a month.");
+    })(c.rows);
+    if (safe < 0) {
+      out.unshift('You are heading ' + SMmoney(-safe) + ' short on ' + SMfmtDate(p.lowest.date) +
+        (p.lowest.why.length ? ', because of ' + p.lowest.why.join(' and ') : '') + '.');
+    } else if (items.length) {
+      out.unshift('You can spend up to ' + SMmoney(safe) + ' and everything between now and ' +
+        SMfmtDate(p.days[p.days.length - 1].date) + ' still clears.');
+    }
+    SMD('g-verdict').textContent = items.length ? out.join('\n\n') : "Put your payday and your bills in above.";
+
+    if (!items.length) { SMD('g-list').innerHTML = '<p class="sub">Nothing added yet.</p>'; SMD('g-timeline').innerHTML = ''; return; }
+    var head = FIELDS.map(function(f){ return SMesc(f.label); }).concat(['']);
+    SMD('g-list').innerHTML = SMtable(head, items.map(function(r, i){
+      return FIELDS.map(function(f){ return SMesc(SMlabel(f, r[f.id])); })
+        .concat(['<button class="secondary" data-del="' + i + '" style="padding:4px 10px">Remove</button>']);
+    }));
+    Array.prototype.forEach.call(SMD('g-list').querySelectorAll('[data-del]'), function(b){
+      b.addEventListener('click', function(){ items.splice(Number(b.getAttribute('data-del')), 1); persist(); paint(); });
+    });
+
+    var interesting = p.days.filter(function(x){ return x.in > 0 || x.out > 0; }).slice(0, SM.pro() ? 200 : 12);
+    SMD('g-timeline').innerHTML = interesting.length
+      ? SMtable(['Date', 'In', 'Out', 'Left', 'What'], interesting.map(function(x){
+          return [SMfmtDate(x.date), x.in ? SMmoney(x.in) : '', x.out ? SMmoney(x.out) : '', SMmoney(x.balance), SMesc(x.why.join(', '))];
+        }))
+      : '';
+  }
+
+  SMD('g-add').addEventListener('click', function(){
+    if (!SM.pro() && items.length >= FREE_MAX) { SM.limit(); return; }
+    if (!SM.use()) return;
+    var r = {};
+    for (var i = 0; i < FIELDS.length; i++) { r[FIELDS[i].id] = SMV('f-' + FIELDS[i].id); }
+    if (!r["name"]) { var el = SMD('f-' + "name"); if (el) el.focus(); return; }
+    items.push(r);
+    if (SMD('f-name')) SMD('f-name').value = '';
+    if (SMD('f-amount')) SMD('f-amount').value = '';
+    persist(); paint();
+  });
+  SMD('g-clear').addEventListener('click', function(){ items = []; persist(); paint(); });
+  if (SMD('s-balance')) { SMD('s-balance').addEventListener('input', paint); SMD('s-balance').addEventListener('change', paint); }
+  if (SMD('s-pay')) { SMD('s-pay').addEventListener('input', paint); SMD('s-pay').addEventListener('change', paint); }
+  if (SMD('s-every')) { SMD('s-every').addEventListener('input', paint); SMD('s-every').addEventListener('change', paint); }
+  if (SMD('s-nextPay')) { SMD('s-nextPay').addEventListener('input', paint); SMD('s-nextPay').addEventListener('change', paint); }
+
+  SMD('g-far').addEventListener('click', function(){
+    if (!SM.gate('The twelve month view')) return;
+    var p = project(365);
+    var byMonth = {};
+    p.days.forEach(function(x){
+      var k = x.date.getFullYear() + '-' + String(x.date.getMonth() + 1);
+      if (!byMonth[k]) byMonth[k] = { label: x.date.toLocaleDateString(undefined, { month: 'long', year: 'numeric' }), in: 0, out: 0, low: Infinity, end: 0 };
+      byMonth[k].in += x.in; byMonth[k].out += x.out; byMonth[k].end = x.balance;
+      if (x.balance < byMonth[k].low) byMonth[k].low = x.balance;
+    });
+    SMD('g-farout').innerHTML = SMtable(['Month', 'In', 'Out', 'Lowest point', 'End of month'],
+      Object.keys(byMonth).map(function(k){
+        var m = byMonth[k];
+        return [m.label, SMmoney(m.in), SMmoney(m.out), SMmoney(m.low), SMmoney(m.end)];
+      }));
+  });
+  SMD('g-export').addEventListener('click', function(){
+    var p = project(SM.pro() ? 365 : 7);
+    SM.exportCsv("carer--bills-vs-pay.csv", [['Date', 'In', 'Out', 'Balance', 'What']].concat(
+      p.days.filter(function(x){ return x.in || x.out; }).map(function(x){
+        return [x.date.toISOString().slice(0,10), x.in.toFixed(2), x.out.toFixed(2), x.balance.toFixed(2), x.why.join('; ')];
+      })));
+  });
+
+  (function(){ var el = SMD('s-nextPay'); if (el && !el.value) { var n = new Date(); n.setDate(n.getDate() + 7); el.value = n.toISOString().slice(0,10); } })();
+  paint();
+})();</script>
 <script>
 (function(){
   var SESSION_STORE = 'sm_session_' + SM_SLUG;
@@ -802,7 +806,21 @@ window.SM = (function(){
     if(!box) return;
     box.hidden = false;
     show('sm-acc-choose');
+
+    // Retitle the card when it has been opened on the way to paying, so the
+    // reason is the first thing read rather than a line under the fields.
+    var title = el('sm-acc-title');
+    var sub = el('sm-acc-sub');
+    if(why && title) title.textContent = 'One step before payment';
+    if(why && sub) sub.textContent = why;
+
     if(why) say(why);
+
+    // Flashed, because the card can already be on screen - in which case
+    // nothing visibly changes and the button looks broken.
+    box.classList.add('sm-attention');
+    setTimeout(function(){ box.classList.remove('sm-attention'); }, 1600);
+
     box.scrollIntoView({ block: 'center' });
     if(el('sm-acc-email')) el('sm-acc-email').focus();
   }
@@ -1316,8 +1334,18 @@ window.SM = (function(){
     // account card can carry straight on to the card form afterwards instead
     // of dropping them back on the page wondering what happened.
     try { sessionStorage.setItem('sm_buying_intent_' + SM_SLUG, '1'); } catch(err){}
+
+    // Say something where the click happened, first. The account card can be
+    // most of a page away, and a message that appears only inside it reads as
+    // "the button is broken" - which is exactly how this was reported.
+    say('Sign in or create an account below to continue — it takes a moment.');
+
     if(window.SMaccount && window.SMaccount.open){
-      window.SMaccount.open('You need an account first — it is what keeps Pro on your phone as well as here.');
+      window.SMaccount.open('Create an account or sign in, and payment opens straight after.');
+    } else {
+      // No account card on this page at all: better to let them pay than to
+      // stop them dead over an account they can make afterwards.
+      goToCheckout();
     }
   });
 
