@@ -28,7 +28,7 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Log income and costs in seconds and always know what to put aside and what is genuinely yours</h1>
+<h1>Stop guessing: Log income and costs in seconds and always know what to put aside and what is genuinely yours</h1>
 
 <ul class="checks"><li>Built for freelancers, sole traders, delivery drivers and anyone self-employed for the first time</li><li>Fixes: money comes in, gets spent, and the tax bill arrives in january against an empty account</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
@@ -182,6 +182,7 @@
 var SM_SLUG = "self-employed-income-and-tax-set-aside-tracker";
 var SM_TRACK_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/track";
 var SM_ORDER_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/order";
+var SM_FEEDBACK_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/feedback";
 var SM_LICENCE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/licence/verify";
 var SM_USE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/use";
 var SM_ACTIVATE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/activate";
@@ -1072,13 +1073,23 @@ var SMH = (function(){
     var email = (document.getElementById('sm-email')||{}).value || '';
     var note = (document.getElementById('sm-note')||{}).value || '';
     var status = document.getElementById('sm-status');
+    if(!note.trim()){ status.textContent = 'Write something first.'; return; }
     status.textContent = 'Sending...';
-    fetch(SM_TRACK_URL, {
+
+    // /api/feedback, not /api/track. This used to post to the visit counter,
+    // which records a page view and ignores the email and the message
+    // entirely - so every piece of feedback anybody ever sent was thrown away,
+    // while the page thanked them and said it had reached a person.
+    fetch(SM_FEEDBACK_URL, {
       method:'POST',
       headers:{'content-type':'application/json'},
-      body: JSON.stringify({slug: SM_SLUG, event:'lead', email: email, note: note})
-    }).then(function(r){ return r.json(); }).then(function(){
-      status.textContent = 'Thanks - that came straight through to the inbox.';
+      body: JSON.stringify({slug: SM_SLUG, email: email, note: note})
+    }).then(function(r){ return r.json(); }).then(function(res){
+      if(res && res.ok === false){
+        status.textContent = res.reason || ('Could not send. Email us instead: ' + SM_CONTACT);
+        return;
+      }
+      status.textContent = (res && res.message) || 'Thank you - that reaches a person.';
       form.reset();
     }).catch(function(){
       status.textContent = 'Could not send. Email us instead: ' + SM_CONTACT;
