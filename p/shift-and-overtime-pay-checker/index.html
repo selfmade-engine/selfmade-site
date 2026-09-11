@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Shift and Overtime Pay Checker — Log your shifts, see</title>
+<title>Shift and Overtime Pay Checker — Stop guessing: Log your</title>
 <meta name="description" content="Log your shifts, see exactly what you are owed including overtime, and compare it to what you were paid. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Shift and Overtime Pay Checker — Log your shifts, see">
+<meta property="og:title" content="Shift and Overtime Pay Checker — Stop guessing: Log your">
 <meta property="og:description" content="Log your shifts, see exactly what you are owed including overtime, and compare it to what you were paid. Free to use, nothing to install, works in your browser.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/shift-and-overtime-pay-checker/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Shift and Overtime Pay Checker — Log your shifts, see">
+<meta property="og:image:alt" content="Shift and Overtime Pay Checker — Stop guessing: Log your">
 <!-- summary_large_image rather than summary: without a picture a shared link
      renders as a grey rectangle, which costs more clicks than any wording. -->
 <meta name="twitter:card" content="summary_large_image">
@@ -28,7 +28,7 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Log your shifts, see exactly what you are owed including overtime, and compare it to what you were paid</h1>
+<h1>Stop guessing: Log your shifts, see exactly what you are owed including overtime, and compare it to what you were paid</h1>
 
 <ul class="checks"><li>Built for people paid by the hour - hospitality, care, retail, warehouse, agency work</li><li>Fixes: payslips are short by half an hour here and a break there, and people have no way to show it</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
@@ -195,182 +195,10 @@ var SM_CONTACT = "selfmade.engine@gmail.com";
 var SM_BUY_URL = "./pricing.html";
 var SM_PRICE = "$15.00";
 </script>
-<script data-sm="tool">
-var SMH = (function(){
-  function $(id){ return document.getElementById(id); }
-  function n(v){ var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, '')); return isFinite(x) ? x : 0; }
-  function num(id){ var e = $(id); return e ? n(e.value) : 0; }
-  function val(id){ var e = $(id); return e ? String(e.value || '').trim() : ''; }
-  function esc(s){
-    return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
-      return c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&quot;';
-    });
-  }
-  var CUR = '$';
-  function setCur(s){ if(s) CUR = s; }
-  function cur(v){
-    var neg = v < 0;
-    var a = Math.abs(Math.round(v * 100) / 100).toFixed(2);
-    return (neg ? '-' : '') + CUR + a.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  }
-  function hrs(v){ return (Math.round(v * 100) / 100).toFixed(2); }
-  function today(){ return new Date().toISOString().slice(0, 10); }
-  function fmtDate(d){
-    if(!(d instanceof Date)) d = new Date(d);
-    if(isNaN(d.getTime())) return '';
-    return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
-  }
-  function addMonths(d, m){ var x = new Date(d.getTime()); x.setMonth(x.getMonth() + m); return x; }
-  function table(head, rows, cls){
-    var h = '<tr>' + head.map(function(c){ return '<th>' + c + '</th>'; }).join('') + '</tr>';
-    var b = rows.map(function(r){
-      var rowCls = r.cls ? ' class="' + r.cls + '"' : '';
-      var cells = (r.cells || r);
-      return '<tr' + rowCls + '>' + cells.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>';
-    }).join('');
-    return '<table' + (cls ? ' class="' + cls + '"' : '') + '>' + h + b + '</table>';
-  }
-  function stat(k, v, note){
-    return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
-      (note ? '<div class="k" style="text-transform:none;letter-spacing:0;margin-top:4px">' + note + '</div>' : '') + '</div>';
-  }
-  return { $: $, n: n, num: num, val: val, esc: esc, cur: cur, setCur: setCur, hrs: hrs,
-           today: today, fmtDate: fmtDate, addMonths: addMonths, table: table, stat: stat };
-})();
-
-(function(){
-  var FREE_MAX = 3;
-  var shifts = [];
-  try { shifts = JSON.parse(localStorage.getItem('sm-shifts') || '[]'); } catch(e){ shifts = []; }
-  if(!(shifts instanceof Array)) shifts = [];
-  function persist(){ try { localStorage.setItem('sm-shifts', JSON.stringify(shifts)); } catch(e){} }
-
-  function minutes(t){ var p = String(t || '').split(':'); return SMH.n(p[0]) * 60 + SMH.n(p[1]); }
-  function hoursOf(s){
-    var m = minutes(s.end) - minutes(s.start);
-    if(m < 0) m += 24 * 60;                 // a shift that runs past midnight
-    m -= SMH.n(s.brk);
-    return Math.max(0, m / 60);
-  }
-  function totals(){
-    var otAfter = SMH.num('s-ot-after');
-    var mult = SMH.num('s-ot-rate') || 1;
-    var rows = shifts.map(function(s){ return { s: s, h: hoursOf(s) }; });
-    var total = rows.reduce(function(a, r){ return a + r.h; }, 0);
-    var basePay = rows.reduce(function(a, r){ return a + r.h * SMH.n(r.s.rate); }, 0);
-    var avgRate = total > 0 ? basePay / total : 0;
-    var over = Math.max(0, total - otAfter);
-    var extra = over * avgRate * (mult - 1);
-    return { rows: rows, total: total, over: over, normal: total - over,
-             basePay: basePay, otExtra: extra, due: basePay + extra, avgRate: avgRate };
-  }
-
-  function paint(){
-    var t = totals();
-    SMH.$('s-count').textContent = shifts.length + (shifts.length === 1 ? ' shift' : ' shifts');
-    SMH.$('s-stats').innerHTML =
-      SMH.stat('Hours worked', SMH.hrs(t.total), t.over > 0 ? SMH.hrs(t.over) + ' of them overtime' : 'no overtime yet') +
-      SMH.stat('You are owed', SMH.cur(t.due), 'before tax') +
-      SMH.stat('Extra for overtime', SMH.cur(t.otExtra), t.over > 0 ? 'on top of your normal pay' : 'nothing over the limit');
-
-    if(!shifts.length){
-      SMH.$('s-table').innerHTML = '<p class="sub">No shifts yet. Add one above.</p>';
-      return;
-    }
-    var rows = t.rows.map(function(r, i){
-      return { cells: [
-        SMH.esc(r.s.date || ''),
-        SMH.esc(r.s.job || '-'),
-        SMH.esc(r.s.start) + ' to ' + SMH.esc(r.s.end),
-        SMH.n(r.s.brk) + ' min',
-        SMH.hrs(r.h),
-        SMH.cur(r.h * SMH.n(r.s.rate)),
-        '<button class="secondary" data-del="' + i + '" style="padding:4px 10px">Remove</button>'
-      ] };
-    });
-    SMH.$('s-table').innerHTML = SMH.table(['Date', 'Job', 'Time', 'Break', 'Hours', 'Pay', ''], rows);
-    Array.prototype.forEach.call(SMH.$('s-table').querySelectorAll('[data-del]'), function(b){
-      b.addEventListener('click', function(){
-        shifts.splice(Number(b.getAttribute('data-del')), 1);
-        persist(); paint();
-      });
-    });
-  }
-
-  SMH.$('s-add').addEventListener('click', function(){
-    if(!SM.pro() && shifts.length >= FREE_MAX){
-      SM.limit();
-      return;
-    }
-    if(!SM.use()) return;
-    shifts.push({
-      date: SMH.val('s-date') || SMH.today(),
-      start: SMH.val('s-start') || '09:00',
-      end: SMH.val('s-end') || '17:00',
-      brk: SMH.num('s-break'),
-      rate: SMH.num('s-rate'),
-      job: SMH.val('s-job')
-    });
-    persist(); paint();
-  });
-  SMH.$('s-clear').addEventListener('click', function(){ shifts = []; persist(); paint(); });
-  ['s-ot-after', 's-ot-rate'].forEach(function(id){ SMH.$(id).addEventListener('input', paint); });
-
-  SMH.$('s-check').addEventListener('click', function(){
-    var t = totals();
-    var paid = SMH.num('s-paid');
-    var out = SMH.$('s-verdict');
-    if(!shifts.length){ out.textContent = 'Add your shifts first, then this can compare them.'; return; }
-    var diff = t.due - paid;
-    if(Math.abs(diff) < 0.01){
-      out.textContent = 'That matches. You worked ' + SMH.hrs(t.total) + ' hours and you were paid ' + SMH.cur(paid) + ', which is right.';
-    } else if(diff > 0){
-      out.textContent = 'You are short ' + SMH.cur(diff) + '.\n\n' +
-        'You worked ' + SMH.hrs(t.total) + ' hours. At ' + SMH.cur(t.avgRate) + ' an hour' +
-        (t.over > 0 ? ', with ' + SMH.hrs(t.over) + ' hours of overtime' : '') +
-        ', that comes to ' + SMH.cur(t.due) + ' before tax. You were paid ' + SMH.cur(paid) + '.\n\n' +
-        'Take this to whoever does your pay. Most of the time it is a mistake and it gets fixed.';
-    } else {
-      out.textContent = 'You were paid ' + SMH.cur(-diff) + ' more than these shifts come to. ' +
-        'That is usually a bonus, holiday pay, or a shift you have not added yet.';
-    }
-  });
-
-  // ---- Pro: a record that lasts longer than one week ----
-  function paintSaved(){
-    var box = SMH.$('s-saved');
-    var list = SM.load('weeks');
-    box.innerHTML = list.length
-      ? list.map(function(w, i){ return '<button class="secondary" data-w="' + i + '">' + SMH.esc(w.name) + ' - ' + SMH.cur(w.due) + '</button>'; }).join(' ')
-      : '<span class="sub">No saved weeks yet.</span>';
-    Array.prototype.forEach.call(box.querySelectorAll('[data-w]'), function(b){
-      b.addEventListener('click', function(){
-        var w = SM.load('weeks')[Number(b.getAttribute('data-w'))];
-        if(!w) return;
-        shifts = w.shifts || [];
-        persist(); paint();
-      });
-    });
-  }
-  SMH.$('s-save').addEventListener('click', function(){
-    var name = SMH.val('s-week-name');
-    if(!name){ SMH.$('s-week-name').placeholder = 'give the week a name first'; return; }
-    var list = SM.load('weeks');
-    list.push({ name: name, due: totals().due, shifts: shifts.slice() });
-    if(SM.save('weeks', list)){ SMH.$('s-week-name').value = ''; paintSaved(); }
-  });
-  SMH.$('s-export').addEventListener('click', function(){
-    var t = totals();
-    var rows = t.rows.map(function(r){
-      return [r.s.date, r.s.job || '', r.s.start, r.s.end, SMH.n(r.s.brk), SMH.hrs(r.h), (r.h * SMH.n(r.s.rate)).toFixed(2)];
-    });
-    rows.push(['', '', '', '', '', SMH.hrs(t.total), t.due.toFixed(2)]);
-    SM.exportCsv('shifts.csv', [['Date', 'Job', 'Start', 'End', 'Break mins', 'Hours', 'Pay']].concat(rows));
-  });
-
-  SMH.$('s-date').value = SMH.today();
-  paint(); paintSaved();
-})();</script>
+<!-- LICENCE_JS first: it defines window.SM, and the tool calls SM.load() and
+     SM.pro() while it is painting for the first time. The other way round threw
+     "SM is not defined" on every single page load, which killed the rest of
+     that paint - the saved-sets panel simply never appeared. -->
 <script>
 window.SM = (function(){
   var KEY_STORE = 'sm_key_' + SM_SLUG;
@@ -702,6 +530,182 @@ window.SM = (function(){
   return SM;
 })();
 </script>
+<script data-sm="tool">
+var SMH = (function(){
+  function $(id){ return document.getElementById(id); }
+  function n(v){ var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, '')); return isFinite(x) ? x : 0; }
+  function num(id){ var e = $(id); return e ? n(e.value) : 0; }
+  function val(id){ var e = $(id); return e ? String(e.value || '').trim() : ''; }
+  function esc(s){
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
+      return c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&quot;';
+    });
+  }
+  var CUR = '$';
+  function setCur(s){ if(s) CUR = s; }
+  function cur(v){
+    var neg = v < 0;
+    var a = Math.abs(Math.round(v * 100) / 100).toFixed(2);
+    return (neg ? '-' : '') + CUR + a.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+  function hrs(v){ return (Math.round(v * 100) / 100).toFixed(2); }
+  function today(){ return new Date().toISOString().slice(0, 10); }
+  function fmtDate(d){
+    if(!(d instanceof Date)) d = new Date(d);
+    if(isNaN(d.getTime())) return '';
+    return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  function addMonths(d, m){ var x = new Date(d.getTime()); x.setMonth(x.getMonth() + m); return x; }
+  function table(head, rows, cls){
+    var h = '<tr>' + head.map(function(c){ return '<th>' + c + '</th>'; }).join('') + '</tr>';
+    var b = rows.map(function(r){
+      var rowCls = r.cls ? ' class="' + r.cls + '"' : '';
+      var cells = (r.cells || r);
+      return '<tr' + rowCls + '>' + cells.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>';
+    }).join('');
+    return '<table' + (cls ? ' class="' + cls + '"' : '') + '>' + h + b + '</table>';
+  }
+  function stat(k, v, note){
+    return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
+      (note ? '<div class="k" style="text-transform:none;letter-spacing:0;margin-top:4px">' + note + '</div>' : '') + '</div>';
+  }
+  return { $: $, n: n, num: num, val: val, esc: esc, cur: cur, setCur: setCur, hrs: hrs,
+           today: today, fmtDate: fmtDate, addMonths: addMonths, table: table, stat: stat };
+})();
+
+(function(){
+  var FREE_MAX = 3;
+  var shifts = [];
+  try { shifts = JSON.parse(localStorage.getItem('sm-shifts') || '[]'); } catch(e){ shifts = []; }
+  if(!(shifts instanceof Array)) shifts = [];
+  function persist(){ try { localStorage.setItem('sm-shifts', JSON.stringify(shifts)); } catch(e){} }
+
+  function minutes(t){ var p = String(t || '').split(':'); return SMH.n(p[0]) * 60 + SMH.n(p[1]); }
+  function hoursOf(s){
+    var m = minutes(s.end) - minutes(s.start);
+    if(m < 0) m += 24 * 60;                 // a shift that runs past midnight
+    m -= SMH.n(s.brk);
+    return Math.max(0, m / 60);
+  }
+  function totals(){
+    var otAfter = SMH.num('s-ot-after');
+    var mult = SMH.num('s-ot-rate') || 1;
+    var rows = shifts.map(function(s){ return { s: s, h: hoursOf(s) }; });
+    var total = rows.reduce(function(a, r){ return a + r.h; }, 0);
+    var basePay = rows.reduce(function(a, r){ return a + r.h * SMH.n(r.s.rate); }, 0);
+    var avgRate = total > 0 ? basePay / total : 0;
+    var over = Math.max(0, total - otAfter);
+    var extra = over * avgRate * (mult - 1);
+    return { rows: rows, total: total, over: over, normal: total - over,
+             basePay: basePay, otExtra: extra, due: basePay + extra, avgRate: avgRate };
+  }
+
+  function paint(){
+    var t = totals();
+    SMH.$('s-count').textContent = shifts.length + (shifts.length === 1 ? ' shift' : ' shifts');
+    SMH.$('s-stats').innerHTML =
+      SMH.stat('Hours worked', SMH.hrs(t.total), t.over > 0 ? SMH.hrs(t.over) + ' of them overtime' : 'no overtime yet') +
+      SMH.stat('You are owed', SMH.cur(t.due), 'before tax') +
+      SMH.stat('Extra for overtime', SMH.cur(t.otExtra), t.over > 0 ? 'on top of your normal pay' : 'nothing over the limit');
+
+    if(!shifts.length){
+      SMH.$('s-table').innerHTML = '<p class="sub">No shifts yet. Add one above.</p>';
+      return;
+    }
+    var rows = t.rows.map(function(r, i){
+      return { cells: [
+        SMH.esc(r.s.date || ''),
+        SMH.esc(r.s.job || '-'),
+        SMH.esc(r.s.start) + ' to ' + SMH.esc(r.s.end),
+        SMH.n(r.s.brk) + ' min',
+        SMH.hrs(r.h),
+        SMH.cur(r.h * SMH.n(r.s.rate)),
+        '<button class="secondary" data-del="' + i + '" style="padding:4px 10px">Remove</button>'
+      ] };
+    });
+    SMH.$('s-table').innerHTML = SMH.table(['Date', 'Job', 'Time', 'Break', 'Hours', 'Pay', ''], rows);
+    Array.prototype.forEach.call(SMH.$('s-table').querySelectorAll('[data-del]'), function(b){
+      b.addEventListener('click', function(){
+        shifts.splice(Number(b.getAttribute('data-del')), 1);
+        persist(); paint();
+      });
+    });
+  }
+
+  SMH.$('s-add').addEventListener('click', function(){
+    if(!SM.pro() && shifts.length >= FREE_MAX){
+      SM.limit();
+      return;
+    }
+    if(!SM.use()) return;
+    shifts.push({
+      date: SMH.val('s-date') || SMH.today(),
+      start: SMH.val('s-start') || '09:00',
+      end: SMH.val('s-end') || '17:00',
+      brk: SMH.num('s-break'),
+      rate: SMH.num('s-rate'),
+      job: SMH.val('s-job')
+    });
+    persist(); paint();
+  });
+  SMH.$('s-clear').addEventListener('click', function(){ shifts = []; persist(); paint(); });
+  ['s-ot-after', 's-ot-rate'].forEach(function(id){ SMH.$(id).addEventListener('input', paint); });
+
+  SMH.$('s-check').addEventListener('click', function(){
+    var t = totals();
+    var paid = SMH.num('s-paid');
+    var out = SMH.$('s-verdict');
+    if(!shifts.length){ out.textContent = 'Add your shifts first, then this can compare them.'; return; }
+    var diff = t.due - paid;
+    if(Math.abs(diff) < 0.01){
+      out.textContent = 'That matches. You worked ' + SMH.hrs(t.total) + ' hours and you were paid ' + SMH.cur(paid) + ', which is right.';
+    } else if(diff > 0){
+      out.textContent = 'You are short ' + SMH.cur(diff) + '.\n\n' +
+        'You worked ' + SMH.hrs(t.total) + ' hours. At ' + SMH.cur(t.avgRate) + ' an hour' +
+        (t.over > 0 ? ', with ' + SMH.hrs(t.over) + ' hours of overtime' : '') +
+        ', that comes to ' + SMH.cur(t.due) + ' before tax. You were paid ' + SMH.cur(paid) + '.\n\n' +
+        'Take this to whoever does your pay. Most of the time it is a mistake and it gets fixed.';
+    } else {
+      out.textContent = 'You were paid ' + SMH.cur(-diff) + ' more than these shifts come to. ' +
+        'That is usually a bonus, holiday pay, or a shift you have not added yet.';
+    }
+  });
+
+  // ---- Pro: a record that lasts longer than one week ----
+  function paintSaved(){
+    var box = SMH.$('s-saved');
+    var list = SM.load('weeks');
+    box.innerHTML = list.length
+      ? list.map(function(w, i){ return '<button class="secondary" data-w="' + i + '">' + SMH.esc(w.name) + ' - ' + SMH.cur(w.due) + '</button>'; }).join(' ')
+      : '<span class="sub">No saved weeks yet.</span>';
+    Array.prototype.forEach.call(box.querySelectorAll('[data-w]'), function(b){
+      b.addEventListener('click', function(){
+        var w = SM.load('weeks')[Number(b.getAttribute('data-w'))];
+        if(!w) return;
+        shifts = w.shifts || [];
+        persist(); paint();
+      });
+    });
+  }
+  SMH.$('s-save').addEventListener('click', function(){
+    var name = SMH.val('s-week-name');
+    if(!name){ SMH.$('s-week-name').placeholder = 'give the week a name first'; return; }
+    var list = SM.load('weeks');
+    list.push({ name: name, due: totals().due, shifts: shifts.slice() });
+    if(SM.save('weeks', list)){ SMH.$('s-week-name').value = ''; paintSaved(); }
+  });
+  SMH.$('s-export').addEventListener('click', function(){
+    var t = totals();
+    var rows = t.rows.map(function(r){
+      return [r.s.date, r.s.job || '', r.s.start, r.s.end, SMH.n(r.s.brk), SMH.hrs(r.h), (r.h * SMH.n(r.s.rate)).toFixed(2)];
+    });
+    rows.push(['', '', '', '', '', SMH.hrs(t.total), t.due.toFixed(2)]);
+    SM.exportCsv('shifts.csv', [['Date', 'Job', 'Start', 'End', 'Break mins', 'Hours', 'Pay']].concat(rows));
+  });
+
+  SMH.$('s-date').value = SMH.today();
+  paint(); paintSaved();
+})();</script>
 <script>
 (function(){
   var SESSION_STORE = 'sm_session_' + SM_SLUG;
@@ -739,7 +743,21 @@ window.SM = (function(){
     if(!box) return;
     box.hidden = false;
     show('sm-acc-choose');
+
+    // Retitle the card when it has been opened on the way to paying, so the
+    // reason is the first thing read rather than a line under the fields.
+    var title = el('sm-acc-title');
+    var sub = el('sm-acc-sub');
+    if(why && title) title.textContent = 'One step before payment';
+    if(why && sub) sub.textContent = why;
+
     if(why) say(why);
+
+    // Flashed, because the card can already be on screen - in which case
+    // nothing visibly changes and the button looks broken.
+    box.classList.add('sm-attention');
+    setTimeout(function(){ box.classList.remove('sm-attention'); }, 1600);
+
     box.scrollIntoView({ block: 'center' });
     if(el('sm-acc-email')) el('sm-acc-email').focus();
   }
@@ -1253,8 +1271,18 @@ window.SM = (function(){
     // account card can carry straight on to the card form afterwards instead
     // of dropping them back on the page wondering what happened.
     try { sessionStorage.setItem('sm_buying_intent_' + SM_SLUG, '1'); } catch(err){}
+
+    // Say something where the click happened, first. The account card can be
+    // most of a page away, and a message that appears only inside it reads as
+    // "the button is broken" - which is exactly how this was reported.
+    say('Sign in or create an account below to continue — it takes a moment.');
+
     if(window.SMaccount && window.SMaccount.open){
-      window.SMaccount.open('You need an account first — it is what keeps Pro on your phone as well as here.');
+      window.SMaccount.open('Create an account or sign in, and payment opens straight after.');
+    } else {
+      // No account card on this page at all: better to let them pay than to
+      // stop them dead over an account they can make afterwards.
+      goToCheckout();
     }
   });
 
