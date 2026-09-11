@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Plumber Income and Tax Tracker for Plumber — plumbers</title>
+<title>Plumber Income and Tax Tracker: stop money comes in and gets spent, and the tax bill arrives against an empty account — plumbers are hit by this every single year</title>
 <meta name="description" content="Log what comes in and what goes out in seconds, and always know what to put aside and what is genuinely yours. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Plumber Income and Tax Tracker for Plumber — plumbers">
+<meta property="og:title" content="Plumber Income and Tax Tracker: stop money comes in and gets spent, and the tax bill arrives against an empty account — plumbers are hit by this every single year">
 <meta property="og:description" content="Log what comes in and what goes out in seconds, and always know what to put aside and what is genuinely yours. Free to use, nothing to install, works in your browser.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -21,7 +21,7 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Plumber Income and Tax Tracker for Plumber — plumbers</h1>
+<h1>Plumber Income and Tax Tracker: stop money comes in and gets spent, and the tax bill arrives against an empty account — plumbers are hit by this every single year</h1>
 <p class="sub">Log what comes in and what goes out in seconds, and always know what to put aside and what is genuinely yours. Free to use, nothing to install, works in your browser.</p>
 <ul class="checks"><li>Built for plumber — plumbers</li><li>Fixes: money comes in and gets spent, and the tax bill arrives against an empty account — plumbers are hit by this every single year</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
@@ -283,6 +283,7 @@ function SMfmtDate(d){
   // far back it keeps and what it analyses, not on how much you may log.
   // Blocking entry would just make the free version annoying without making
   // the paid one better.
+  var FREE_MAX = 3;
   var rows = [];
   try { rows = JSON.parse(localStorage.getItem("sm-plumber--tax-aside") || '[]'); } catch(e){ rows = []; }
   if (!(rows instanceof Array)) rows = [];
@@ -461,6 +462,8 @@ function SMfmtDate(d){
       r[f.id] = SMV('f-' + f.id);
       if (f.type === 'date' && !r[f.id]) r[f.id] = SMtoday();
     }
+    // Checked before the row is kept, so the limit is never half-applied.
+    if (!SM.pro() && rows.length >= FREE_MAX) { SM.gate('More than ' + FREE_MAX + ' ' + "records"); return; }
     rows.push(r);
     if (SMD('f-what')) SMD('f-what').value = '';
     persist(); paint();
@@ -904,6 +907,16 @@ window.SM = (function(){
     sayConfirm('Checking…');
     post('/api/account/verify', { email: email, code: given, slug: SM_SLUG })
       .then(function(res){
+        // Confirmed but no session: the address was already confirmed, so a
+        // code cannot let anybody in. Send them to sign in rather than
+        // reloading into a page that claims they are signed in and is not.
+        if(res.ok && !res.sessionToken){
+          drops(PENDING_STORE);
+          show('sm-acc-choose');
+          say(res.reason || 'That address is already confirmed. Sign in with your password.');
+          if(el('sm-acc-pass')) el('sm-acc-pass').focus();
+          return;
+        }
         if(res.ok) return landInAccount(res);
         sayConfirm(res.reason || 'That code is not right.', true);
         if(res.expired){
@@ -929,6 +942,12 @@ window.SM = (function(){
       askToConfirm(who, 'Confirming…');
       post('/api/account/verify', { email: who, token: confirmToken, slug: SM_SLUG })
         .then(function(res){
+          if(res.ok && !res.sessionToken){
+            drops(PENDING_STORE);
+            show('sm-acc-choose');
+            say(res.reason || 'That address is already confirmed. Sign in with your password.');
+            return;
+          }
           if(res.ok) return landInAccount(res);
           sayConfirm(res.reason || 'That link is not valid any more. Ask for a new code.', true);
         })
