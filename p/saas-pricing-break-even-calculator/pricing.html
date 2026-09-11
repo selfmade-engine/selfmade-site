@@ -29,7 +29,7 @@
     <div class="price">$0<span class="per">/month</span></div>
     <p class="sub">Model one pricing scenario.</p>
     <ul class="checks"><li>Break-even, LTV and LTV:CAC</li><li>12-month projection</li><li>The plain-English verdict</li></ul>
-    <p class="limit">Limit: <strong>15 models a day</strong>, then it asks you to upgrade.</p>
+    <p class="limit">Limit: <strong>3 models a day</strong>, then it asks you to upgrade.</p>
   </div>
   <div class="card featured">
     <div class="badge badge-pro">Pro</div>
@@ -78,7 +78,7 @@ var SM_LICENCE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/licen
 var SM_USE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/use";
 var SM_ACTIVATE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/activate";
 var SM_API_BASE = "https://selfmade-api.selfmade-engine.workers.dev";
-var SM_DAILY_LIMIT = 15;
+var SM_DAILY_LIMIT = 3;
 var SM_LIMIT_LABEL = "models a day";
 var SM_PITCH = "Pro adds compare up to six scenarios, spreadsheet export and cohort and churn curves.";
 var SM_CONTACT = "selfmade.engine@gmail.com";
@@ -483,6 +483,16 @@ window.SM = (function(){
     sayConfirm('Checking…');
     post('/api/account/verify', { email: email, code: given, slug: SM_SLUG })
       .then(function(res){
+        // Confirmed but no session: the address was already confirmed, so a
+        // code cannot let anybody in. Send them to sign in rather than
+        // reloading into a page that claims they are signed in and is not.
+        if(res.ok && !res.sessionToken){
+          drops(PENDING_STORE);
+          show('sm-acc-choose');
+          say(res.reason || 'That address is already confirmed. Sign in with your password.');
+          if(el('sm-acc-pass')) el('sm-acc-pass').focus();
+          return;
+        }
         if(res.ok) return landInAccount(res);
         sayConfirm(res.reason || 'That code is not right.', true);
         if(res.expired){
@@ -508,6 +518,12 @@ window.SM = (function(){
       askToConfirm(who, 'Confirming…');
       post('/api/account/verify', { email: who, token: confirmToken, slug: SM_SLUG })
         .then(function(res){
+          if(res.ok && !res.sessionToken){
+            drops(PENDING_STORE);
+            show('sm-acc-choose');
+            say(res.reason || 'That address is already confirmed. Sign in with your password.');
+            return;
+          }
           if(res.ok) return landInAccount(res);
           sayConfirm(res.reason || 'That link is not valid any more. Ask for a new code.', true);
         })
