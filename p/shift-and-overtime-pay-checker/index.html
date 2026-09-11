@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Shift and Overtime Pay Checker — Log your shifts, see exactly what you are owed including overtime, and compare it to what you were paid</title>
+<title>Shift and Overtime Pay Checker for People paid by the</title>
 <meta name="description" content="Log your shifts, see exactly what you are owed including overtime, and compare it to what you were paid. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Shift and Overtime Pay Checker — Log your shifts, see exactly what you are owed including overtime, and compare it to what you were paid">
+<meta property="og:title" content="Shift and Overtime Pay Checker for People paid by the">
 <meta property="og:description" content="Log your shifts, see exactly what you are owed including overtime, and compare it to what you were paid. Free to use, nothing to install, works in your browser.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -21,8 +21,8 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Shift and Overtime Pay Checker — Log your shifts, see exactly what you are owed including overtime, and compare it to what you were paid</h1>
-
+<h1>Shift and Overtime Pay Checker for People paid by the</h1>
+<p class="sub">Log your shifts, see exactly what you are owed including overtime, and compare it to what you were paid. Free to use, nothing to install, works in your browser.</p>
 <ul class="checks"><li>Built for people paid by the hour - hospitality, care, retail, warehouse, agency work</li><li>Fixes: payslips are short by half an hour here and a break there, and people have no way to show it</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
 
@@ -179,7 +179,7 @@ var SM_LICENCE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/licen
 var SM_USE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/use";
 var SM_ACTIVATE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/activate";
 var SM_API_BASE = "https://selfmade-api.selfmade-engine.workers.dev";
-var SM_DAILY_LIMIT = 5;
+var SM_DAILY_LIMIT = 3;
 var SM_LIMIT_LABEL = "shifts a day";
 var SM_PITCH = "Pro adds every week kept, as many shifts as you work, download it all as a spreadsheet and more than one job at once.";
 var SM_CONTACT = "selfmade.engine@gmail.com";
@@ -232,7 +232,7 @@ var SMH = (function(){
 })();
 
 (function(){
-  var FREE_MAX = 5;
+  var FREE_MAX = 3;
   var shifts = [];
   try { shifts = JSON.parse(localStorage.getItem('sm-shifts') || '[]'); } catch(e){ shifts = []; }
   if(!(shifts instanceof Array)) shifts = [];
@@ -759,6 +759,16 @@ window.SM = (function(){
     sayConfirm('Checking…');
     post('/api/account/verify', { email: email, code: given, slug: SM_SLUG })
       .then(function(res){
+        // Confirmed but no session: the address was already confirmed, so a
+        // code cannot let anybody in. Send them to sign in rather than
+        // reloading into a page that claims they are signed in and is not.
+        if(res.ok && !res.sessionToken){
+          drops(PENDING_STORE);
+          show('sm-acc-choose');
+          say(res.reason || 'That address is already confirmed. Sign in with your password.');
+          if(el('sm-acc-pass')) el('sm-acc-pass').focus();
+          return;
+        }
         if(res.ok) return landInAccount(res);
         sayConfirm(res.reason || 'That code is not right.', true);
         if(res.expired){
@@ -784,6 +794,12 @@ window.SM = (function(){
       askToConfirm(who, 'Confirming…');
       post('/api/account/verify', { email: who, token: confirmToken, slug: SM_SLUG })
         .then(function(res){
+          if(res.ok && !res.sessionToken){
+            drops(PENDING_STORE);
+            show('sm-acc-choose');
+            say(res.reason || 'That address is already confirmed. Sign in with your password.');
+            return;
+          }
           if(res.ok) return landInAccount(res);
           sayConfirm(res.reason || 'That link is not valid any more. Ask for a new code.', true);
         })
