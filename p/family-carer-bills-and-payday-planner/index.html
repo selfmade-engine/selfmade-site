@@ -28,7 +28,7 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Stop guessing: Map your paydays against your bills and get one number: what you can spend today with everything still clearing</h1>
+<h1>Map your paydays against your bills and get one number: what you can spend today with everything still clearing</h1>
 
 <ul class="checks"><li>Built for someone caring for a parent — people caring for a parent</li><li>Fixes: the balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
@@ -606,13 +606,22 @@ window.SM = (function(){
     var box = document.getElementById('sm-lock');
     if(!box) return;
 
+    // Saying "you have run out" and stopping there is a dead end. The moment
+    // somebody hits the limit is the moment the upgrade is worth something to
+    // them, so the message says plainly what Pro removes - and reassures them
+    // nothing they have typed is lost, because otherwise it reads as a crash.
     var heading = limit
       ? '<strong>' + (limit.daily
           ? 'That is the free version used up for today.'
           : 'That is as far as the free version goes.') + '</strong> '
         + (limit.daily
-          ? 'It resets tomorrow, and nothing you have entered is lost.'
-          : 'What you have entered stays exactly as it is.')
+          ? 'It resets tomorrow, and nothing you have entered is lost. '
+          : 'What you have entered stays exactly as it is. ')
+        + '<span class="sm-lock-sell">Pro takes the limit off completely — '
+        + (limit.daily
+            ? 'use it as much as you like, every day'
+            : 'as many ' + SM_LIMIT_LABEL.replace(/ a day$/, '') + ' as you need, kept between visits')
+        + '.</span> ' + SM_PITCH
       : '<strong>' + featureName + ' is part of Pro.</strong> ' + SM_PITCH;
 
     box.innerHTML = '<button type="button" class="sm-lock-x" id="sm-lock-x" aria-label="Close">&times;</button>'
