@@ -28,7 +28,7 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Stop guessing: Log income and costs in seconds and always know what to put aside and what is genuinely yours</h1>
+<h1>Log income and costs in seconds and always know what to put aside and what is genuinely yours</h1>
 
 <ul class="checks"><li>Built for freelancers, sole traders, delivery drivers and anyone self-employed for the first time</li><li>Fixes: money comes in, gets spent, and the tax bill arrives in january against an empty account</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
@@ -290,7 +290,7 @@ var SMH = (function(){
   }
 
   SMH.$('t-add').addEventListener('click', function(){
-    if(!SM.pro() && items.length >= FREE_MAX){ SM.gate('More than ' + FREE_MAX + ' records'); return; }
+    if(!SM.pro() && items.length >= FREE_MAX){ SM.limit(); return; }
     if(!SM.use()) return;
     var amount = SMH.num('t-amount');
     if(amount <= 0){ SMH.$('t-amount').focus(); return; }
@@ -479,18 +479,47 @@ window.SM = (function(){
     } catch(e){}
   }
 
-  function lock(featureName){
+  /**
+   * Show why something stopped, with a way to close it.
+   *
+   * Two different situations used to produce the same sentence. Wanting a
+   * Pro-only feature is "this is part of Pro"; filling up the free allowance is
+   * "you have used what free gives you" - and phrasing the second like the
+   * first read as though the product had broken.
+   *
+   * It can also be dismissed now. Before, it appeared and stayed, which on a
+   * small screen meant it sat on top of the thing somebody was trying to use
+   * with no way to get rid of it.
+   */
+  function lock(featureName, limit){
     var box = document.getElementById('sm-lock');
     if(!box) return;
-    // The moment somebody actually wants the thing is the moment to offer it,
-    // and the button belongs here rather than a page away.
-    box.innerHTML = '<strong>' + featureName + ' is part of Pro.</strong> ' + SM_PITCH
+
+    var heading = limit
+      ? '<strong>' + (limit.daily
+          ? 'That is the free version used up for today.'
+          : 'That is as far as the free version goes.') + '</strong> '
+        + (limit.daily
+          ? 'It resets tomorrow, and nothing you have entered is lost.'
+          : 'What you have entered stays exactly as it is.')
+      : '<strong>' + featureName + ' is part of Pro.</strong> ' + SM_PITCH;
+
+    box.innerHTML = '<button type="button" class="sm-lock-x" id="sm-lock-x" aria-label="Close">&times;</button>'
+      + heading
       + '<div class="row"><a class="buy" href="' + SM_BUY_URL + '">Get Pro — ' + SM_PRICE + '/month</a></div>'
       + '<div class="row"><input id="sm-key" placeholder="Already subscribed? Paste your key" style="max-width:280px">'
       + '<button id="sm-key-go" class="secondary">Unlock</button><span id="sm-key-msg" class="badge"></span></div>';
     box.hidden = false;
+
     var go = document.getElementById('sm-key-go');
     if(go) go.addEventListener('click', function(){ SM.activate(document.getElementById('sm-key').value); });
+
+    var shut = document.getElementById('sm-lock-x');
+    if(shut) shut.addEventListener('click', function(){ box.hidden = true; });
+
+    // Somewhere to look. Without this the message can appear off-screen and
+    // the click that triggered it looks like it did nothing at all.
+    if(box.scrollIntoView) box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
   var SM = {
@@ -516,12 +545,23 @@ window.SM = (function(){
       return false;
     },
 
+    /**
+     * The free allowance is used up, as opposed to a Pro-only feature being
+     * wanted. Separate because the two need different words: one is "you have
+     * finished what free gives you", the other is "this was never in free".
+     */
+    limit: function(){
+      if(state.pro) return true;
+      lock('', { daily: false });
+      return false;
+    },
+
     /** Count one use of the free tier. Returns false once the daily limit is hit. */
     use: function(){
       if(state.pro) return true;
       if(!SM_DAILY_LIMIT) return true;
       if(usesToday() >= SM_DAILY_LIMIT){
-        lock('Unlimited use');
+        lock('Unlimited use', { daily: true });
         paint();
         return false;
       }
@@ -637,9 +677,27 @@ window.SM = (function(){
     }
   }
 
-  function open(){
+  function open(why){
     var box = el('sm-account');
-    if(box){ box.hidden = false; box.scrollIntoView({ block: 'center' }); }
+    if(!box) return;
+    box.hidden = false;
+    show('sm-acc-choose');
+    if(why) say(why);
+    box.scrollIntoView({ block: 'center' });
+    if(el('sm-acc-email')) el('sm-acc-email').focus();
+  }
+
+  /**
+   * Whether they were on their way to paying when they were asked to sign in.
+   *
+   * Kept in sessionStorage rather than a variable: signing in reloads the page,
+   * so anything held in memory is gone by the time it is needed.
+   */
+  function wasBuying(){
+    try { return sessionStorage.getItem('sm_buying_intent_' + SM_SLUG) === '1'; } catch(e){ return false; }
+  }
+  function clearBuying(){
+    try { sessionStorage.removeItem('sm_buying_intent_' + SM_SLUG); } catch(e){}
   }
 
   function post(path, payload){
@@ -694,6 +752,21 @@ window.SM = (function(){
     if(res.sessionToken) writes(SESSION_STORE, res.sessionToken);
     drops(PENDING_STORE);
     var mine = (res.entitlements || []).filter(function(e){ return e.slug === SM_SLUG; })[0];
+
+    // They were part-way through buying when they were asked to sign in. Carry
+    // straight on to the card form rather than leaving them back on the page
+    // with no idea what happened to the thing they clicked.
+    if(!mine && wasBuying()){
+      say('Signed in. Taking you to the payment page…');
+      clearBuying();
+      setTimeout(function(){
+        if(window.SMbuy && window.SMbuy.checkout) window.SMbuy.checkout();
+        else location.reload();
+      }, 500);
+      return;
+    }
+    clearBuying();
+
     say(mine ? 'Signed in. Pro is on — one moment.' : 'Signed in — one moment.');
     sayConfirm('Confirmed. Signing you in…');
     setTimeout(function(){ location.reload(); }, 700);
@@ -741,6 +814,9 @@ window.SM = (function(){
   /* ---------------- wiring ---------------- */
 
   document.addEventListener('DOMContentLoaded', function(){
+    // Published so the Buy button can ask for an account before the card form.
+    window.SMaccount = { open: open, signedIn: function(){ return Boolean(reads(SESSION_STORE)); } };
+
     var link = el('sm-navsignin');
     if(link) link.addEventListener('click', function(e){ e.preventDefault(); open(); });
 
@@ -1066,21 +1142,23 @@ window.SM = (function(){
   /**
    * Buy.
    *
-   * The checkout is created now, at this product's real price, and we go
-   * straight to it - card fields on the next screen, nothing in between.
+   * An account comes first, then the card. Paying without one worked, but left
+   * the subscription attached to nothing somebody could sign into: the licence
+   * belonged to an email address they may have typed differently at Stripe,
+   * the Pro they had paid for lived in that one browser, and opening the tool
+   * on a phone showed the free version with no way to prove otherwise.
    *
-   * This used to fire the request and then ignore the URL that came back,
-   * following whatever static link had been baked into the page at publish
-   * time instead. A live checkout was created and thrown away on every click.
+   * So: signed in already, go straight to the card form. Not signed in, open
+   * the account card, remember that a purchase was the intent, and continue to
+   * the card form the moment they are in. Nobody is asked to type their email
+   * twice, and the subscription lands on an account that exists.
    *
    * The tab is navigated rather than opened: a window.open after an await is
    * blocked by every popup blocker, because by then the browser no longer
    * considers it something the person did.
    */
-  link.addEventListener('click', function(e){
-    e.preventDefault();
+  function goToCheckout(){
     say('Opening the payment page…');
-
     fetch(SM_API_BASE + '/api/checkout/start', {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-sm-session': reads(SESSION_STORE) || '' },
@@ -1088,30 +1166,39 @@ window.SM = (function(){
     })
       .then(function(r){ return r.json(); })
       .then(function(data){
-        if(data && data.ok && data.code){
-          // Remembered before leaving, so coming back mid-purchase resumes.
-          writes(CODE_STORE, data.code);
-        }
-        if(data && data.ok && data.payUrl){
-          location.href = data.payUrl;
-          return;
-        }
-        // No live checkout: fall back to whatever link the page shipped with,
-        // so a purchase is never blocked by our own bookkeeping.
-        if(link.getAttribute('href') && link.getAttribute('href') !== '#'){
+        if(data && data.ok && data.code) writes(CODE_STORE, data.code);
+        if(data && data.ok && data.payUrl){ location.href = data.payUrl; return; }
+        var href = link.getAttribute('href');
+        if(href && href !== '#'){
           if(data && data.code) watch(data.code);
-          window.open(link.getAttribute('href'), '_blank', 'noopener');
+          window.open(href, '_blank', 'noopener');
           return;
         }
         say('Could not open the payment page. Try again in a moment.');
       })
       .catch(function(){
-        if(link.getAttribute('href') && link.getAttribute('href') !== '#'){
-          window.open(link.getAttribute('href'), '_blank', 'noopener');
-          return;
-        }
+        var href = link.getAttribute('href');
+        if(href && href !== '#'){ window.open(href, '_blank', 'noopener'); return; }
         say('Could not reach the server. Try again in a moment.');
       });
+  }
+
+  // Published so the account card can continue to the card form once somebody
+  // has signed in, instead of stranding them back on the page.
+  window.SMbuy = { checkout: goToCheckout };
+
+  link.addEventListener('click', function(e){
+    e.preventDefault();
+
+    if(reads(SESSION_STORE)){ goToCheckout(); return; }
+
+    // Not signed in. Remember that they were on their way to paying, so the
+    // account card can carry straight on to the card form afterwards instead
+    // of dropping them back on the page wondering what happened.
+    try { sessionStorage.setItem('sm_buying_intent_' + SM_SLUG, '1'); } catch(err){}
+    if(window.SMaccount && window.SMaccount.open){
+      window.SMaccount.open('You need an account first — it is what keeps Pro on your phone as well as here.');
+    }
   });
 
   // Came back to the page mid-purchase - carry on waiting where they left off.
