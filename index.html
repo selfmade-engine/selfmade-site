@@ -1,10 +1,89 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tools</title>
-<style>body{font:16px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;margin:0;padding:40px 20px;background:#fafafa;color:#111}
-main{max-width:640px;margin:0 auto}a{color:#0b5fff}</style></head>
-<body><main>
-<h1>Tools</h1>
-<p>Each tool lives at its own address under <code>/p/</code>. If you followed a link here, it should have taken you straight to one.</p>
-</main></body></html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SELFMADE — small tools that do one job properly</title>
+<meta name="description" content="Calculators and trackers for people running their own work. Free to use, with an optional Pro version.">
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--text:#14171a;--muted:#5b6470;--line:#e6e8eb;--accent:#1f6feb}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1216;--card:#161a1f;--text:#e9edf2;--muted:#99a3b0;--line:#252b33}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:40px 20px 80px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:32px 28px;margin-bottom:20px}
+h1{font-size:28px;margin:0 0 6px;letter-spacing:-.02em}
+h2{font-size:18px;margin:30px 0 8px}
+h2:first-of-type{margin-top:8px}
+p,li{color:var(--text)}
+.sub{color:var(--muted);margin:0 0 4px}
+.updated{color:var(--muted);font-size:14px;margin:0}
+a{color:var(--accent)}
+ul{padding-left:20px}
+li{margin:6px 0}
+.back{display:inline-block;margin-bottom:20px;color:var(--muted);text-decoration:none;font-size:14px}
+.back:hover{color:var(--accent)}
+footer{color:var(--muted);font-size:14px;text-align:center;padding:10px 0 0}
+
+.tools{display:grid;gap:12px;margin-top:18px}
+a.tool{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;text-decoration:none;color:var(--text)}
+a.tool:hover{border-color:var(--accent)}
+a.tool strong{display:block;font-size:16px;margin-bottom:2px}
+a.tool .why{color:var(--muted);font-size:14px}
+.links{margin-top:26px;font-size:14px;color:var(--muted)}
+.links a{margin-right:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>SELFMADE</h1>
+    <p class="sub">Small tools that do one job properly. Each one runs in your browser —
+    what you type stays on your own device. Free to use, with an optional Pro version
+    that takes the limits off.</p>
+  </div>
+
+  <div class="tools">
+  <a class="tool" href="https://selfmade-engine.github.io/selfmade-site/p/mobile-hairdresser-income-and-tax-tracker/">
+    <strong>Mobile Hairdresser Income and Tax Tracker</strong>
+    <span class="why">For Mobile hairdresser — mobile hairdressers who deal with Money comes in and gets spent, and the tax bill arrives against an empty account — mobile hairdressers are hit by this every single year.</span>
+  </a>
+  <a class="tool" href="https://selfmade-engine.github.io/selfmade-site/p/plumber-income-and-tax-tracker/">
+    <strong>Plumber Income and Tax Tracker</strong>
+    <span class="why">For Plumber — plumbers who deal with Money comes in and gets spent, and the tax bill arrives against an empty account — plumbers are hit by this every single year.</span>
+  </a>
+  <a class="tool" href="https://selfmade-engine.github.io/selfmade-site/p/self-employed-income-and-tax-set-aside-tracker/">
+    <strong>Self-Employed Income and Tax Set-Aside Tracker</strong>
+    <span class="why">For Freelancers, sole traders, delivery drivers and anyone self-employed for the first time who deal with Money comes in, gets spent, and the tax bill arrives in January against an empty account.</span>
+  </a>
+  <a class="tool" href="https://selfmade-engine.github.io/selfmade-site/p/family-carer-bills-and-payday-planner/">
+    <strong>Family Carer Bills and Payday Planner</strong>
+    <span class="why">For Someone caring for a parent — people caring for a parent who deal with The balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest.</span>
+  </a>
+  <a class="tool" href="https://selfmade-engine.github.io/selfmade-site/p/care-worker-pay-and-hours-checker/">
+    <strong>Care Worker Pay and Hours Checker</strong>
+    <span class="why">For Care worker — care workers who deal with Payslips come up short by half an hour here and a break there, and care workers have no record to point at.</span>
+  </a>
+  <a class="tool" href="https://selfmade-engine.github.io/selfmade-site/p/shift-and-overtime-pay-checker/">
+    <strong>Shift and Overtime Pay Checker</strong>
+    <span class="why">For People paid by the hour - hospitality, care, retail, warehouse, agency work who deal with Payslips are short by half an hour here and a break there, and people have no way to show it.</span>
+  </a>
+  <a class="tool" href="https://selfmade-engine.github.io/selfmade-site/p/saas-pricing-break-even-calculator/">
+    <strong>SaaS Pricing &amp; Break-even Calculator</strong>
+    <span class="why">For Bootstrapped founders setting their first price who deal with Founders price on feel and cannot see the break-even or churn impact.</span>
+  </a>
+  <a class="tool" href="https://selfmade-engine.github.io/selfmade-site/p/painter-and-decorator-job-profit-tracker/">
+    <strong>Painter and Decorator Job Profit Tracker</strong>
+    <span class="why">For painters and decorators who deal with A price that felt right in the van turns out to pay less than minimum wage once the hours and materials are counted, and painters and decorators usually find out too late.</span>
+  </a>
+  </div>
+
+  <p class="links">
+    <a href="./privacy.html">Privacy</a>
+    <a href="./terms.html">Terms</a>
+    <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>
+  </p>
+  <footer>SELFMADE</footer>
+</div>
+</body>
+</html>
