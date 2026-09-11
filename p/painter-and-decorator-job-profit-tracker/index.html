@@ -28,7 +28,7 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Stop guessing: Log each job with its price, materials and real hours, and see what you actually earned an hour</h1>
+<h1>Painter and Decorator Job Profit Tracker — Log each job with its price, materials and real hours, and see what you actually earned an hour</h1>
 
 <ul class="checks"><li>Built for painters and decorators</li><li>Fixes: a price that felt right in the van turns out to pay less than minimum wage once the hours and materials are counted, and painters and decorators usually find out too late</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
@@ -204,321 +204,10 @@ var SM_CONTACT = "selfmade.engine@gmail.com";
 var SM_BUY_URL = "./pricing.html";
 var SM_PRICE = "$15.00";
 </script>
-<script data-sm="tool">
-function SMN(v){
-  if (typeof v === 'number') return isFinite(v) ? v : 0;
-  var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, ''));
-  return isFinite(x) ? x : 0;
-}
-/**
- * Whole days from today until a date. Negative once it has gone past.
- *
- * Both ends are flattened to midnight first, so "tomorrow" is 1 all day rather
- * than 0 in the evening and 1 in the morning - a countdown that changes with
- * the time of day reads as broken.
- */
-function SMdays(v){
-  if (!v) return 0;
-  var text = String(v).trim();
-  var b = null;
-  // A plain "2026-04-01" is parsed as UTC midnight by the browser, which reads
-  // back as the day BEFORE anywhere west of Greenwich. Somebody typing a date
-  // means that date where they are, so it is built locally instead.
-  //
-  // Split rather than matched, because a regular expression written inside a
-  // template literal has to survive two rounds of escaping and quietly loses
-  // its backslashes if it does not.
-  var bits = text.split('-');
-  if (bits.length === 3 && bits[0].length === 4) {
-    var y = Number(bits[0]), mo = Number(bits[1]), da = Number(bits[2].slice(0, 2));
-    if (y && mo && da) b = new Date(y, mo - 1, da);
-  }
-  if (!b) {
-    var parsed = new Date(text);
-    if (isNaN(parsed.getTime())) return 0;
-    b = new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
-  }
-  if (isNaN(b.getTime())) return 0;
-  var a = new Date(); a.setHours(0,0,0,0);
-  return Math.round((b - a) / 86400000);
-}
-var CUR = "$";
-function SMD(id){ var e = document.getElementById(id); return e; }
-function SMV(id){ var e = SMD(id); return e ? String(e.value == null ? '' : e.value).trim() : ''; }
-function SMmoney(v){
-  var neg = v < 0;
-  var a = Math.abs(Math.round(v * 100) / 100).toFixed(2);
-  return (neg ? '-' : '') + CUR + a.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-function SMnum(v, dp){
-  var d = dp == null ? 2 : dp;
-  var n = Math.round(SMN(v) * Math.pow(10, d)) / Math.pow(10, d);
-  return d === 0 ? String(n) : n.toFixed(d);
-}
-function SMesc(s){
-  return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
-    return c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&quot;';
-  });
-}
-function SMtable(head, rows){
-  return '<table><tr>' + head.map(function(h){ return '<th>' + h + '</th>'; }).join('') + '</tr>' +
-    rows.map(function(r){ return '<tr>' + r.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>'; }).join('') +
-    '</table>';
-}
-function SMstat(k, v, note){
-  return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
-    (note ? '<div class="k" style="text-transform:none;letter-spacing:0;margin-top:4px">' + note + '</div>' : '') + '</div>';
-}
-/** A dropdown stores its numeric value; the table should show the words. */
-function SMlabel(f, v){
-  if (f && f.options && f.options.length && typeof f.options[0] === 'object') {
-    for (var i = 0; i < f.options.length; i++) {
-      if (String(f.options[i].value) === String(v)) return f.options[i].label;
-    }
-  }
-  return v;
-}
-function SMtoday(){ return new Date().toISOString().slice(0, 10); }
-function SMfmtDate(d){
-  var x = (d instanceof Date) ? d : new Date(d);
-  if (isNaN(x.getTime())) return String(d || '');
-  return x.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
-}
-(function(){
-  var FIELDS = [{"id":"date","label":"Date finished","type":"date"},{"id":"job","label":"The job","type":"text","placeholder":"What and where"},{"id":"charged","label":"What you charged","type":"number","default":0,"min":0,"step":1},{"id":"materials","label":"Materials and tip runs","type":"number","default":0,"min":0,"step":1},{"id":"hours","label":"Hours it really took","type":"number","default":4,"min":0,"step":0.5},{"id":"category","label":"Kind of job","type":"select","options":["Small repair","Half day","Full day","Multi-day","Emergency call-out","Regular customer"]}];
-  // Deliberately no row cap here: this pattern's free tier is capped on how
-  // far back it keeps and what it analyses, not on how much you may log.
-  // Blocking entry would just make the free version annoying without making
-  // the paid one better.
-  var FREE_MAX = 3;
-  var rows = [];
-  try { rows = JSON.parse(localStorage.getItem("sm-decorator--job-profit") || '[]'); } catch(e){ rows = []; }
-  if (!(rows instanceof Array)) rows = [];
-  function persist(){ try { localStorage.setItem("sm-decorator--job-profit", JSON.stringify(rows)); } catch(e){} }
-
-  function derive(r, T){
-    var out = {};
-    for (var k in r) out[k] = r[k];
-    out.kept = (function(r, T){ return SMN(r.charged) - SMN(r.materials); })(out, T);
-    out.perHour = (function(r, T){ return SMN(r.hours) > 0 ? ( SMN(r.charged) - SMN(r.materials) ) / SMN(r.hours) : 0; })(out, T);
-    return out;
-  }
-
-  function settings(){
-    var T = {};
-    T.target = SMN(SMV('s-target'));
-    return T;
-  }
-
-  function compute(){
-    var T = settings();
-    var derivedRows = rows.map(function(r){ return derive(r, T); });
-    (function(rows){
-      T.jobs = rows.length;
-      T.turnover = rows.reduce(function(a, r){ return a + (SMN(r.charged)); }, 0);
-      T.materialsTotal = rows.reduce(function(a, r){ return a + (SMN(r.materials)); }, 0);
-      T.keptTotal = SMN(T.turnover) - SMN(T.materialsTotal);
-      T.hoursTotal = rows.reduce(function(a, r){ return a + (SMN(r.hours)); }, 0);
-      T.realRate = SMN(T.hoursTotal) > 0 ? SMN(T.keptTotal) / SMN(T.hoursTotal) : 0;
-      T.gap = SMN(T.target) - ( SMN(T.hoursTotal) > 0 ? SMN(T.keptTotal) / SMN(T.hoursTotal) : 0 );
-      T.badJobs = rows.reduce(function(a, r){ return a + (SMN(r.perHour) < SMN(T.target) ? 1 : 0); }, 0);
-    })(derivedRows);
-    return { rows: derivedRows, T: T };
-  }
-
-  function paint(){
-    var c = compute();
-    var rowsD = c.rows, T = c.T;
-    SMD('g-count').textContent = rows.length + ' ' + "jobs";
-
-    SMD('g-stats').innerHTML = 3 === 0 ? '' : [
-      SMstat("Charged", SMmoney(T.turnover), ""),
-      SMstat("Kept", SMmoney(T.keptTotal), "after materials"),
-      SMstat("Earned an hour", SMmoney(T.realRate), "across every job")
-    ].join('');
-
-    var out = [];
-    (function(rows){
-      out.push("Across " + SMnum(T.jobs, 0) + " jobs you charged " + SMmoney(T.turnover) + ", spent " + SMmoney(T.materialsTotal) + " on materials, and put in " + SMnum(T.hoursTotal, 1) + " hours.");
-    out.push("That works out at " + SMmoney(T.realRate) + " an hour, once materials are off.");
-    if (SMN(T.gap) > 0) out.push("That is " + SMmoney(T.gap) + " an hour below what you wanted. Over a full week that is a real amount of money, and it usually comes from a couple of jobs rather than all of them.");
-    if (SMN(T.badJobs) > 0) out.push(SMnum(T.badJobs, 0) + " of these jobs came in under your target rate. Those are the ones to look at — either they were underpriced, or they took longer than you allowed for.");
-    if (SMN(T.gap) <= 0 && SMN(T.jobs) > 0) out.push("You are at or above your target rate. Worth keeping an eye on the ones that dip, but the pricing is working.");
-    })(rowsD);
-    SMD('g-verdict').textContent = rows.length ? out.join('\n\n') : "Log a couple of finished jobs to see the real number.";
-
-    if (!rows.length) { SMD('g-table').innerHTML = '<p class="sub">Nothing logged yet.</p>'; return; }
-    var head = FIELDS.map(function(f){ return SMesc(f.label); })
-      .concat(["Kept","An hour"]).concat(['']);
-    var body = rowsD.map(function(r, i){
-      var cells = FIELDS.map(function(f){ return SMesc(SMlabel(f, r[f.id])); });
-      cells.push(SMmoney(r.kept));
-      cells.push(SMmoney(r.perHour));
-      cells.push('<button class="secondary" data-del="' + i + '" style="padding:4px 10px">Remove</button>');
-      return cells;
-    });
-    SMD('g-table').innerHTML = SMtable(head, body);
-    Array.prototype.forEach.call(SMD('g-table').querySelectorAll('[data-del]'), function(b){
-      b.addEventListener('click', function(){
-        rows.splice(Number(b.getAttribute('data-del')), 1);
-        persist(); paint();
-      });
-    });
-
-    paintAnalysis(rowsD, T);
-  }
-
-  /** Which month an entry belongs to. Falls back to now if there is no date. */
-  function monthOf(r){
-    var raw = String(r.date || '');
-    if (/^\d{4}-\d{2}/.test(raw)) return raw.slice(0, 7);
-    return SMtoday().slice(0, 7);
-  }
-
-  function monthName(key){
-    var parts = String(key).split('-');
-    var d = new Date(Number(parts[0]), Number(parts[1]) - 1, 1);
-    return isNaN(d.getTime()) ? key : d.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
-  }
-
-  /**
-   * Where the money goes, month by month, and how this month compares.
-   *
-   * Free shows the current month. Pro shows every month and the breakdown -
-   * which is the analysis, not an artificial cap on a form.
-   */
-  function paintAnalysis(rowsD, T){
-    var breakdown = SMD('g-breakdown');
-    var months = SMD('g-months');
-    var trend = SMD('g-trend');
-    if (!breakdown || !months) return;
-
-    if (!SM.pro()) {
-      var locked = '<p class="sub">Pro shows this. ' +
-        '<a href="' + (window.SM_BUY_URL || './pricing.html') + '">See what it costs</a></p>';
-      breakdown.innerHTML = locked;
-      months.innerHTML = locked;
-      if (trend) trend.textContent = '';
-      return;
-    }
-
-    if (!rowsD.length) {
-      breakdown.innerHTML = '<p class="sub">Nothing logged yet.</p>';
-      months.innerHTML = '';
-      if (trend) trend.textContent = '';
-      return;
-    }
-
-    // ---- by category ----
-    var CAT = "category";
-    var VAL = "kept";
-    if (CAT && VAL) {
-      var byCat = {};
-      rowsD.forEach(function(r){
-        var key = String(r[CAT] == null || r[CAT] === '' ? 'Uncategorised' : r[CAT]);
-        byCat[key] = (byCat[key] || 0) + SMN(r[VAL]);
-      });
-      var cats = Object.keys(byCat).sort(function(a, b){ return Math.abs(byCat[b]) - Math.abs(byCat[a]); });
-      var catTotal = cats.reduce(function(a, k){ return a + Math.abs(byCat[k]); }, 0);
-      breakdown.innerHTML = SMtable(['Category', 'Total', 'Share'], cats.map(function(k){
-        var share = catTotal > 0 ? Math.round(Math.abs(byCat[k]) / catTotal * 100) : 0;
-        return [SMesc(k), SMmoney(byCat[k]), share + '%'];
-      }));
-    } else {
-      breakdown.innerHTML = '<p class="sub">This one has nothing to break down by category.</p>';
-    }
-
-    // ---- month by month ----
-    var byMonth = {};
-    rowsD.forEach(function(r){
-      var m = monthOf(r);
-      if (!byMonth[m]) byMonth[m] = { count: 0, value: 0 };
-      byMonth[m].count += 1;
-      if (VAL) byMonth[m].value += SMN(r[VAL]);
-    });
-    var keys = Object.keys(byMonth).sort();
-    months.innerHTML = SMtable(['Month', 'Entries', VAL ? 'Total' : ''], keys.map(function(k){
-      return [monthName(k), byMonth[k].count, VAL ? SMmoney(byMonth[k].value) : ''];
-    }));
-
-    // ---- this month against last ----
-    if (trend && keys.length >= 2 && VAL) {
-      var thisM = byMonth[keys[keys.length - 1]].value;
-      var lastM = byMonth[keys[keys.length - 2]].value;
-      var diff = thisM - lastM;
-      var pct = lastM !== 0 ? Math.round(Math.abs(diff) / Math.abs(lastM) * 100) : 0;
-      trend.textContent = Math.abs(diff) < 0.005
-        ? monthName(keys[keys.length - 1]) + ' is the same as ' + monthName(keys[keys.length - 2]) + '.'
-        : monthName(keys[keys.length - 1]) + ' is ' + SMmoney(Math.abs(diff)) + (pct ? ' (' + pct + '%)' : '') +
-          (diff > 0 ? ' more than ' : ' less than ') + monthName(keys[keys.length - 2]) + '.';
-    } else if (trend) {
-      trend.textContent = keys.length < 2
-        ? 'Log a second month and this compares them for you.'
-        : '';
-    }
-  }
-
-  SMD('g-add').addEventListener('click', function(){
-    // Free is not capped on how much you log - that would just be an obstacle.
-    // It is capped on how far back it keeps, which is a real difference in what
-    // the thing can do for you.
-    if (!SM.use()) return;
-    var r = {};
-    for (var i = 0; i < FIELDS.length; i++) {
-      var f = FIELDS[i];
-      r[f.id] = SMV('f-' + f.id);
-      if (f.type === 'date' && !r[f.id]) r[f.id] = SMtoday();
-    }
-    // Checked before the row is kept, so the limit is never half-applied.
-    if (!SM.pro() && rows.length >= FREE_MAX) { SM.limit(); return; }
-    rows.push(r);
-    if (SMD('f-job')) SMD('f-job').value = '';
-    persist(); paint();
-  });
-  SMD('g-clear').addEventListener('click', function(){ rows = []; persist(); paint(); });
-  if (SMD('s-target')) SMD('s-target').addEventListener('input', paint);
-  if (SMD('f-date')) SMD('f-date').addEventListener('input', function(){});
-  if (SMD('f-job')) SMD('f-job').addEventListener('input', function(){});
-  if (SMD('f-charged')) SMD('f-charged').addEventListener('input', function(){});
-  if (SMD('f-materials')) SMD('f-materials').addEventListener('input', function(){});
-  if (SMD('f-hours')) SMD('f-hours').addEventListener('input', function(){});
-  if (SMD('f-category')) SMD('f-category').addEventListener('input', function(){});
-
-  // ---- Pro ----
-  function paintSaved(){
-    var box = SMD('g-saved');
-    var list = SM.load('sets');
-    box.innerHTML = list.length
-      ? list.map(function(s, i){ return '<button class="secondary" data-s="' + i + '">' + SMesc(s.name) + '</button>'; }).join(' ')
-      : '<span class="sub">Nothing saved yet.</span>';
-    Array.prototype.forEach.call(box.querySelectorAll('[data-s]'), function(b){
-      b.addEventListener('click', function(){
-        var s = SM.load('sets')[Number(b.getAttribute('data-s'))];
-        if (!s) return;
-        rows = s.rows || [];
-        persist(); paint();
-      });
-    });
-  }
-  SMD('g-save').addEventListener('click', function(){
-    var name = SMV('g-save-name');
-    if (!name) { SMD('g-save-name').placeholder = 'give it a name first'; return; }
-    var list = SM.load('sets');
-    list.push({ name: name, rows: rows.slice() });
-    if (SM.save('sets', list)) { SMD('g-save-name').value = ''; paintSaved(); }
-  });
-  SMD('g-export').addEventListener('click', function(){
-    var c = compute();
-    var head = FIELDS.map(function(f){ return f.label; }).concat(["Kept","An hour"]);
-    var body = c.rows.map(function(r){
-      return FIELDS.map(function(f){ return r[f.id]; }).concat(["kept","perHour"].map(function(id){ return SMnum(r[id]); }));
-    });
-    SM.exportCsv("decorator--job-profit.csv", [head].concat(body));
-  });
-
-  if (SMD('f-date') && !SMD('f-date').value) SMD('f-date').value = SMtoday();
-  paint(); paintSaved();
-})();</script>
+<!-- LICENCE_JS first: it defines window.SM, and the tool calls SM.load() and
+     SM.pro() while it is painting for the first time. The other way round threw
+     "SM is not defined" on every single page load, which killed the rest of
+     that paint - the saved-sets panel simply never appeared. -->
 <script>
 window.SM = (function(){
   var KEY_STORE = 'sm_key_' + SM_SLUG;
@@ -850,6 +539,321 @@ window.SM = (function(){
   return SM;
 })();
 </script>
+<script data-sm="tool">
+function SMN(v){
+  if (typeof v === 'number') return isFinite(v) ? v : 0;
+  var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, ''));
+  return isFinite(x) ? x : 0;
+}
+/**
+ * Whole days from today until a date. Negative once it has gone past.
+ *
+ * Both ends are flattened to midnight first, so "tomorrow" is 1 all day rather
+ * than 0 in the evening and 1 in the morning - a countdown that changes with
+ * the time of day reads as broken.
+ */
+function SMdays(v){
+  if (!v) return 0;
+  var text = String(v).trim();
+  var b = null;
+  // A plain "2026-04-01" is parsed as UTC midnight by the browser, which reads
+  // back as the day BEFORE anywhere west of Greenwich. Somebody typing a date
+  // means that date where they are, so it is built locally instead.
+  //
+  // Split rather than matched, because a regular expression written inside a
+  // template literal has to survive two rounds of escaping and quietly loses
+  // its backslashes if it does not.
+  var bits = text.split('-');
+  if (bits.length === 3 && bits[0].length === 4) {
+    var y = Number(bits[0]), mo = Number(bits[1]), da = Number(bits[2].slice(0, 2));
+    if (y && mo && da) b = new Date(y, mo - 1, da);
+  }
+  if (!b) {
+    var parsed = new Date(text);
+    if (isNaN(parsed.getTime())) return 0;
+    b = new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+  }
+  if (isNaN(b.getTime())) return 0;
+  var a = new Date(); a.setHours(0,0,0,0);
+  return Math.round((b - a) / 86400000);
+}
+var CUR = "$";
+function SMD(id){ var e = document.getElementById(id); return e; }
+function SMV(id){ var e = SMD(id); return e ? String(e.value == null ? '' : e.value).trim() : ''; }
+function SMmoney(v){
+  var neg = v < 0;
+  var a = Math.abs(Math.round(v * 100) / 100).toFixed(2);
+  return (neg ? '-' : '') + CUR + a.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+function SMnum(v, dp){
+  var d = dp == null ? 2 : dp;
+  var n = Math.round(SMN(v) * Math.pow(10, d)) / Math.pow(10, d);
+  return d === 0 ? String(n) : n.toFixed(d);
+}
+function SMesc(s){
+  return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
+    return c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&quot;';
+  });
+}
+function SMtable(head, rows){
+  return '<table><tr>' + head.map(function(h){ return '<th>' + h + '</th>'; }).join('') + '</tr>' +
+    rows.map(function(r){ return '<tr>' + r.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>'; }).join('') +
+    '</table>';
+}
+function SMstat(k, v, note){
+  return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
+    (note ? '<div class="k" style="text-transform:none;letter-spacing:0;margin-top:4px">' + note + '</div>' : '') + '</div>';
+}
+/** A dropdown stores its numeric value; the table should show the words. */
+function SMlabel(f, v){
+  if (f && f.options && f.options.length && typeof f.options[0] === 'object') {
+    for (var i = 0; i < f.options.length; i++) {
+      if (String(f.options[i].value) === String(v)) return f.options[i].label;
+    }
+  }
+  return v;
+}
+function SMtoday(){ return new Date().toISOString().slice(0, 10); }
+function SMfmtDate(d){
+  var x = (d instanceof Date) ? d : new Date(d);
+  if (isNaN(x.getTime())) return String(d || '');
+  return x.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+}
+(function(){
+  var FIELDS = [{"id":"date","label":"Date finished","type":"date"},{"id":"job","label":"The job","type":"text","placeholder":"What and where"},{"id":"charged","label":"What you charged","type":"number","default":0,"min":0,"step":1},{"id":"materials","label":"Materials and tip runs","type":"number","default":0,"min":0,"step":1},{"id":"hours","label":"Hours it really took","type":"number","default":4,"min":0,"step":0.5},{"id":"category","label":"Kind of job","type":"select","options":["Small repair","Half day","Full day","Multi-day","Emergency call-out","Regular customer"]}];
+  // Deliberately no row cap here: this pattern's free tier is capped on how
+  // far back it keeps and what it analyses, not on how much you may log.
+  // Blocking entry would just make the free version annoying without making
+  // the paid one better.
+  var FREE_MAX = 3;
+  var rows = [];
+  try { rows = JSON.parse(localStorage.getItem("sm-decorator--job-profit") || '[]'); } catch(e){ rows = []; }
+  if (!(rows instanceof Array)) rows = [];
+  function persist(){ try { localStorage.setItem("sm-decorator--job-profit", JSON.stringify(rows)); } catch(e){} }
+
+  function derive(r, T){
+    var out = {};
+    for (var k in r) out[k] = r[k];
+    out.kept = (function(r, T){ return SMN(r.charged) - SMN(r.materials); })(out, T);
+    out.perHour = (function(r, T){ return SMN(r.hours) > 0 ? ( SMN(r.charged) - SMN(r.materials) ) / SMN(r.hours) : 0; })(out, T);
+    return out;
+  }
+
+  function settings(){
+    var T = {};
+    T.target = SMN(SMV('s-target'));
+    return T;
+  }
+
+  function compute(){
+    var T = settings();
+    var derivedRows = rows.map(function(r){ return derive(r, T); });
+    (function(rows){
+      T.jobs = rows.length;
+      T.turnover = rows.reduce(function(a, r){ return a + (SMN(r.charged)); }, 0);
+      T.materialsTotal = rows.reduce(function(a, r){ return a + (SMN(r.materials)); }, 0);
+      T.keptTotal = SMN(T.turnover) - SMN(T.materialsTotal);
+      T.hoursTotal = rows.reduce(function(a, r){ return a + (SMN(r.hours)); }, 0);
+      T.realRate = SMN(T.hoursTotal) > 0 ? SMN(T.keptTotal) / SMN(T.hoursTotal) : 0;
+      T.gap = SMN(T.target) - ( SMN(T.hoursTotal) > 0 ? SMN(T.keptTotal) / SMN(T.hoursTotal) : 0 );
+      T.badJobs = rows.reduce(function(a, r){ return a + (SMN(r.perHour) < SMN(T.target) ? 1 : 0); }, 0);
+    })(derivedRows);
+    return { rows: derivedRows, T: T };
+  }
+
+  function paint(){
+    var c = compute();
+    var rowsD = c.rows, T = c.T;
+    SMD('g-count').textContent = rows.length + ' ' + "jobs";
+
+    SMD('g-stats').innerHTML = 3 === 0 ? '' : [
+      SMstat("Charged", SMmoney(T.turnover), ""),
+      SMstat("Kept", SMmoney(T.keptTotal), "after materials"),
+      SMstat("Earned an hour", SMmoney(T.realRate), "across every job")
+    ].join('');
+
+    var out = [];
+    (function(rows){
+      out.push("Across " + SMnum(T.jobs, 0) + " jobs you charged " + SMmoney(T.turnover) + ", spent " + SMmoney(T.materialsTotal) + " on materials, and put in " + SMnum(T.hoursTotal, 1) + " hours.");
+    out.push("That works out at " + SMmoney(T.realRate) + " an hour, once materials are off.");
+    if (SMN(T.gap) > 0) out.push("That is " + SMmoney(T.gap) + " an hour below what you wanted. Over a full week that is a real amount of money, and it usually comes from a couple of jobs rather than all of them.");
+    if (SMN(T.badJobs) > 0) out.push(SMnum(T.badJobs, 0) + " of these jobs came in under your target rate. Those are the ones to look at — either they were underpriced, or they took longer than you allowed for.");
+    if (SMN(T.gap) <= 0 && SMN(T.jobs) > 0) out.push("You are at or above your target rate. Worth keeping an eye on the ones that dip, but the pricing is working.");
+    })(rowsD);
+    SMD('g-verdict').textContent = rows.length ? out.join('\n\n') : "Log a couple of finished jobs to see the real number.";
+
+    if (!rows.length) { SMD('g-table').innerHTML = '<p class="sub">Nothing logged yet.</p>'; return; }
+    var head = FIELDS.map(function(f){ return SMesc(f.label); })
+      .concat(["Kept","An hour"]).concat(['']);
+    var body = rowsD.map(function(r, i){
+      var cells = FIELDS.map(function(f){ return SMesc(SMlabel(f, r[f.id])); });
+      cells.push(SMmoney(r.kept));
+      cells.push(SMmoney(r.perHour));
+      cells.push('<button class="secondary" data-del="' + i + '" style="padding:4px 10px">Remove</button>');
+      return cells;
+    });
+    SMD('g-table').innerHTML = SMtable(head, body);
+    Array.prototype.forEach.call(SMD('g-table').querySelectorAll('[data-del]'), function(b){
+      b.addEventListener('click', function(){
+        rows.splice(Number(b.getAttribute('data-del')), 1);
+        persist(); paint();
+      });
+    });
+
+    paintAnalysis(rowsD, T);
+  }
+
+  /** Which month an entry belongs to. Falls back to now if there is no date. */
+  function monthOf(r){
+    var raw = String(r.date || '');
+    if (/^\d{4}-\d{2}/.test(raw)) return raw.slice(0, 7);
+    return SMtoday().slice(0, 7);
+  }
+
+  function monthName(key){
+    var parts = String(key).split('-');
+    var d = new Date(Number(parts[0]), Number(parts[1]) - 1, 1);
+    return isNaN(d.getTime()) ? key : d.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+  }
+
+  /**
+   * Where the money goes, month by month, and how this month compares.
+   *
+   * Free shows the current month. Pro shows every month and the breakdown -
+   * which is the analysis, not an artificial cap on a form.
+   */
+  function paintAnalysis(rowsD, T){
+    var breakdown = SMD('g-breakdown');
+    var months = SMD('g-months');
+    var trend = SMD('g-trend');
+    if (!breakdown || !months) return;
+
+    if (!SM.pro()) {
+      var locked = '<p class="sub">Pro shows this. ' +
+        '<a href="' + (window.SM_BUY_URL || './pricing.html') + '">See what it costs</a></p>';
+      breakdown.innerHTML = locked;
+      months.innerHTML = locked;
+      if (trend) trend.textContent = '';
+      return;
+    }
+
+    if (!rowsD.length) {
+      breakdown.innerHTML = '<p class="sub">Nothing logged yet.</p>';
+      months.innerHTML = '';
+      if (trend) trend.textContent = '';
+      return;
+    }
+
+    // ---- by category ----
+    var CAT = "category";
+    var VAL = "kept";
+    if (CAT && VAL) {
+      var byCat = {};
+      rowsD.forEach(function(r){
+        var key = String(r[CAT] == null || r[CAT] === '' ? 'Uncategorised' : r[CAT]);
+        byCat[key] = (byCat[key] || 0) + SMN(r[VAL]);
+      });
+      var cats = Object.keys(byCat).sort(function(a, b){ return Math.abs(byCat[b]) - Math.abs(byCat[a]); });
+      var catTotal = cats.reduce(function(a, k){ return a + Math.abs(byCat[k]); }, 0);
+      breakdown.innerHTML = SMtable(['Category', 'Total', 'Share'], cats.map(function(k){
+        var share = catTotal > 0 ? Math.round(Math.abs(byCat[k]) / catTotal * 100) : 0;
+        return [SMesc(k), SMmoney(byCat[k]), share + '%'];
+      }));
+    } else {
+      breakdown.innerHTML = '<p class="sub">This one has nothing to break down by category.</p>';
+    }
+
+    // ---- month by month ----
+    var byMonth = {};
+    rowsD.forEach(function(r){
+      var m = monthOf(r);
+      if (!byMonth[m]) byMonth[m] = { count: 0, value: 0 };
+      byMonth[m].count += 1;
+      if (VAL) byMonth[m].value += SMN(r[VAL]);
+    });
+    var keys = Object.keys(byMonth).sort();
+    months.innerHTML = SMtable(['Month', 'Entries', VAL ? 'Total' : ''], keys.map(function(k){
+      return [monthName(k), byMonth[k].count, VAL ? SMmoney(byMonth[k].value) : ''];
+    }));
+
+    // ---- this month against last ----
+    if (trend && keys.length >= 2 && VAL) {
+      var thisM = byMonth[keys[keys.length - 1]].value;
+      var lastM = byMonth[keys[keys.length - 2]].value;
+      var diff = thisM - lastM;
+      var pct = lastM !== 0 ? Math.round(Math.abs(diff) / Math.abs(lastM) * 100) : 0;
+      trend.textContent = Math.abs(diff) < 0.005
+        ? monthName(keys[keys.length - 1]) + ' is the same as ' + monthName(keys[keys.length - 2]) + '.'
+        : monthName(keys[keys.length - 1]) + ' is ' + SMmoney(Math.abs(diff)) + (pct ? ' (' + pct + '%)' : '') +
+          (diff > 0 ? ' more than ' : ' less than ') + monthName(keys[keys.length - 2]) + '.';
+    } else if (trend) {
+      trend.textContent = keys.length < 2
+        ? 'Log a second month and this compares them for you.'
+        : '';
+    }
+  }
+
+  SMD('g-add').addEventListener('click', function(){
+    // Free is not capped on how much you log - that would just be an obstacle.
+    // It is capped on how far back it keeps, which is a real difference in what
+    // the thing can do for you.
+    if (!SM.use()) return;
+    var r = {};
+    for (var i = 0; i < FIELDS.length; i++) {
+      var f = FIELDS[i];
+      r[f.id] = SMV('f-' + f.id);
+      if (f.type === 'date' && !r[f.id]) r[f.id] = SMtoday();
+    }
+    // Checked before the row is kept, so the limit is never half-applied.
+    if (!SM.pro() && rows.length >= FREE_MAX) { SM.limit(); return; }
+    rows.push(r);
+    if (SMD('f-job')) SMD('f-job').value = '';
+    persist(); paint();
+  });
+  SMD('g-clear').addEventListener('click', function(){ rows = []; persist(); paint(); });
+  if (SMD('s-target')) SMD('s-target').addEventListener('input', paint);
+  if (SMD('f-date')) SMD('f-date').addEventListener('input', function(){});
+  if (SMD('f-job')) SMD('f-job').addEventListener('input', function(){});
+  if (SMD('f-charged')) SMD('f-charged').addEventListener('input', function(){});
+  if (SMD('f-materials')) SMD('f-materials').addEventListener('input', function(){});
+  if (SMD('f-hours')) SMD('f-hours').addEventListener('input', function(){});
+  if (SMD('f-category')) SMD('f-category').addEventListener('input', function(){});
+
+  // ---- Pro ----
+  function paintSaved(){
+    var box = SMD('g-saved');
+    var list = SM.load('sets');
+    box.innerHTML = list.length
+      ? list.map(function(s, i){ return '<button class="secondary" data-s="' + i + '">' + SMesc(s.name) + '</button>'; }).join(' ')
+      : '<span class="sub">Nothing saved yet.</span>';
+    Array.prototype.forEach.call(box.querySelectorAll('[data-s]'), function(b){
+      b.addEventListener('click', function(){
+        var s = SM.load('sets')[Number(b.getAttribute('data-s'))];
+        if (!s) return;
+        rows = s.rows || [];
+        persist(); paint();
+      });
+    });
+  }
+  SMD('g-save').addEventListener('click', function(){
+    var name = SMV('g-save-name');
+    if (!name) { SMD('g-save-name').placeholder = 'give it a name first'; return; }
+    var list = SM.load('sets');
+    list.push({ name: name, rows: rows.slice() });
+    if (SM.save('sets', list)) { SMD('g-save-name').value = ''; paintSaved(); }
+  });
+  SMD('g-export').addEventListener('click', function(){
+    var c = compute();
+    var head = FIELDS.map(function(f){ return f.label; }).concat(["Kept","An hour"]);
+    var body = c.rows.map(function(r){
+      return FIELDS.map(function(f){ return r[f.id]; }).concat(["kept","perHour"].map(function(id){ return SMnum(r[id]); }));
+    });
+    SM.exportCsv("decorator--job-profit.csv", [head].concat(body));
+  });
+
+  if (SMD('f-date') && !SMD('f-date').value) SMD('f-date').value = SMtoday();
+  paint(); paintSaved();
+})();</script>
 <script>
 (function(){
   var SESSION_STORE = 'sm_session_' + SM_SLUG;
@@ -887,7 +891,21 @@ window.SM = (function(){
     if(!box) return;
     box.hidden = false;
     show('sm-acc-choose');
+
+    // Retitle the card when it has been opened on the way to paying, so the
+    // reason is the first thing read rather than a line under the fields.
+    var title = el('sm-acc-title');
+    var sub = el('sm-acc-sub');
+    if(why && title) title.textContent = 'One step before payment';
+    if(why && sub) sub.textContent = why;
+
     if(why) say(why);
+
+    // Flashed, because the card can already be on screen - in which case
+    // nothing visibly changes and the button looks broken.
+    box.classList.add('sm-attention');
+    setTimeout(function(){ box.classList.remove('sm-attention'); }, 1600);
+
     box.scrollIntoView({ block: 'center' });
     if(el('sm-acc-email')) el('sm-acc-email').focus();
   }
@@ -1401,8 +1419,18 @@ window.SM = (function(){
     // account card can carry straight on to the card form afterwards instead
     // of dropping them back on the page wondering what happened.
     try { sessionStorage.setItem('sm_buying_intent_' + SM_SLUG, '1'); } catch(err){}
+
+    // Say something where the click happened, first. The account card can be
+    // most of a page away, and a message that appears only inside it reads as
+    // "the button is broken" - which is exactly how this was reported.
+    say('Sign in or create an account below to continue — it takes a moment.');
+
     if(window.SMaccount && window.SMaccount.open){
-      window.SMaccount.open('You need an account first — it is what keeps Pro on your phone as well as here.');
+      window.SMaccount.open('Create an account or sign in, and payment opens straight after.');
+    } else {
+      // No account card on this page at all: better to let them pay than to
+      // stop them dead over an account they can make afterwards.
+      goToCheckout();
     }
   });
 
