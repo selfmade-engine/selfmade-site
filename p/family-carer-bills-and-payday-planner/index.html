@@ -28,7 +28,7 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Map your paydays against your bills and get one number: what you can spend today with everything still clearing</h1>
+<h1>Stop guessing: Map your paydays against your bills and get one number: what you can spend today with everything still clearing</h1>
 
 <ul class="checks"><li>Built for someone caring for a parent — people caring for a parent</li><li>Fixes: the balance in the account is not the money you have, because four bills have not gone out yet — and people caring for a parent feel this hardest</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
@@ -880,9 +880,16 @@ function SMfmtDate(d){
     }
   }
 
+  /**
+   * Show the account card. Returns false when there is none on this page.
+   *
+   * The pricing page carries this script but not the card, so it used to
+   * return quietly and the Subscribe button did nothing at all - which is
+   * indistinguishable from a broken button.
+   */
   function open(why){
     var box = el('sm-account');
-    if(!box) return;
+    if(!box) return false;
     box.hidden = false;
     show('sm-acc-choose');
 
@@ -902,6 +909,7 @@ function SMfmtDate(d){
 
     box.scrollIntoView({ block: 'center' });
     if(el('sm-acc-email')) el('sm-acc-email').focus();
+    return true;
   }
 
   /**
@@ -1057,6 +1065,11 @@ function SMfmtDate(d){
         })
         .catch(function(){ sayConfirm('Could not reach the server. Try the code instead.', true); });
       return;
+    }
+
+    // Sent here from the pricing page to sign in before paying.
+    if(params.get('signin')){
+      open('Create an account or sign in, and payment opens straight after.');
     }
 
     // Came back to a half-finished sign-up.
@@ -1343,12 +1356,15 @@ function SMfmtDate(d){
     // "the button is broken" - which is exactly how this was reported.
     say('Sign in or create an account below to continue — it takes a moment.');
 
-    if(window.SMaccount && window.SMaccount.open){
-      window.SMaccount.open('Create an account or sign in, and payment opens straight after.');
-    } else {
-      // No account card on this page at all: better to let them pay than to
-      // stop them dead over an account they can make afterwards.
-      goToCheckout();
+    var opened = window.SMaccount && window.SMaccount.open
+      && window.SMaccount.open('Create an account or sign in, and payment opens straight after.');
+
+    if(!opened){
+      // This page has no account card - the pricing page is like that. Send
+      // them to the product itself, where there is one. The intent is already
+      // in sessionStorage, so signing in there carries on to payment.
+      say('Taking you to sign in…');
+      location.href = './?signin=1';
     }
   });
 
