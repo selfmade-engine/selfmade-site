@@ -28,7 +28,7 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Painter and Decorator Job Profit Tracker — Log each job with its price, materials and real hours, and see what you actually earned an hour</h1>
+<h1>Stop guessing: Log each job with its price, materials and real hours, and see what you actually earned an hour</h1>
 
 <ul class="checks"><li>Built for painters and decorators</li><li>Fixes: a price that felt right in the van turns out to pay less than minimum wage once the hours and materials are counted, and painters and decorators usually find out too late</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
@@ -204,10 +204,13 @@ var SM_CONTACT = "selfmade.engine@gmail.com";
 var SM_BUY_URL = "./pricing.html";
 var SM_PRICE = "$15.00";
 </script>
-<!-- LICENCE_JS first: it defines window.SM, and the tool calls SM.load() and
-     SM.pro() while it is painting for the first time. The other way round threw
-     "SM is not defined" on every single page load, which killed the rest of
-     that paint - the saved-sets panel simply never appeared. -->
+<!-- Everything that builds window.SM has to run before the tool does.
+     The tool calls SM.pro() and SM.load() while painting for the first time,
+     and SM is assembled in two parts: LICENCE_JS creates it, PRO_TOOLKIT_JS
+     adds save/load/export to it.
+     With the tool first this threw "SM is not defined" on every page load;
+     moving only LICENCE_JS ahead of it turned that into "SM.load is not a
+     function", which is the same bug one step later. Both parts go first. -->
 <script>
 window.SM = (function(){
   var KEY_STORE = 'sm_key_' + SM_SLUG;
@@ -537,6 +540,82 @@ window.SM = (function(){
   if(document.readyState !== 'loading') SM.init();
   else document.addEventListener('DOMContentLoaded', function(){ SM.init(); });
   return SM;
+})();
+</script>
+<script>
+(function(){
+  if(!window.SM) return;
+
+  function store(name){ return 'sm_pro_' + SM_SLUG + '_' + name; }
+
+  SM.save = function(name, list){
+    if(!SM.gate('Saving')) return false;
+    try { localStorage.setItem(store(name), JSON.stringify(list)); return true; } catch(e){ return false; }
+  };
+
+  SM.load = function(name){
+    try { return JSON.parse(localStorage.getItem(store(name)) || '[]'); } catch(e){ return []; }
+  };
+
+  /** Download rows as CSV. Pro only. */
+  SM.exportCsv = function(filename, rows){
+    if(!SM.gate('CSV export')) return false;
+    var csv = rows.map(function(r){
+      return r.map(function(cell){
+        var v = String(cell == null ? '' : cell);
+        return /[",\n]/.test(v) ? '"' + v.replace(/"/g,'""') + '"' : v;
+      }).join(',');
+    }).join('\n');
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    return true;
+  };
+
+  /** Copy text, no gate - free users get this too. */
+  SM.copy = function(text, btn){
+    navigator.clipboard.writeText(text);
+    if(btn){ var old = btn.textContent; btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = old; }, 1500); }
+  };
+
+  /**
+   * Renders a bulk panel: many inputs in, many results out.
+   * cfg = { mount, placeholder, hint, run(lineArray) -> rowsArray, header }
+   */
+  SM.bulk = function(cfg){
+    var mount = document.getElementById(cfg.mount);
+    if(!mount) return;
+    mount.innerHTML =
+      '<h3>Bulk mode <span class="badge pro">PRO</span></h3>'
+      + '<p class="sub">' + cfg.hint + '</p>'
+      + '<textarea id="' + cfg.mount + '-in" placeholder="' + cfg.placeholder + '"></textarea>'
+      + '<div class="row"><button id="' + cfg.mount + '-go">Run all</button>'
+      + '<button id="' + cfg.mount + '-csv" class="secondary">Download CSV</button>'
+      + '<span id="' + cfg.mount + '-count" class="badge"></span></div>'
+      + '<output id="' + cfg.mount + '-out"></output>';
+
+    var rows = [];
+    function run(){
+      if(!SM.gate('Bulk mode')) return;
+      var lines = (document.getElementById(cfg.mount + '-in').value || '')
+        .split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
+      if(!lines.length){ document.getElementById(cfg.mount + '-out').textContent = 'Paste one per line above.'; return; }
+      rows = cfg.run(lines);
+      document.getElementById(cfg.mount + '-count').textContent = rows.length + ' done';
+      document.getElementById(cfg.mount + '-out').textContent =
+        rows.slice(0, 50).map(function(r){ return r.join('  ->  '); }).join('\n')
+        + (rows.length > 50 ? '\n... and ' + (rows.length - 50) + ' more in the CSV' : '');
+    }
+    document.getElementById(cfg.mount + '-go').addEventListener('click', run);
+    document.getElementById(cfg.mount + '-csv').addEventListener('click', function(){
+      if(!rows.length) run();
+      if(rows.length) SM.exportCsv(SM_SLUG + '-bulk.csv', [cfg.header].concat(rows));
+    });
+  };
 })();
 </script>
 <script data-sm="tool">
@@ -1167,82 +1246,6 @@ function SMfmtDate(d){
     refresh();
   });
 })();</script>
-<script>
-(function(){
-  if(!window.SM) return;
-
-  function store(name){ return 'sm_pro_' + SM_SLUG + '_' + name; }
-
-  SM.save = function(name, list){
-    if(!SM.gate('Saving')) return false;
-    try { localStorage.setItem(store(name), JSON.stringify(list)); return true; } catch(e){ return false; }
-  };
-
-  SM.load = function(name){
-    try { return JSON.parse(localStorage.getItem(store(name)) || '[]'); } catch(e){ return []; }
-  };
-
-  /** Download rows as CSV. Pro only. */
-  SM.exportCsv = function(filename, rows){
-    if(!SM.gate('CSV export')) return false;
-    var csv = rows.map(function(r){
-      return r.map(function(cell){
-        var v = String(cell == null ? '' : cell);
-        return /[",\n]/.test(v) ? '"' + v.replace(/"/g,'""') + '"' : v;
-      }).join(',');
-    }).join('\n');
-    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500);
-    return true;
-  };
-
-  /** Copy text, no gate - free users get this too. */
-  SM.copy = function(text, btn){
-    navigator.clipboard.writeText(text);
-    if(btn){ var old = btn.textContent; btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = old; }, 1500); }
-  };
-
-  /**
-   * Renders a bulk panel: many inputs in, many results out.
-   * cfg = { mount, placeholder, hint, run(lineArray) -> rowsArray, header }
-   */
-  SM.bulk = function(cfg){
-    var mount = document.getElementById(cfg.mount);
-    if(!mount) return;
-    mount.innerHTML =
-      '<h3>Bulk mode <span class="badge pro">PRO</span></h3>'
-      + '<p class="sub">' + cfg.hint + '</p>'
-      + '<textarea id="' + cfg.mount + '-in" placeholder="' + cfg.placeholder + '"></textarea>'
-      + '<div class="row"><button id="' + cfg.mount + '-go">Run all</button>'
-      + '<button id="' + cfg.mount + '-csv" class="secondary">Download CSV</button>'
-      + '<span id="' + cfg.mount + '-count" class="badge"></span></div>'
-      + '<output id="' + cfg.mount + '-out"></output>';
-
-    var rows = [];
-    function run(){
-      if(!SM.gate('Bulk mode')) return;
-      var lines = (document.getElementById(cfg.mount + '-in').value || '')
-        .split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
-      if(!lines.length){ document.getElementById(cfg.mount + '-out').textContent = 'Paste one per line above.'; return; }
-      rows = cfg.run(lines);
-      document.getElementById(cfg.mount + '-count').textContent = rows.length + ' done';
-      document.getElementById(cfg.mount + '-out').textContent =
-        rows.slice(0, 50).map(function(r){ return r.join('  ->  '); }).join('\n')
-        + (rows.length > 50 ? '\n... and ' + (rows.length - 50) + ' more in the CSV' : '');
-    }
-    document.getElementById(cfg.mount + '-go').addEventListener('click', run);
-    document.getElementById(cfg.mount + '-csv').addEventListener('click', function(){
-      if(!rows.length) run();
-      if(rows.length) SM.exportCsv(SM_SLUG + '-bulk.csv', [cfg.header].concat(rows));
-    });
-  };
-})();
-</script>
 <script>
 (function(){
   var form = document.getElementById('sm-feedback');
