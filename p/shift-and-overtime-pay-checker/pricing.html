@@ -541,9 +541,16 @@ window.SM = (function(){
     }
   }
 
+  /**
+   * Show the account card. Returns false when there is none on this page.
+   *
+   * The pricing page carries this script but not the card, so it used to
+   * return quietly and the Subscribe button did nothing at all - which is
+   * indistinguishable from a broken button.
+   */
   function open(why){
     var box = el('sm-account');
-    if(!box) return;
+    if(!box) return false;
     box.hidden = false;
     show('sm-acc-choose');
 
@@ -563,6 +570,7 @@ window.SM = (function(){
 
     box.scrollIntoView({ block: 'center' });
     if(el('sm-acc-email')) el('sm-acc-email').focus();
+    return true;
   }
 
   /**
@@ -718,6 +726,11 @@ window.SM = (function(){
         })
         .catch(function(){ sayConfirm('Could not reach the server. Try the code instead.', true); });
       return;
+    }
+
+    // Sent here from the pricing page to sign in before paying.
+    if(params.get('signin')){
+      open('Create an account or sign in, and payment opens straight after.');
     }
 
     // Came back to a half-finished sign-up.
@@ -1004,12 +1017,15 @@ window.SM = (function(){
     // "the button is broken" - which is exactly how this was reported.
     say('Sign in or create an account below to continue — it takes a moment.');
 
-    if(window.SMaccount && window.SMaccount.open){
-      window.SMaccount.open('Create an account or sign in, and payment opens straight after.');
-    } else {
-      // No account card on this page at all: better to let them pay than to
-      // stop them dead over an account they can make afterwards.
-      goToCheckout();
+    var opened = window.SMaccount && window.SMaccount.open
+      && window.SMaccount.open('Create an account or sign in, and payment opens straight after.');
+
+    if(!opened){
+      // This page has no account card - the pricing page is like that. Send
+      // them to the product itself, where there is one. The intent is already
+      // in sessionStorage, so signing in there carries on to payment.
+      say('Taking you to sign in…');
+      location.href = './?signin=1';
     }
   });
 
