@@ -46,6 +46,10 @@ button.secondary{background:var(--panel-2);color:var(--text);border:1px solid va
 /* The one line that says what paying actually gets you. Hitting the limit
    is the moment that matters, so it is not small print. */
 .sm-lock-sell{display:block;margin-top:8px;color:var(--text);font-weight:600}
+/* Shown instead of the Buy button to somebody already subscribed. */
+.sm-on-pro{margin:10px 0;padding:10px 14px;border:1px solid var(--ok,#2ea043);border-radius:10px;color:var(--ok,#2ea043);font-weight:600}
+.legal{font-size:12px;opacity:.75;margin-top:10px}
+.legal a{color:inherit}
 /* Draws the eye when the sign-in card is opened by the Buy button. Without
    it, a card already on screen changes by one line of text and the button
    looks like it did nothing. */
