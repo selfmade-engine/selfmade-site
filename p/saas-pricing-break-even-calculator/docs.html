@@ -62,7 +62,10 @@ var SM_CONTACT = "selfmade.engine@gmail.com";
 var SM_BUY_URL = "./pricing.html";
 var SM_PRICE = "$15.00";
 </script>
-<script data-sm="tool"></script>
+<!-- LICENCE_JS first: it defines window.SM, and the tool calls SM.load() and
+     SM.pro() while it is painting for the first time. The other way round threw
+     "SM is not defined" on every single page load, which killed the rest of
+     that paint - the saved-sets panel simply never appeared. -->
 <script>
 window.SM = (function(){
   var KEY_STORE = 'sm_key_' + SM_SLUG;
@@ -394,6 +397,7 @@ window.SM = (function(){
   return SM;
 })();
 </script>
+<script data-sm="tool"></script>
 <script>
 (function(){
   var SESSION_STORE = 'sm_session_' + SM_SLUG;
@@ -431,7 +435,21 @@ window.SM = (function(){
     if(!box) return;
     box.hidden = false;
     show('sm-acc-choose');
+
+    // Retitle the card when it has been opened on the way to paying, so the
+    // reason is the first thing read rather than a line under the fields.
+    var title = el('sm-acc-title');
+    var sub = el('sm-acc-sub');
+    if(why && title) title.textContent = 'One step before payment';
+    if(why && sub) sub.textContent = why;
+
     if(why) say(why);
+
+    // Flashed, because the card can already be on screen - in which case
+    // nothing visibly changes and the button looks broken.
+    box.classList.add('sm-attention');
+    setTimeout(function(){ box.classList.remove('sm-attention'); }, 1600);
+
     box.scrollIntoView({ block: 'center' });
     if(el('sm-acc-email')) el('sm-acc-email').focus();
   }
@@ -945,8 +963,18 @@ window.SM = (function(){
     // account card can carry straight on to the card form afterwards instead
     // of dropping them back on the page wondering what happened.
     try { sessionStorage.setItem('sm_buying_intent_' + SM_SLUG, '1'); } catch(err){}
+
+    // Say something where the click happened, first. The account card can be
+    // most of a page away, and a message that appears only inside it reads as
+    // "the button is broken" - which is exactly how this was reported.
+    say('Sign in or create an account below to continue — it takes a moment.');
+
     if(window.SMaccount && window.SMaccount.open){
-      window.SMaccount.open('You need an account first — it is what keeps Pro on your phone as well as here.');
+      window.SMaccount.open('Create an account or sign in, and payment opens straight after.');
+    } else {
+      // No account card on this page at all: better to let them pay than to
+      // stop them dead over an account they can make afterwards.
+      goToCheckout();
     }
   });
 

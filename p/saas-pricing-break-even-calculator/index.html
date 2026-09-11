@@ -28,7 +28,7 @@
   <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
-<h1>Stop guessing: Model price, churn, CAC and costs, and see break-even customers and 12-month MRR</h1>
+<h1>Model price, churn, CAC and costs, and see break-even customers and 12-month MRR</h1>
 
 <ul class="checks"><li>Built for bootstrapped founders setting their first price</li><li>Fixes: founders price on feel and cannot see the break-even or churn impact</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $15.00 a month and you can cancel any time.</li></ul>
 <div id="sm-tier" class="tierbar"></div>
@@ -172,39 +172,10 @@ var SM_CONTACT = "selfmade.engine@gmail.com";
 var SM_BUY_URL = "./pricing.html";
 var SM_PRICE = "$15.00";
 </script>
-<script data-sm="tool">
-(function(){
-  function n(id){ return parseFloat(document.getElementById(id).value)||0; }
-  function money(v){ return (v<0?'-$':'$') + Math.abs(v).toFixed(2); }
-  function calc(){
-    var price=n('s-price'), fixed=n('s-cost'), variable=n('s-var');
-    var churn=Math.min(n('s-churn'),50)/100, cac=n('s-cac'), added=n('s-new');
-    var contribution = price - variable;
-    var be = contribution>0 ? Math.ceil(fixed/contribution) : Infinity;
-    var ltv = churn>0 ? contribution/churn : contribution*36;
-    var ratio = cac>0 ? ltv/cac : Infinity;
-    document.getElementById('s-be').textContent = isFinite(be) ? be : 'never';
-    document.getElementById('s-ltv').textContent = money(ltv);
-    document.getElementById('s-ratio').textContent = isFinite(ratio) ? ratio.toFixed(1)+'x' : 'inf';
-    var verdict;
-    if(contribution<=0) verdict='Each customer loses money before fixed costs. The price is below the variable cost - nothing else matters until that is fixed.';
-    else if(!isFinite(ratio)) verdict='With no acquisition cost, every customer is pure upside. Break-even is ' + be + ' customers.';
-    else if(ratio<1) verdict='You pay ' + money(cac) + ' to earn ' + money(ltv) + '. Every sale destroys value - cut acquisition cost or raise price before scaling.';
-    else if(ratio<3) verdict='LTV:CAC of ' + ratio.toFixed(1) + 'x is thin. Below 3x there is little room for the months where nothing works.';
-    else verdict='LTV:CAC of ' + ratio.toFixed(1) + 'x supports spending on acquisition. Break-even sits at ' + be + ' customers.';
-    document.getElementById('s-out').textContent = verdict;
-    var rows='', customers=0;
-    for(var m=1;m<=12;m++){
-      customers = customers*(1-churn) + added;
-      var mrr = customers*price;
-      var profit = mrr - fixed - customers*variable - added*cac;
-      rows += '<tr><td>'+m+'</td><td>'+customers.toFixed(0)+'</td><td>'+money(mrr)+'</td><td>'+money(profit)+'</td></tr>';
-    }
-    document.getElementById('s-rows').innerHTML = rows;
-  }
-  ['s-price','s-cost','s-var','s-churn','s-cac','s-new'].forEach(function(id){ document.getElementById(id).addEventListener('input', calc); });
-  calc();
-})();</script>
+<!-- LICENCE_JS first: it defines window.SM, and the tool calls SM.load() and
+     SM.pro() while it is painting for the first time. The other way round threw
+     "SM is not defined" on every single page load, which killed the rest of
+     that paint - the saved-sets panel simply never appeared. -->
 <script>
 window.SM = (function(){
   var KEY_STORE = 'sm_key_' + SM_SLUG;
@@ -536,6 +507,39 @@ window.SM = (function(){
   return SM;
 })();
 </script>
+<script data-sm="tool">
+(function(){
+  function n(id){ return parseFloat(document.getElementById(id).value)||0; }
+  function money(v){ return (v<0?'-$':'$') + Math.abs(v).toFixed(2); }
+  function calc(){
+    var price=n('s-price'), fixed=n('s-cost'), variable=n('s-var');
+    var churn=Math.min(n('s-churn'),50)/100, cac=n('s-cac'), added=n('s-new');
+    var contribution = price - variable;
+    var be = contribution>0 ? Math.ceil(fixed/contribution) : Infinity;
+    var ltv = churn>0 ? contribution/churn : contribution*36;
+    var ratio = cac>0 ? ltv/cac : Infinity;
+    document.getElementById('s-be').textContent = isFinite(be) ? be : 'never';
+    document.getElementById('s-ltv').textContent = money(ltv);
+    document.getElementById('s-ratio').textContent = isFinite(ratio) ? ratio.toFixed(1)+'x' : 'inf';
+    var verdict;
+    if(contribution<=0) verdict='Each customer loses money before fixed costs. The price is below the variable cost - nothing else matters until that is fixed.';
+    else if(!isFinite(ratio)) verdict='With no acquisition cost, every customer is pure upside. Break-even is ' + be + ' customers.';
+    else if(ratio<1) verdict='You pay ' + money(cac) + ' to earn ' + money(ltv) + '. Every sale destroys value - cut acquisition cost or raise price before scaling.';
+    else if(ratio<3) verdict='LTV:CAC of ' + ratio.toFixed(1) + 'x is thin. Below 3x there is little room for the months where nothing works.';
+    else verdict='LTV:CAC of ' + ratio.toFixed(1) + 'x supports spending on acquisition. Break-even sits at ' + be + ' customers.';
+    document.getElementById('s-out').textContent = verdict;
+    var rows='', customers=0;
+    for(var m=1;m<=12;m++){
+      customers = customers*(1-churn) + added;
+      var mrr = customers*price;
+      var profit = mrr - fixed - customers*variable - added*cac;
+      rows += '<tr><td>'+m+'</td><td>'+customers.toFixed(0)+'</td><td>'+money(mrr)+'</td><td>'+money(profit)+'</td></tr>';
+    }
+    document.getElementById('s-rows').innerHTML = rows;
+  }
+  ['s-price','s-cost','s-var','s-churn','s-cac','s-new'].forEach(function(id){ document.getElementById(id).addEventListener('input', calc); });
+  calc();
+})();</script>
 <script>
 (function(){
   var SESSION_STORE = 'sm_session_' + SM_SLUG;
@@ -573,7 +577,21 @@ window.SM = (function(){
     if(!box) return;
     box.hidden = false;
     show('sm-acc-choose');
+
+    // Retitle the card when it has been opened on the way to paying, so the
+    // reason is the first thing read rather than a line under the fields.
+    var title = el('sm-acc-title');
+    var sub = el('sm-acc-sub');
+    if(why && title) title.textContent = 'One step before payment';
+    if(why && sub) sub.textContent = why;
+
     if(why) say(why);
+
+    // Flashed, because the card can already be on screen - in which case
+    // nothing visibly changes and the button looks broken.
+    box.classList.add('sm-attention');
+    setTimeout(function(){ box.classList.remove('sm-attention'); }, 1600);
+
     box.scrollIntoView({ block: 'center' });
     if(el('sm-acc-email')) el('sm-acc-email').focus();
   }
@@ -1087,8 +1105,18 @@ window.SM = (function(){
     // account card can carry straight on to the card form afterwards instead
     // of dropping them back on the page wondering what happened.
     try { sessionStorage.setItem('sm_buying_intent_' + SM_SLUG, '1'); } catch(err){}
+
+    // Say something where the click happened, first. The account card can be
+    // most of a page away, and a message that appears only inside it reads as
+    // "the button is broken" - which is exactly how this was reported.
+    say('Sign in or create an account below to continue — it takes a moment.');
+
     if(window.SMaccount && window.SMaccount.open){
-      window.SMaccount.open('You need an account first — it is what keeps Pro on your phone as well as here.');
+      window.SMaccount.open('Create an account or sign in, and payment opens straight after.');
+    } else {
+      // No account card on this page at all: better to let them pay than to
+      // stop them dead over an account they can make afterwards.
+      goToCheckout();
     }
   });
 
