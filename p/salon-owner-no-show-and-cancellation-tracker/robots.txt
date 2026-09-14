@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://selfmade-api.selfmade-engine.workers.dev/p/salon-owner-no-show-and-cancellation-tracker/sitemap.xml
