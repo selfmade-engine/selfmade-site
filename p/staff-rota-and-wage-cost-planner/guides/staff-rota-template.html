@@ -3,180 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Staff Rota Cost Planner — Build the week</title>
-<meta name="description" content="Build the week and watch the wage cost as you go, with clashes and over-hours caught before Monday. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Staff Rota Cost Planner — Build the week">
-<meta property="og:description" content="Build the week and watch the wage cost as you go, with clashes and over-hours caught before Monday. Free to use, nothing to install, works in your browser.">
+<title>Staff rota template</title>
+<meta name="description" content="The rota is built blind and the wage cost is discovered after payroll has run. Staff Rota Cost Planner works it out for you, free, in your browser — nothi…">
+<meta property="og:title" content="Staff rota template">
+<meta property="og:description" content="The rota is built blind and the wage cost is discovered after payroll has run. Staff Rota Cost Planner works it out for you, free, in your browser — nothi…">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/staff-rota-and-wage-cost-planner/og.png">
+<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/staff-rota-and-wage-cost-planner/guides/staff-rota-template.html/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Staff Rota Cost Planner — Build the week">
+<meta property="og:image:alt" content="Staff rota template">
 <!-- summary_large_image rather than summary: without a picture a shared link
      renders as a grey rectangle, which costs more clicks than any wording. -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/staff-rota-and-wage-cost-planner/og.png">
-<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/staff-rota-and-wage-cost-planner/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Staff Rota Cost Planner","description":"Build the week and watch the wage cost as you go, with clashes and over-hours caught before Monday. Free to use, nothing to install, works in your browser.","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"https://selfmade-engine.github.io/selfmade-site/p/staff-rota-and-wage-cost-planner/","offers":{"@type":"Offer","price":"24.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
-<link rel="stylesheet" href="./style.css">
+<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/staff-rota-and-wage-cost-planner/guides/staff-rota-template.html/og.png">
+<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/staff-rota-and-wage-cost-planner/guides/staff-rota-template.html">
+
+<link rel="stylesheet" href="../style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
 <body>
 <div class="wrap">
 <header class="site">
-  <a class="brand" href="./">Staff Rota Cost Planner</a>
-  <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
+  <a class="brand" href="../">Staff Rota Cost Planner</a>
+  <nav><a href="./">Tool</a><a href="../docs.html">Docs</a><a href="../pricing.html">Pricing</a></nav>
 </header>
 
-<h1>Build the week</h1>
-<p class="sub">Build the week and watch the wage cost as you go, with clashes and over-hours caught before Monday. Free to use, nothing to install, works in your browser.</p>
-<ul class="checks"><li>Built for owners and managers of cafes, shops, salons and small venues</li><li>Fixes: the rota is built blind and the wage cost is discovered after payroll has run</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $24.00 a month and you can cancel any time.</li></ul>
-<div id="sm-tier" class="tierbar"></div>
-
-<div class="card">
-  <h2>Who is on the team</h2>
-  <div class="grid cols-3">
-    <div><label for="r-name">Name</label><input id="r-name" placeholder="Sam"></div>
-    <div><label for="r-pay">Hourly pay</label><input id="r-pay" type="number" min="0" step="0.25" value="12"></div>
-    <div><label for="r-max">Most hours they can do</label><input id="r-max" type="number" min="0" step="1" value="40"></div>
-  </div>
-  <div class="row"><button id="r-add-staff">Add to the team</button><span id="r-staff-count" class="badge"></span></div>
-  <div id="r-staff-list"></div>
-</div>
-<div class="card">
-  <h2>Put someone on a shift</h2>
-  <div class="grid cols-3">
-    <div><label for="r-who">Who</label><select id="r-who"></select></div>
-    <div><label for="r-day">Day</label><select id="r-day">
-      <option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option>
-      <option>Friday</option><option>Saturday</option><option>Sunday</option></select></div>
-    <div><label for="r-shift-start">From</label><input id="r-shift-start" type="time" value="09:00"></div>
-    <div><label for="r-shift-end">Until</label><input id="r-shift-end" type="time" value="17:00"></div>
-    <div><label for="r-shift-break">Unpaid break (minutes)</label><input id="r-shift-break" type="number" min="0" step="5" value="30"></div>
-    <div><label for="r-add-shift">&nbsp;</label><button id="r-add-shift">Add shift</button></div>
-  </div>
-</div>
-<div class="card">
-  <h2>The week</h2>
-  <div class="grid cols-2">
-    <div><label for="r-budget">Wage budget for the week</label><input id="r-budget" type="number" min="0" step="10" value="1500"></div>
-    <div><label for="r-clear">&nbsp;</label><button id="r-clear" class="secondary">Clear the rota</button></div>
-  </div>
-  <div class="grid cols-3" id="r-stats"></div>
-  <div id="r-warnings"></div>
-  <div id="r-grid"></div>
-</div>
-<div class="card">
-  <h3>Save weeks and copy last week <span class="badge pro">PRO</span></h3>
-  <p class="sub">Most weeks look like the last one. Save a good week, bring it back with one click, and change the two shifts that moved instead of building it again from nothing.</p>
-  <div class="row">
-    <input id="r-week-name" placeholder="e.g. Half term week" style="max-width:240px">
-    <button id="r-save" class="secondary">Save this week</button>
-    <button id="r-export" class="secondary">Download the rota</button>
-  </div>
-  <div id="r-saved" class="row"></div>
-</div>
-<div id="sm-lock" class="lockbox" hidden></div>
-
-<div class="card no-print sm-auth" id="sm-account" hidden>
-
-  <!-- 1. sign in, or start an account -->
-  <div id="sm-acc-choose">
-    <div class="sm-auth-head">
-      <h2 id="sm-acc-title">Sign in</h2>
-      <p class="sub" id="sm-acc-sub">Your account carries Pro with you — this computer, your phone, anywhere you open it.</p>
-    </div>
-
-    <div class="sm-auth-fields">
-      <label for="sm-acc-email">Email</label>
-      <input id="sm-acc-email" type="email" autocomplete="email" placeholder="you@example.com" inputmode="email">
-
-      <label for="sm-acc-pass">Password<span class="sm-hint" id="sm-acc-passhint"></span></label>
-      <input id="sm-acc-pass" type="password" autocomplete="current-password" placeholder="Your password">
-    </div>
-
-    <button id="sm-acc-go" class="sm-auth-primary">Sign in</button>
-
-    <output id="sm-acc-msg" class="sm-auth-msg"></output>
-
-    <div class="sm-auth-alt">
-      <button id="sm-acc-new" class="linkish">Create an account</button>
-      <span class="sm-auth-dot">·</span>
-      <button id="sm-acc-forgot" class="linkish">Forgot password</button>
-    </div>
-  </div>
-
-  <!-- 2. confirm the email -->
-  <div id="sm-acc-confirm" hidden>
-    <div class="sm-auth-head">
-      <h2>Check your email</h2>
-      <p class="sub">We sent a 6-digit code to <strong id="sm-acc-sentto"></strong>. Type it in and you are done.</p>
-    </div>
-
-    <input id="sm-acc-code" class="sm-code" type="text" inputmode="numeric" autocomplete="one-time-code"
-           maxlength="6" placeholder="000000" aria-label="6-digit code from your email">
-
-    <button id="sm-acc-confirmgo" class="sm-auth-primary">Confirm</button>
-
-    <output id="sm-acc-confirmmsg" class="sm-auth-msg"></output>
-
-    <div class="sm-auth-alt">
-      <button id="sm-acc-resend" class="linkish">Send it again</button>
-      <span class="sm-auth-dot">·</span>
-      <button id="sm-acc-abandon" class="linkish sm-danger">Cancel</button>
-    </div>
-    <p class="limit">The code lasts 30 minutes. Cancelling removes the half-made account, so nothing is left behind.</p>
-  </div>
-
-  <!-- 3. signed in -->
-  <div id="sm-acc-signedin" hidden>
-    <div class="sm-acc-rows" id="sm-acc-stats"></div>
-    <div class="row">
-      <button id="sm-acc-out" class="secondary">Sign out</button>
-      <button id="sm-acc-cancel" class="linkish sm-danger" hidden>Cancel subscription</button>
-    </div>
-    <output id="sm-acc-cancelmsg" class="sm-auth-msg"></output>
-    <p class="limit" id="sm-acc-cancelnote" hidden></p>
-    <p class="limit" id="sm-acc-foot">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for, and your account stays exactly as it is.</p>
-  </div>
-</div>
-
-<div class="card paycard no-print" id="sm-pay">
-  <div class="payhead">
-    <div>
-      <h2>Pro</h2>
-      <p class="sub">Rota three people for one week, with the wage cost as you go. Pro takes the limit off and adds what you need when you do this every week.</p>
-    </div>
-    <div class="payprice"><span class="price">$24.00</span><span class="per">/month</span></div>
-  </div>
-  <ul class="checks pro"><li><strong>The whole team</strong><span class="why">Free covers a couple of people. A small cafe is eight.</span></li><li><strong>Saved weeks and copy last week</strong><span class="why">Most weeks are last week with two changes. This turns an hour on a Sunday into five minutes.</span></li><li><strong>Download the rota</strong><span class="why">Print it for the back wall, or send it to payroll without retyping it.</span></li></ul>
-  <p class="sm-on-pro" id="sm-already-pro" hidden></p>
-    <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Get Pro — $24.00/month</a></div>
-    <p class="notice" id="sm-buy-note">You will be taken straight to a secure card form. Payment is handled by Stripe — your card details go to them, never to this page. Cancel any time.</p>
-    <p class="notice" id="sm-buy-status" hidden></p>
-  <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
-  <a href="./pricing.html">See everything in Pro</a></p>
-</div>
-<div class="card">
-  <h2>Who this is for</h2>
-  <p class="sub">Owners and managers of cafes, shops, salons and small venues</p>
-  <h2>The problem</h2>
-  <p class="sub">The rota is built blind and the wage cost is discovered after payroll has run</p>
-  <h2>What it does about it</h2>
-  <p class="sub">Build the week and watch the wage cost as you go, with clashes and over-hours caught before Monday</p>
-  
-</div>
-<div class="card"><h2>Guides</h2><ul class="checks"><li><a href="./guides/staff-rota-template.html">Staff rota template</a></li></ul></div>
-
-<div class="card no-print">
-  <h2>Did this do what you needed?</h2>
-  <p class="sub">One line of feedback decides what gets built next. Leave an email only if you want a reply.</p>
-  <form id="sm-feedback" class="grid">
-    <div><label for="sm-note">What would make this better?</label><input id="sm-note" name="note" maxlength="500" placeholder="It should also…"></div>
-    <div><label for="sm-email">Email (optional)</label><input id="sm-email" name="email" type="email" placeholder="you@example.com"></div>
-    <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
-  </form>
-</div>
+<h1>Staff rota template</h1>
+<p class="sub">The rota is built blind and the wage cost is discovered after payroll has run. Staff Rota Cost Planner works it out for you, free, in your browser — nothi…</p>
+<div class="card"><h2>The short answer</h2><p class="sub">The rota is built blind and the wage cost is discovered after payroll has run. Staff Rota Cost Planner works it out for you, free, in your browser — nothing to install and nothing uploaded.</p></div>
+<div class="card"><h2>How hours and cost are worked out</h2><p class="sub">Finish time minus start time, minus the unpaid break, times that person&#39;s hourly pay. Shifts that run past midnight are handled properly.</p></div>
+<div class="card"><h2>Why it is worth doing at all</h2><p class="sub">Owners and managers of cafes, shops, salons and small venues. put this off because it feels like admin rather than work. It is not: it is the difference between knowing where you stand and guessing at it, and the guess is always more flattering than the truth.</p></div>
+<div class="card"><h2>Doing it without a tool</h2><p class="sub">You can do all of this on paper or in a spreadsheet, and plenty of people do. The cost is not the arithmetic, it is remembering to do it and keeping the same method every time. A month you forget is a month missing from the total, and you find out about it at the worst possible moment.</p></div>
+<div class="card"><h2>If you would rather it just did it</h2><p class="sub">Open Staff Rota Cost Planner, put the numbers in, and read the answer. The free version is enough to try it properly, and Pro takes the limit off.</p></div>
+<div class="card"><h2>Try it</h2><p class="sub">Staff Rota Cost Planner does this in your browser, free, with no signup.</p><p><a class="buy" href="../">Open Staff Rota Cost Planner</a></p></div>
+<p class="notice">Written by SELFMADE, which also built the tool this page is about. That is a bias worth knowing about while you read it.</p>
 <footer class="site">
   <p>Staff Rota Cost Planner — built and operated by SELFMADE.
   Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
@@ -201,9 +61,9 @@ var SM_LICENCE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/licen
 var SM_USE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/use";
 var SM_ACTIVATE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/activate";
 var SM_API_BASE = "https://selfmade-api.selfmade-engine.workers.dev";
-var SM_DAILY_LIMIT = 3;
-var SM_LIMIT_LABEL = "rotas a day";
-var SM_PITCH = "Pro adds the whole team, saved weeks and copy last week, download the rota and budget tracking across weeks.";
+var SM_DAILY_LIMIT = 0;
+var SM_LIMIT_LABEL = "uses";
+var SM_PITCH = "";
 var SM_CONTACT = "selfmade.engine@gmail.com";
 // Where the Upgrade button goes, and what it costs. Straight to checkout when
 // there is one, because a pricing page in between is a step people leave at.
@@ -629,211 +489,7 @@ window.SM = (function(){
   };
 })();
 </script>
-<script data-sm="tool">
-var SMH = (function(){
-  function $(id){ return document.getElementById(id); }
-  function n(v){ var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, '')); return isFinite(x) ? x : 0; }
-  function num(id){ var e = $(id); return e ? n(e.value) : 0; }
-  function val(id){ var e = $(id); return e ? String(e.value || '').trim() : ''; }
-  function esc(s){
-    return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
-      return c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&quot;';
-    });
-  }
-  var CUR = '$';
-  function setCur(s){ if(s) CUR = s; }
-  function cur(v){
-    var neg = v < 0;
-    var a = Math.abs(Math.round(v * 100) / 100).toFixed(2);
-    return (neg ? '-' : '') + CUR + a.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  }
-  function hrs(v){ return (Math.round(v * 100) / 100).toFixed(2); }
-  function today(){ return new Date().toISOString().slice(0, 10); }
-  function fmtDate(d){
-    if(!(d instanceof Date)) d = new Date(d);
-    if(isNaN(d.getTime())) return '';
-    return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
-  }
-  function addMonths(d, m){ var x = new Date(d.getTime()); x.setMonth(x.getMonth() + m); return x; }
-  function table(head, rows, cls){
-    var h = '<tr>' + head.map(function(c){ return '<th>' + c + '</th>'; }).join('') + '</tr>';
-    var b = rows.map(function(r){
-      var rowCls = r.cls ? ' class="' + r.cls + '"' : '';
-      var cells = (r.cells || r);
-      return '<tr' + rowCls + '>' + cells.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>';
-    }).join('');
-    return '<table' + (cls ? ' class="' + cls + '"' : '') + '>' + h + b + '</table>';
-  }
-  function stat(k, v, note){
-    return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
-      (note ? '<div class="k" style="text-transform:none;letter-spacing:0;margin-top:4px">' + note + '</div>' : '') + '</div>';
-  }
-  return { $: $, n: n, num: num, val: val, esc: esc, cur: cur, setCur: setCur, hrs: hrs,
-           today: today, fmtDate: fmtDate, addMonths: addMonths, table: table, stat: stat };
-})();
-
-(function(){
-  var FREE_STAFF = 3;
-  var DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-  var staff = [], shifts = [];
-  try {
-    var saved = JSON.parse(localStorage.getItem('sm-rota') || '{}');
-    staff = saved.staff instanceof Array ? saved.staff : [];
-    shifts = saved.shifts instanceof Array ? saved.shifts : [];
-  } catch(e){ staff = []; shifts = []; }
-  function persist(){ try { localStorage.setItem('sm-rota', JSON.stringify({ staff: staff, shifts: shifts })); } catch(e){} }
-
-  function mins(t){ var p = String(t || '').split(':'); return SMH.n(p[0]) * 60 + SMH.n(p[1]); }
-  function hoursOf(s){
-    var m = mins(s.end) - mins(s.start);
-    if(m < 0) m += 24 * 60;
-    return Math.max(0, (m - SMH.n(s.brk)) / 60);
-  }
-  function person(name){ return staff.filter(function(p){ return p.name === name; })[0]; }
-
-  function paintWho(){
-    var sel = SMH.$('r-who');
-    var keep = sel.value;
-    sel.innerHTML = staff.map(function(p){ return '<option>' + SMH.esc(p.name) + '</option>'; }).join('');
-    if(keep) sel.value = keep;
-  }
-
-  function paint(){
-    SMH.$('r-staff-count').textContent = staff.length + (staff.length === 1 ? ' person' : ' people');
-    SMH.$('r-staff-list').innerHTML = staff.length
-      ? SMH.table(['Name', 'Pay', 'Max hours', ''], staff.map(function(p, i){
-          return { cells: [SMH.esc(p.name), SMH.cur(SMH.n(p.pay)), SMH.n(p.max),
-            '<button class="secondary" data-ds="' + i + '" style="padding:4px 10px">Remove</button>'] };
-        }))
-      : '<p class="sub">Add someone to get started.</p>';
-    Array.prototype.forEach.call(SMH.$('r-staff-list').querySelectorAll('[data-ds]'), function(b){
-      b.addEventListener('click', function(){
-        var gone = staff.splice(Number(b.getAttribute('data-ds')), 1)[0];
-        shifts = shifts.filter(function(s){ return s.who !== gone.name; });
-        persist(); paintWho(); paint();
-      });
-    });
-
-    // hours and cost per person
-    var perPerson = {}, totalHours = 0, totalCost = 0;
-    staff.forEach(function(p){ perPerson[p.name] = { hours: 0, cost: 0 }; });
-    shifts.forEach(function(s){
-      var p = person(s.who);
-      if(!p) return;
-      var h = hoursOf(s);
-      perPerson[s.who].hours += h;
-      perPerson[s.who].cost += h * SMH.n(p.pay);
-      totalHours += h; totalCost += h * SMH.n(p.pay);
-    });
-
-    var budget = SMH.num('r-budget');
-    SMH.$('r-stats').innerHTML =
-      SMH.stat('Hours on the rota', SMH.hrs(totalHours), shifts.length + (shifts.length === 1 ? ' shift' : ' shifts')) +
-      SMH.stat('Wage cost', SMH.cur(totalCost), 'before tax and any employer costs') +
-      SMH.stat(totalCost > budget ? 'Over budget by' : 'Left in budget', SMH.cur(Math.abs(budget - totalCost)),
-               totalCost > budget ? 'take a shift out, or shorten one' : 'room for more cover');
-
-    // problems worth catching before Monday
-    var warn = [];
-    if(budget > 0 && totalCost > budget) warn.push('The rota costs ' + SMH.cur(totalCost - budget) + ' more than your budget.');
-    staff.forEach(function(p){
-      var got = perPerson[p.name] || { hours: 0 };
-      if(SMH.n(p.max) > 0 && got.hours > SMH.n(p.max)) warn.push(SMH.esc(p.name) + ' is on ' + SMH.hrs(got.hours) + ' hours, which is over their ' + SMH.n(p.max) + '.');
-    });
-    DAYS.forEach(function(day){
-      staff.forEach(function(p){
-        var mine = shifts.filter(function(s){ return s.day === day && s.who === p.name; });
-        for(var i = 0; i < mine.length; i++){
-          for(var j = i + 1; j < mine.length; j++){
-            if(mins(mine[i].start) < mins(mine[j].end) && mins(mine[j].start) < mins(mine[i].end)){
-              warn.push(SMH.esc(p.name) + ' is down twice at the same time on ' + day + '.');
-            }
-          }
-        }
-      });
-      if(!shifts.filter(function(s){ return s.day === day; }).length && staff.length) warn.push('Nobody is on at all on ' + day + '.');
-    });
-    SMH.$('r-warnings').innerHTML = warn.length
-      ? '<p class="notice">' + warn.map(SMH.esc).join('<br>') + '</p>'
-      : (shifts.length ? '<p class="notice">No clashes, nobody over their hours, and it fits the budget.</p>' : '');
-
-    // the grid
-    if(!staff.length){ SMH.$('r-grid').innerHTML = ''; return; }
-    var rows = staff.map(function(p){
-      var cells = [SMH.esc(p.name)];
-      DAYS.forEach(function(day){
-        var mine = shifts.filter(function(s){ return s.day === day && s.who === p.name; });
-        cells.push(mine.length
-          ? mine.map(function(s){
-              var idx = shifts.indexOf(s);
-              return '<span data-rs="' + idx + '" style="cursor:pointer" title="click to remove">' + SMH.esc(s.start) + '-' + SMH.esc(s.end) + '</span>';
-            }).join('<br>')
-          : '<span class="sub">-</span>');
-      });
-      var got = perPerson[p.name] || { hours: 0, cost: 0 };
-      cells.push(SMH.hrs(got.hours));
-      cells.push(SMH.cur(got.cost));
-      return { cells: cells };
-    });
-    SMH.$('r-grid').innerHTML = SMH.table(['Who'].concat(DAYS.map(function(d){ return d.slice(0, 3); })).concat(['Hours', 'Cost']), rows);
-    Array.prototype.forEach.call(SMH.$('r-grid').querySelectorAll('[data-rs]'), function(el){
-      el.addEventListener('click', function(){ shifts.splice(Number(el.getAttribute('data-rs')), 1); persist(); paint(); });
-    });
-  }
-
-  SMH.$('r-add-staff').addEventListener('click', function(){
-    if(!SM.pro() && staff.length >= FREE_STAFF){ SM.gate('A team of more than ' + FREE_STAFF); return; }
-    if(!SM.use()) return;
-    var name = SMH.val('r-name');
-    if(!name){ SMH.$('r-name').focus(); return; }
-    if(person(name)){ SMH.$('r-name').value = ''; return; }
-    staff.push({ name: name, pay: SMH.num('r-pay'), max: SMH.num('r-max') });
-    SMH.$('r-name').value = '';
-    persist(); paintWho(); paint();
-  });
-  SMH.$('r-add-shift').addEventListener('click', function(){
-    if(!staff.length) return;
-    shifts.push({ who: SMH.val('r-who') || staff[0].name, day: SMH.val('r-day'),
-                  start: SMH.val('r-shift-start'), end: SMH.val('r-shift-end'), brk: SMH.num('r-shift-break') });
-    persist(); paint();
-  });
-  SMH.$('r-clear').addEventListener('click', function(){ shifts = []; persist(); paint(); });
-  SMH.$('r-budget').addEventListener('input', paint);
-
-  // ---- Pro ----
-  function paintSaved(){
-    var box = SMH.$('r-saved');
-    var list = SM.load('rotas');
-    box.innerHTML = list.length
-      ? list.map(function(w, i){ return '<button class="secondary" data-w="' + i + '">' + SMH.esc(w.name) + '</button>'; }).join(' ')
-      : '<span class="sub">No saved weeks yet.</span>';
-    Array.prototype.forEach.call(box.querySelectorAll('[data-w]'), function(b){
-      b.addEventListener('click', function(){
-        var w = SM.load('rotas')[Number(b.getAttribute('data-w'))];
-        if(!w) return;
-        staff = w.staff || staff; shifts = w.shifts || [];
-        persist(); paintWho(); paint();
-      });
-    });
-  }
-  SMH.$('r-save').addEventListener('click', function(){
-    var name = SMH.val('r-week-name');
-    if(!name){ SMH.$('r-week-name').placeholder = 'name the week first'; return; }
-    var list = SM.load('rotas');
-    list.push({ name: name, staff: staff.slice(), shifts: shifts.slice() });
-    if(SM.save('rotas', list)){ SMH.$('r-week-name').value = ''; paintSaved(); }
-  });
-  SMH.$('r-export').addEventListener('click', function(){
-    SM.exportCsv('rota.csv', [['Who', 'Day', 'From', 'Until', 'Break mins', 'Hours', 'Cost']].concat(
-      shifts.map(function(s){
-        var p = person(s.who) || { pay: 0 };
-        var h = hoursOf(s);
-        return [s.who, s.day, s.start, s.end, SMH.n(s.brk), SMH.hrs(h), (h * SMH.n(p.pay)).toFixed(2)];
-      })));
-  });
-
-  paintWho(); paint(); paintSaved();
-})();</script>
+<script data-sm="tool"></script>
 <script>
 (function(){
   var SESSION_STORE = 'sm_session_' + SM_SLUG;
