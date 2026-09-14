@@ -3,156 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>UTM Campaign Link Builder — Browser tool that builds</title>
-<meta name="description" content="A browser tool that builds, validates and stores consistent tracked links. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="UTM Campaign Link Builder — Browser tool that builds">
-<meta property="og:description" content="A browser tool that builds, validates and stores consistent tracked links. Free to use, nothing to install, works in your browser.">
+<title>Solo marketers and small agencies running paid and email campaigns: the money mistakes that are easy to miss</title>
+<meta name="description" content="Hand-writing UTM parameters produces inconsistent, unreportable campaign data. None of what follows is complicated. It is all just easy to skip.">
+<meta property="og:title" content="Solo marketers and small agencies running paid and email campaigns: the money mistakes that are easy to miss">
+<meta property="og:description" content="Hand-writing UTM parameters produces inconsistent, unreportable campaign data. None of what follows is complicated. It is all just easy to skip.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/utm-campaign-link-builder/og.png">
+<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/utm-campaign-link-builder/guides/solo-marketers-and-small-agencies-running-paid-and-email-cam.html/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="UTM Campaign Link Builder — Browser tool that builds">
+<meta property="og:image:alt" content="Solo marketers and small agencies running paid and email campaigns: the money mistakes that are easy to miss">
 <!-- summary_large_image rather than summary: without a picture a shared link
      renders as a grey rectangle, which costs more clicks than any wording. -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/utm-campaign-link-builder/og.png">
-<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/utm-campaign-link-builder/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"UTM Campaign Link Builder","description":"A browser tool that builds, validates and stores consistent tracked links. Free to use, nothing to install, works in your browser.","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"https://selfmade-engine.github.io/selfmade-site/p/utm-campaign-link-builder/","offers":{"@type":"Offer","price":"9.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
-<link rel="stylesheet" href="./style.css">
+<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/utm-campaign-link-builder/guides/solo-marketers-and-small-agencies-running-paid-and-email-cam.html/og.png">
+<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/utm-campaign-link-builder/guides/solo-marketers-and-small-agencies-running-paid-and-email-cam.html">
+
+<link rel="stylesheet" href="../style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
 <body>
 <div class="wrap">
 <header class="site">
-  <a class="brand" href="./">UTM Campaign Link Builder</a>
-  <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
+  <a class="brand" href="../">UTM Campaign Link Builder</a>
+  <nav><a href="./">Tool</a><a href="../docs.html">Docs</a><a href="../pricing.html">Pricing</a></nav>
 </header>
 
-<h1>Browser tool that builds</h1>
-<p class="sub">A browser tool that builds, validates and stores consistent tracked links. Free to use, nothing to install, works in your browser.</p>
-<ul class="checks"><li>Built for solo marketers and small agencies running paid and email campaigns</li><li>Fixes: hand-writing utm parameters produces inconsistent, unreportable campaign data</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $9.00 a month and you can cancel any time.</li></ul>
-<div id="sm-tier" class="tierbar"></div>
-
-<div class="card">
-  <div class="grid cols-2">
-    <div><label for="u-url">Destination URL</label><input id="u-url" placeholder="https://example.com/pricing"></div>
-    <div><label for="u-source">Source *</label><input id="u-source" placeholder="newsletter"></div>
-    <div><label for="u-medium">Medium *</label><input id="u-medium" placeholder="email"></div>
-    <div><label for="u-campaign">Campaign *</label><input id="u-campaign" placeholder="spring-launch"></div>
-    <div><label for="u-term">Term</label><input id="u-term" placeholder="paid keyword"></div>
-    <div><label for="u-content">Content</label><input id="u-content" placeholder="header-cta"></div>
-  </div>
-  <div class="row"><button id="u-copy">Copy link</button><button id="u-clear" class="secondary">Clear</button><span id="u-warn" class="badge"></span></div>
-  <output id="u-out">Fill the fields above and your tracked link appears here.</output>
-</div>
-<div class="card">
-  <h3>Saved naming conventions <span class="badge pro">PRO</span></h3>
-  <p class="sub">Lock in the words your team uses, so everyone tags the same way.</p>
-  <div class="row"><input id="u-preset-name" placeholder="e.g. Spring newsletter" style="max-width:240px"><button id="u-preset-save" class="secondary">Save current</button></div>
-  <div id="u-presets" class="row"></div>
-</div>
-<div class="card" id="u-bulk"></div>
-<div id="sm-lock" class="lockbox" hidden></div>
-
-<div class="card no-print sm-auth" id="sm-account" hidden>
-
-  <!-- 1. sign in, or start an account -->
-  <div id="sm-acc-choose">
-    <div class="sm-auth-head">
-      <h2 id="sm-acc-title">Sign in</h2>
-      <p class="sub" id="sm-acc-sub">Your account carries Pro with you — this computer, your phone, anywhere you open it.</p>
-    </div>
-
-    <div class="sm-auth-fields">
-      <label for="sm-acc-email">Email</label>
-      <input id="sm-acc-email" type="email" autocomplete="email" placeholder="you@example.com" inputmode="email">
-
-      <label for="sm-acc-pass">Password<span class="sm-hint" id="sm-acc-passhint"></span></label>
-      <input id="sm-acc-pass" type="password" autocomplete="current-password" placeholder="Your password">
-    </div>
-
-    <button id="sm-acc-go" class="sm-auth-primary">Sign in</button>
-
-    <output id="sm-acc-msg" class="sm-auth-msg"></output>
-
-    <div class="sm-auth-alt">
-      <button id="sm-acc-new" class="linkish">Create an account</button>
-      <span class="sm-auth-dot">·</span>
-      <button id="sm-acc-forgot" class="linkish">Forgot password</button>
-    </div>
-  </div>
-
-  <!-- 2. confirm the email -->
-  <div id="sm-acc-confirm" hidden>
-    <div class="sm-auth-head">
-      <h2>Check your email</h2>
-      <p class="sub">We sent a 6-digit code to <strong id="sm-acc-sentto"></strong>. Type it in and you are done.</p>
-    </div>
-
-    <input id="sm-acc-code" class="sm-code" type="text" inputmode="numeric" autocomplete="one-time-code"
-           maxlength="6" placeholder="000000" aria-label="6-digit code from your email">
-
-    <button id="sm-acc-confirmgo" class="sm-auth-primary">Confirm</button>
-
-    <output id="sm-acc-confirmmsg" class="sm-auth-msg"></output>
-
-    <div class="sm-auth-alt">
-      <button id="sm-acc-resend" class="linkish">Send it again</button>
-      <span class="sm-auth-dot">·</span>
-      <button id="sm-acc-abandon" class="linkish sm-danger">Cancel</button>
-    </div>
-    <p class="limit">The code lasts 30 minutes. Cancelling removes the half-made account, so nothing is left behind.</p>
-  </div>
-
-  <!-- 3. signed in -->
-  <div id="sm-acc-signedin" hidden>
-    <div class="sm-acc-rows" id="sm-acc-stats"></div>
-    <div class="row">
-      <button id="sm-acc-out" class="secondary">Sign out</button>
-      <button id="sm-acc-cancel" class="linkish sm-danger" hidden>Cancel subscription</button>
-    </div>
-    <output id="sm-acc-cancelmsg" class="sm-auth-msg"></output>
-    <p class="limit" id="sm-acc-cancelnote" hidden></p>
-    <p class="limit" id="sm-acc-foot">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for, and your account stays exactly as it is.</p>
-  </div>
-</div>
-
-<div class="card paycard no-print" id="sm-pay">
-  <div class="payhead">
-    <div>
-      <h2>Pro</h2>
-      <p class="sub">Build and validate one tracked link at a time. Pro takes the limit off and adds what you need when you do this every week.</p>
-    </div>
-    <div class="payprice"><span class="price">$9.00</span><span class="per">/month</span></div>
-  </div>
-  <ul class="checks pro"><li><strong>Bulk build from a list</strong><span class="why">Paste 200 destinations, get 200 tagged links in one go.</span></li><li><strong>Saved naming conventions</strong><span class="why">Lock your source/medium vocabulary so the whole team tags identically.</span></li><li><strong>CSV export</strong><span class="why">Straight into a spreadsheet or your ad platform bulk uploader.</span></li></ul>
-  <p class="sm-on-pro" id="sm-already-pro" hidden></p>
-    <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Get Pro — $9.00/month</a></div>
-    <p class="notice" id="sm-buy-note">You will be taken straight to a secure card form. Payment is handled by Stripe — your card details go to them, never to this page. Cancel any time.</p>
-    <p class="notice" id="sm-buy-status" hidden></p>
-  <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
-  <a href="./pricing.html">See everything in Pro</a></p>
-</div>
-<div class="card">
-  <h2>Who this is for</h2>
-  <p class="sub">Solo marketers and small agencies running paid and email campaigns</p>
-  <h2>The problem</h2>
-  <p class="sub">Hand-writing UTM parameters produces inconsistent, unreportable campaign data</p>
-  <h2>What it does about it</h2>
-  <p class="sub">A browser tool that builds, validates and stores consistent tracked links</p>
-  
-</div>
-<div class="card"><h2>Guides</h2><ul class="checks"><li><a href="./guides/utm-builder.html">Utm builder</a></li><li><a href="./guides/solo-marketers-and-small-agencies-running-paid-and-email-cam.html">Solo marketers and small agencies running paid and email campaigns: the money mistakes that are easy to miss</a></li></ul></div>
-
-<div class="card no-print">
-  <h2>Did this do what you needed?</h2>
-  <p class="sub">One line of feedback decides what gets built next. Leave an email only if you want a reply.</p>
-  <form id="sm-feedback" class="grid">
-    <div><label for="sm-note">What would make this better?</label><input id="sm-note" name="note" maxlength="500" placeholder="It should also…"></div>
-    <div><label for="sm-email">Email (optional)</label><input id="sm-email" name="email" type="email" placeholder="you@example.com"></div>
-    <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
-  </form>
-</div>
+<h1>Solo marketers and small agencies running paid and email campaigns: the money mistakes that are easy to miss</h1>
+<p class="sub">Hand-writing UTM parameters produces inconsistent, unreportable campaign data. None of what follows is complicated. It is all just easy to skip.</p>
+<div class="card"><h2>Getting the numbers right matters more than it looks</h2><p class="sub">Hand-writing UTM parameters produces inconsistent, unreportable campaign data. None of what follows is complicated. It is all just easy to skip.</p></div>
+<div class="card"><h2>Why capital letters break things</h2><p class="sub">Analytics tools count &quot;Email&quot; and &quot;email&quot; as two separate things, so your report quietly splits in half and both numbers look worse than they are. This tool makes everything lower case and swaps spaces for hyphens, so it cannot happen.</p></div>
+<div class="card"><h2>Trusting your memory over a note</h2><p class="sub">It is genuinely obvious while you are looking at it, and genuinely gone six weeks later. Most of the money solo marketers and small agencies running paid and email campaigns lose to this is not lost to a bad decision — it is lost to a good one that nobody wrote down.</p></div>
+<div class="card"><h2>Only counting the obvious costs</h2><p class="sub">The costs that get forgotten are the ones nobody invoices you for — the time spent quoting, the mileage, the thing that got thrown away. Left out, the figures look better than the reality, and decisions get made on them.</p></div>
+<div class="card"><h2>Waiting until the end of the year</h2><p class="sub">Every one of these is easy to fix in the moment and painful to reconstruct in January. Ten seconds at the time is the whole trick.</p></div>
+<div class="card"><h2>Try it</h2><p class="sub">UTM Campaign Link Builder does this in your browser, free, with no signup.</p><p><a class="buy" href="../">Open UTM Campaign Link Builder</a></p></div>
+<p class="notice">Written by SELFMADE, which also built the tool this page is about. That is a bias worth knowing about while you read it.</p>
 <footer class="site">
   <p>UTM Campaign Link Builder — built and operated by SELFMADE, an autonomous business agent.
   Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
@@ -177,9 +61,9 @@ var SM_LICENCE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/licen
 var SM_USE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/use";
 var SM_ACTIVATE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/activate";
 var SM_API_BASE = "https://selfmade-api.selfmade-engine.workers.dev";
-var SM_DAILY_LIMIT = 3;
-var SM_LIMIT_LABEL = "links a day";
-var SM_PITCH = "Pro adds bulk build from a list, saved naming conventions, csv export and link history.";
+var SM_DAILY_LIMIT = 0;
+var SM_LIMIT_LABEL = "uses";
+var SM_PITCH = "";
 var SM_CONTACT = "selfmade.engine@gmail.com";
 // Where the Upgrade button goes, and what it costs. Straight to checkout when
 // there is one, because a pricing page in between is a step people leave at.
@@ -605,99 +489,7 @@ window.SM = (function(){
   };
 })();
 </script>
-<script data-sm="tool">
-(function(){
-  var ids = ['u-url','u-source','u-medium','u-campaign','u-term','u-content'];
-  var keys = {'u-source':'utm_source','u-medium':'utm_medium','u-campaign':'utm_campaign','u-term':'utm_term','u-content':'utm_content'};
-  var out = document.getElementById('u-out');
-  var warn = document.getElementById('u-warn');
-  function norm(v){ return v.trim().toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9._~-]/g,''); }
-  function build(){
-    var raw = document.getElementById('u-url').value.trim();
-    if(!raw){ out.textContent = 'Add a destination URL to start.'; warn.textContent=''; return ''; }
-    if(!/^https?:\/\//i.test(raw)) raw = 'https://' + raw;
-    var url;
-    try { url = new URL(raw); } catch(e){ out.textContent = 'That is not a valid URL yet.'; warn.textContent='invalid url'; return ''; }
-    var missing = [];
-    ['u-source','u-medium','u-campaign'].forEach(function(id){ if(!document.getElementById(id).value.trim()) missing.push(keys[id]); });
-    Object.keys(keys).forEach(function(id){
-      var v = norm(document.getElementById(id).value||'');
-      if(v) url.searchParams.set(keys[id], v); else url.searchParams.delete(keys[id]);
-    });
-    warn.textContent = missing.length ? 'missing: ' + missing.join(', ') : 'valid';
-    var link = url.toString();
-    out.textContent = link;
-    try { localStorage.setItem('utm-last', link); } catch(e){}
-    return link;
-  }
-  ids.forEach(function(id){ document.getElementById(id).addEventListener('input', build); });
-  document.getElementById('u-copy').addEventListener('click', function(){
-    var link = build();
-    if(!link) return;
-    if(!SM.use()) return;
-    navigator.clipboard.writeText(link).then(function(){ warn.textContent = 'copied'; });
-  });
-
-  // ---- Pro: saved naming conventions ----
-  var presetName = document.getElementById('u-preset-name');
-  function paintPresets(){
-    var box = document.getElementById('u-presets');
-    var list = SM.load('presets');
-    box.innerHTML = list.length
-      ? list.map(function(p,i){ return '<button class="secondary" data-i="'+i+'">'+p.name+'</button>'; }).join(' ')
-      : '<span class="sub">No saved conventions yet.</span>';
-    Array.prototype.forEach.call(box.querySelectorAll('button'), function(b){
-      b.addEventListener('click', function(){
-        var p = SM.load('presets')[Number(b.dataset.i)];
-        if(!p) return;
-        document.getElementById('u-source').value = p.source || '';
-        document.getElementById('u-medium').value = p.medium || '';
-        document.getElementById('u-campaign').value = p.campaign || '';
-        build();
-      });
-    });
-  }
-  document.getElementById('u-preset-save').addEventListener('click', function(){
-    var name = (presetName.value || '').trim();
-    if(!name){ presetName.placeholder = 'name it first'; return; }
-    var list = SM.load('presets');
-    list.push({
-      name: name,
-      source: document.getElementById('u-source').value,
-      medium: document.getElementById('u-medium').value,
-      campaign: document.getElementById('u-campaign').value
-    });
-    if(SM.save('presets', list)){ presetName.value=''; paintPresets(); }
-  });
-  paintPresets();
-
-  // ---- Pro: bulk ----
-  SM.bulk({
-    mount: 'u-bulk',
-    hint: 'One destination URL per line. Every one gets the source, medium and campaign above.',
-    placeholder: 'https://example.com/pricing\nhttps://example.com/about',
-    header: ['destination','tagged link'],
-    run: function(lines){
-      return lines.map(function(raw){
-        var u = raw;
-        if(!/^https?:\/\//i.test(u)) u = 'https://' + u;
-        try {
-          var url = new URL(u);
-          Object.keys(keys).forEach(function(id){
-            var v = norm(document.getElementById(id).value||'');
-            if(v) url.searchParams.set(keys[id], v);
-          });
-          return [raw, url.toString()];
-        } catch(e){ return [raw, 'invalid url']; }
-      });
-    }
-  });
-  document.getElementById('u-clear').addEventListener('click', function(){
-    ids.forEach(function(id){ document.getElementById(id).value=''; });
-    build();
-  });
-  build();
-})();</script>
+<script data-sm="tool"></script>
 <script>
 (function(){
   var SESSION_STORE = 'sm_session_' + SM_SLUG;
