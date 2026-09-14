@@ -94,6 +94,13 @@ output,.out{display:block;background:var(--panel-2);border:1px solid var(--line)
 .sm-auth-primary{width:100%;padding:13px;font-size:15px;font-weight:650}
 .sm-auth-msg{display:block;min-height:20px;margin-top:12px;text-align:center;font-size:14px;color:var(--muted)}
 .sm-auth-msg.bad{color:var(--warn,#c0392b)}
+.sm-acc-rows{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.sm-acc-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:11px 14px;border-top:1px solid var(--line);font-size:14px}
+.sm-acc-row:first-child{border-top:none}
+.sm-acc-row .k{color:var(--muted);white-space:nowrap}
+.sm-acc-row .v{font-weight:650;text-align:right;overflow-wrap:anywhere}
+.sm-acc-row .v.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;letter-spacing:.03em}
+#sm-acc-signedin .row{justify-content:space-between;align-items:center}
 .sm-auth-alt{margin-top:14px;text-align:center;font-size:14px}
 .sm-auth-dot{color:var(--muted);margin:0 8px}
 button.linkish{background:none;border:none;padding:0;color:var(--accent);font:inherit;font-size:14px;cursor:pointer;text-decoration:underline}
