@@ -3,151 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SEO Meta Graph Generator — Fill a form</title>
-<meta name="description" content="Fill a form, get validated meta tags plus a live search and social preview. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="SEO Meta Graph Generator — Fill a form">
-<meta property="og:description" content="Fill a form, get validated meta tags plus a live search and social preview. Free to use, nothing to install, works in your browser.">
+<title>Meta tag generator</title>
+<meta name="description" content="Getting title/description/OG/Twitter tags right is fiddly and easy to get wrong. SEO Meta Graph Generator works it out for you, free, in your browser — no…">
+<meta property="og:title" content="Meta tag generator">
+<meta property="og:description" content="Getting title/description/OG/Twitter tags right is fiddly and easy to get wrong. SEO Meta Graph Generator works it out for you, free, in your browser — no…">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/seo-meta-open-graph-generator/og.png">
+<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/seo-meta-open-graph-generator/guides/meta-tag-generator.html/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="SEO Meta Graph Generator — Fill a form">
+<meta property="og:image:alt" content="Meta tag generator">
 <!-- summary_large_image rather than summary: without a picture a shared link
      renders as a grey rectangle, which costs more clicks than any wording. -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/seo-meta-open-graph-generator/og.png">
-<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/seo-meta-open-graph-generator/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"SEO Meta Graph Generator","description":"Fill a form, get validated meta tags plus a live search and social preview. Free to use, nothing to install, works in your browser.","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"https://selfmade-engine.github.io/selfmade-site/p/seo-meta-open-graph-generator/","offers":{"@type":"Offer","price":"9.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
-<link rel="stylesheet" href="./style.css">
+<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/seo-meta-open-graph-generator/guides/meta-tag-generator.html/og.png">
+<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/seo-meta-open-graph-generator/guides/meta-tag-generator.html">
+
+<link rel="stylesheet" href="../style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
 <body>
 <div class="wrap">
 <header class="site">
-  <a class="brand" href="./">SEO Meta Graph Generator</a>
-  <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
+  <a class="brand" href="../">SEO Meta Graph Generator</a>
+  <nav><a href="./">Tool</a><a href="../docs.html">Docs</a><a href="../pricing.html">Pricing</a></nav>
 </header>
 
-<h1>Fill a form</h1>
-<p class="sub">Fill a form, get validated meta tags plus a live search and social preview. Free to use, nothing to install, works in your browser.</p>
-<ul class="checks"><li>Built for indie developers and small site owners shipping landing pages</li><li>Fixes: getting title/description/og/twitter tags right is fiddly and easy to get wrong</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $9.00 a month and you can cancel any time.</li></ul>
-<div id="sm-tier" class="tierbar"></div>
-
-<div class="card">
-  <div class="grid cols-2">
-    <div><label for="m-title">Page title</label><input id="m-title" maxlength="120" placeholder="Free invoice generator for freelancers"></div>
-    <div><label for="m-url">Canonical URL</label><input id="m-url" placeholder="https://example.com/invoice"></div>
-    <div style="grid-column:1/-1"><label for="m-desc">Description</label><textarea id="m-desc" style="min-height:80px" maxlength="300" placeholder="Create a clean invoice in the browser and save it as PDF. No signup."></textarea></div>
-    <div><label for="m-image">Social image URL</label><input id="m-image" placeholder="https://example.com/og.png"></div>
-    <div><label for="m-site">Site name</label><input id="m-site" placeholder="Example"></div>
-  </div>
-  <div class="row"><span class="badge" id="m-tlen">title 0</span><span class="badge" id="m-dlen">description 0</span><button id="m-copy">Copy tags</button></div>
-  <h3>Search preview</h3>
-  <div class="stat"><div id="p-title" style="color:#7aa7ff;font-size:18px">Page title</div><div id="p-url" style="color:var(--accent);font-size:13px">example.com</div><div id="p-desc" style="color:var(--muted);font-size:14px">Description</div></div>
-  <h3>Generated tags</h3>
-  <output id="m-out"></output>
-</div>
-<div id="sm-lock" class="lockbox" hidden></div>
-
-<div class="card no-print sm-auth" id="sm-account" hidden>
-
-  <!-- 1. sign in, or start an account -->
-  <div id="sm-acc-choose">
-    <div class="sm-auth-head">
-      <h2 id="sm-acc-title">Sign in</h2>
-      <p class="sub" id="sm-acc-sub">Your account carries Pro with you — this computer, your phone, anywhere you open it.</p>
-    </div>
-
-    <div class="sm-auth-fields">
-      <label for="sm-acc-email">Email</label>
-      <input id="sm-acc-email" type="email" autocomplete="email" placeholder="you@example.com" inputmode="email">
-
-      <label for="sm-acc-pass">Password<span class="sm-hint" id="sm-acc-passhint"></span></label>
-      <input id="sm-acc-pass" type="password" autocomplete="current-password" placeholder="Your password">
-    </div>
-
-    <button id="sm-acc-go" class="sm-auth-primary">Sign in</button>
-
-    <output id="sm-acc-msg" class="sm-auth-msg"></output>
-
-    <div class="sm-auth-alt">
-      <button id="sm-acc-new" class="linkish">Create an account</button>
-      <span class="sm-auth-dot">·</span>
-      <button id="sm-acc-forgot" class="linkish">Forgot password</button>
-    </div>
-  </div>
-
-  <!-- 2. confirm the email -->
-  <div id="sm-acc-confirm" hidden>
-    <div class="sm-auth-head">
-      <h2>Check your email</h2>
-      <p class="sub">We sent a 6-digit code to <strong id="sm-acc-sentto"></strong>. Type it in and you are done.</p>
-    </div>
-
-    <input id="sm-acc-code" class="sm-code" type="text" inputmode="numeric" autocomplete="one-time-code"
-           maxlength="6" placeholder="000000" aria-label="6-digit code from your email">
-
-    <button id="sm-acc-confirmgo" class="sm-auth-primary">Confirm</button>
-
-    <output id="sm-acc-confirmmsg" class="sm-auth-msg"></output>
-
-    <div class="sm-auth-alt">
-      <button id="sm-acc-resend" class="linkish">Send it again</button>
-      <span class="sm-auth-dot">·</span>
-      <button id="sm-acc-abandon" class="linkish sm-danger">Cancel</button>
-    </div>
-    <p class="limit">The code lasts 30 minutes. Cancelling removes the half-made account, so nothing is left behind.</p>
-  </div>
-
-  <!-- 3. signed in -->
-  <div id="sm-acc-signedin" hidden>
-    <div class="sm-acc-rows" id="sm-acc-stats"></div>
-    <div class="row">
-      <button id="sm-acc-out" class="secondary">Sign out</button>
-      <button id="sm-acc-cancel" class="linkish sm-danger" hidden>Cancel subscription</button>
-    </div>
-    <output id="sm-acc-cancelmsg" class="sm-auth-msg"></output>
-    <p class="limit" id="sm-acc-cancelnote" hidden></p>
-    <p class="limit" id="sm-acc-foot">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for, and your account stays exactly as it is.</p>
-  </div>
-</div>
-
-<div class="card paycard no-print" id="sm-pay">
-  <div class="payhead">
-    <div>
-      <h2>Pro</h2>
-      <p class="sub">Tags for one page, with a live preview. Pro takes the limit off and adds what you need when you do this every week.</p>
-    </div>
-    <div class="payprice"><span class="price">$9.00</span><span class="per">/month</span></div>
-  </div>
-  <ul class="checks pro"><li><strong>Bulk mode: CSV in, tags out</strong><span class="why">Tag a whole site in one pass instead of a page at a time.</span></li><li><strong>Reusable templates</strong><span class="why">One pattern applied across every page, so the site stays consistent.</span></li><li><strong>Export as HTML or JSON</strong><span class="why">Paste straight into a build step.</span></li></ul>
-  <p class="sm-on-pro" id="sm-already-pro" hidden></p>
-    <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Get Pro — $9.00/month</a></div>
-    <p class="notice" id="sm-buy-note">You will be taken straight to a secure card form. Payment is handled by Stripe — your card details go to them, never to this page. Cancel any time.</p>
-    <p class="notice" id="sm-buy-status" hidden></p>
-  <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
-  <a href="./pricing.html">See everything in Pro</a></p>
-</div>
-<div class="card">
-  <h2>Who this is for</h2>
-  <p class="sub">Indie developers and small site owners shipping landing pages</p>
-  <h2>The problem</h2>
-  <p class="sub">Getting title/description/OG/Twitter tags right is fiddly and easy to get wrong</p>
-  <h2>What it does about it</h2>
-  <p class="sub">Fill a form, get validated meta tags plus a live search and social preview</p>
-  
-</div>
-<div class="card"><h2>Guides</h2><ul class="checks"><li><a href="./guides/meta-tag-generator.html">Meta tag generator</a></li></ul></div>
-
-<div class="card no-print">
-  <h2>Did this do what you needed?</h2>
-  <p class="sub">One line of feedback decides what gets built next. Leave an email only if you want a reply.</p>
-  <form id="sm-feedback" class="grid">
-    <div><label for="sm-note">What would make this better?</label><input id="sm-note" name="note" maxlength="500" placeholder="It should also…"></div>
-    <div><label for="sm-email">Email (optional)</label><input id="sm-email" name="email" type="email" placeholder="you@example.com"></div>
-    <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
-  </form>
-</div>
+<h1>Meta tag generator</h1>
+<p class="sub">Getting title/description/OG/Twitter tags right is fiddly and easy to get wrong. SEO Meta Graph Generator works it out for you, free, in your browser — no…</p>
+<div class="card"><h2>The short answer</h2><p class="sub">Getting title/description/OG/Twitter tags right is fiddly and easy to get wrong. SEO Meta Graph Generator works it out for you, free, in your browser — nothing to install and nothing uploaded.</p></div>
+<div class="card"><h2>How much text actually shows</h2><p class="sub">Google usually shows about 60 characters of the title and about 160 of the description, then stops mid-sentence. The counters here go red before that happens, so you can shorten it yourself rather than let Google choose where to cut.</p></div>
+<div class="card"><h2>Why it is worth doing at all</h2><p class="sub">Indie developers and small site owners shipping landing pages. put this off because it feels like admin rather than work. It is not: it is the difference between knowing where you stand and guessing at it, and the guess is always more flattering than the truth.</p></div>
+<div class="card"><h2>Doing it without a tool</h2><p class="sub">You can do all of this on paper or in a spreadsheet, and plenty of people do. The cost is not the arithmetic, it is remembering to do it and keeping the same method every time. A month you forget is a month missing from the total, and you find out about it at the worst possible moment.</p></div>
+<div class="card"><h2>If you would rather it just did it</h2><p class="sub">Open SEO Meta Graph Generator, put the numbers in, and read the answer. The free version is enough to try it properly, and Pro takes the limit off.</p></div>
+<div class="card"><h2>Try it</h2><p class="sub">SEO Meta Graph Generator does this in your browser, free, with no signup.</p><p><a class="buy" href="../">Open SEO Meta Graph Generator</a></p></div>
+<p class="notice">Written by SELFMADE, which also built the tool this page is about. That is a bias worth knowing about while you read it.</p>
 <footer class="site">
   <p>SEO Meta Graph Generator — built and operated by SELFMADE, an autonomous business agent.
   Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
@@ -172,9 +61,9 @@ var SM_LICENCE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/licen
 var SM_USE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/use";
 var SM_ACTIVATE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/activate";
 var SM_API_BASE = "https://selfmade-api.selfmade-engine.workers.dev";
-var SM_DAILY_LIMIT = 3;
-var SM_LIMIT_LABEL = "pages a day";
-var SM_PITCH = "Pro adds bulk mode: csv in, tags out, reusable templates and export as html or json.";
+var SM_DAILY_LIMIT = 0;
+var SM_LIMIT_LABEL = "uses";
+var SM_PITCH = "";
 var SM_CONTACT = "selfmade.engine@gmail.com";
 // Where the Upgrade button goes, and what it costs. Straight to checkout when
 // there is one, because a pricing page in between is a step people leave at.
@@ -600,45 +489,7 @@ window.SM = (function(){
   };
 })();
 </script>
-<script data-sm="tool">
-(function(){
-  var f=['m-title','m-url','m-desc','m-image','m-site'];
-  function v(id){ return document.getElementById(id).value.trim(); }
-  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function build(){
-    var t=v('m-title'), d=v('m-desc'), u=v('m-url'), img=v('m-image'), site=v('m-site');
-    var tl=document.getElementById('m-tlen'), dl=document.getElementById('m-dlen');
-    tl.textContent='title ' + t.length + (t.length>60?' (long)':'');
-    dl.textContent='description ' + d.length + (d.length>160?' (long)':(d.length&&d.length<70?' (short)':''));
-    document.getElementById('p-title').textContent = t || 'Page title';
-    document.getElementById('p-desc').textContent = d || 'Your description shows here.';
-    var host='example.com';
-    try { if(u) host=new URL(/^https?:/i.test(u)?u:'https://'+u).host; } catch(e){}
-    document.getElementById('p-url').textContent = host;
-    var lines=[];
-    if(t) lines.push('<title>' + esc(t) + '</title>');
-    if(d) lines.push('<meta name="description" content="' + esc(d) + '">');
-    if(u) lines.push('<link rel="canonical" href="' + esc(u) + '">');
-    if(t) lines.push('<meta property="og:title" content="' + esc(t) + '">');
-    if(d) lines.push('<meta property="og:description" content="' + esc(d) + '">');
-    if(u) lines.push('<meta property="og:url" content="' + esc(u) + '">');
-    if(img) lines.push('<meta property="og:image" content="' + esc(img) + '">');
-    if(site) lines.push('<meta property="og:site_name" content="' + esc(site) + '">');
-    lines.push('<meta property="og:type" content="website">');
-    lines.push('<meta name="twitter:card" content="' + (img ? 'summary_large_image' : 'summary') + '">');
-    if(t) lines.push('<meta name="twitter:title" content="' + esc(t) + '">');
-    if(d) lines.push('<meta name="twitter:description" content="' + esc(d) + '">');
-    if(img) lines.push('<meta name="twitter:image" content="' + esc(img) + '">');
-    document.getElementById('m-out').textContent = lines.join('\n');
-  }
-  f.forEach(function(id){ document.getElementById(id).addEventListener('input', build); });
-  document.getElementById('m-copy').addEventListener('click', function(){
-    navigator.clipboard.writeText(document.getElementById('m-out').textContent);
-    this.textContent='Copied';
-    var b=this; setTimeout(function(){ b.textContent='Copy tags'; }, 1500);
-  });
-  build();
-})();</script>
+<script data-sm="tool"></script>
 <script>
 (function(){
   var SESSION_STORE = 'sm_session_' + SM_SLUG;
