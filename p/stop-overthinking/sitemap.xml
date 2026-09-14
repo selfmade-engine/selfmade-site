@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://selfmade-api.selfmade-engine.workers.dev/p/stop-overthinking/</loc><changefreq>weekly</changefreq></url>
-  <url><loc>https://selfmade-api.selfmade-engine.workers.dev/p/stop-overthinking/docs.html</loc><changefreq>weekly</changefreq></url>
-  <url><loc>https://selfmade-api.selfmade-engine.workers.dev/p/stop-overthinking/pricing.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://selfmade-engine.github.io/selfmade-site/p/stop-overthinking/</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://selfmade-engine.github.io/selfmade-site/p/stop-overthinking/docs.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://selfmade-engine.github.io/selfmade-site/p/stop-overthinking/pricing.html</loc><changefreq>weekly</changefreq></url>
 </urlset>
