@@ -1,0 +1,1437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Debt Payoff Planner — Put in what you owe</title>
+<meta name="description" content="Put in what you owe and see the date you are clear, what the interest costs, and what a different order would save. Free to use, nothing to install, works in your browser.">
+<meta property="og:title" content="Debt Payoff Planner — Put in what you owe">
+<meta property="og:description" content="Put in what you owe and see the date you are clear, what the interest costs, and what a different order would save. Free to use, nothing to install, works in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://selfmade-api.selfmade-engine.workers.dev/p/debt-payoff-planner/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Debt Payoff Planner — Put in what you owe">
+<!-- summary_large_image rather than summary: without a picture a shared link
+     renders as a grey rectangle, which costs more clicks than any wording. -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://selfmade-api.selfmade-engine.workers.dev/p/debt-payoff-planner/og.png">
+<link rel="canonical" href="https://selfmade-api.selfmade-engine.workers.dev/p/debt-payoff-planner/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Debt Payoff Planner","description":"Put in what you owe and see the date you are clear, what the interest costs, and what a different order would save. Free to use, nothing to install, works in your browser.","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"https://selfmade-api.selfmade-engine.workers.dev/p/debt-payoff-planner/","offers":{"@type":"Offer","price":"12.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
+<link rel="stylesheet" href="./style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
+</head>
+<body>
+<div class="wrap">
+<header class="site">
+  <a class="brand" href="./">Debt Payoff Planner</a>
+  <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
+</header>
+
+<h1>Put in what you owe</h1>
+<p class="sub">Put in what you owe and see the date you are clear, what the interest costs, and what a different order would save. Free to use, nothing to install, works in your browser.</p>
+<ul class="checks"><li>Built for anyone carrying credit cards, loans or an overdraft and paying minimums</li><li>Fixes: paying minimums forever with no idea when it ends, and no idea that the order you pay in matters</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $12.00 a month and you can cancel any time.</li></ul>
+<div id="sm-tier" class="tierbar"></div>
+
+<div class="card">
+  <h2>What do you owe?</h2>
+  <p class="sub">Add each card, loan or overdraft. You need the balance, the interest rate, and the smallest payment they let you make.</p>
+  <div class="grid cols-2">
+    <div><label for="d-name">What is it</label><input id="d-name" placeholder="Credit card"></div>
+    <div><label for="d-bal">How much is left</label><input id="d-bal" type="number" min="0" step="0.01" placeholder="2400"></div>
+    <div><label for="d-apr">Interest rate a year (%)</label><input id="d-apr" type="number" min="0" step="0.1" placeholder="22.9"></div>
+    <div><label for="d-min">Smallest payment they allow</label><input id="d-min" type="number" min="0" step="0.01" placeholder="60"></div>
+  </div>
+  <div class="row"><button id="d-add">Add this debt</button><button id="d-clear" class="secondary">Start again</button><span id="d-count" class="badge"></span></div>
+  <div id="d-list"></div>
+</div>
+<div class="card">
+  <h2>How much can you put at it?</h2>
+  <div class="grid cols-2">
+    <div><label for="d-extra">Extra each month, on top of the minimums</label><input id="d-extra" type="number" min="0" step="1" value="100"></div>
+    <div><label for="d-strategy">Which order</label><select id="d-strategy">
+      <option value="avalanche">Highest interest first (costs you least)</option>
+      <option value="snowball">Smallest balance first (feels fastest)</option>
+    </select></div>
+  </div>
+  <div class="grid cols-3" id="d-stats"></div>
+  <output id="d-verdict">Add a debt to see when you would be clear.</output>
+</div>
+<div class="card">
+  <h3>Both orders, side by side <span class="badge pro">PRO</span></h3>
+  <p class="sub">See exactly what paying in a different order costs you, month by month, all the way to the end. Download it to keep.</p>
+  <div class="row"><button id="d-compare" class="secondary">Compare both</button><button id="d-export" class="secondary">Download the plan</button></div>
+  <div id="d-compare-out"></div>
+  <div id="d-schedule"></div>
+</div>
+<div id="sm-lock" class="lockbox" hidden></div>
+
+<div class="card no-print sm-auth" id="sm-account" hidden>
+
+  <!-- 1. sign in, or start an account -->
+  <div id="sm-acc-choose">
+    <div class="sm-auth-head">
+      <h2 id="sm-acc-title">Sign in</h2>
+      <p class="sub" id="sm-acc-sub">Your account carries Pro with you — this computer, your phone, anywhere you open it.</p>
+    </div>
+
+    <div class="sm-auth-fields">
+      <label for="sm-acc-email">Email</label>
+      <input id="sm-acc-email" type="email" autocomplete="email" placeholder="you@example.com" inputmode="email">
+
+      <label for="sm-acc-pass">Password<span class="sm-hint" id="sm-acc-passhint"></span></label>
+      <input id="sm-acc-pass" type="password" autocomplete="current-password" placeholder="Your password">
+    </div>
+
+    <button id="sm-acc-go" class="sm-auth-primary">Sign in</button>
+
+    <output id="sm-acc-msg" class="sm-auth-msg"></output>
+
+    <div class="sm-auth-alt">
+      <button id="sm-acc-new" class="linkish">Create an account</button>
+      <span class="sm-auth-dot">·</span>
+      <button id="sm-acc-forgot" class="linkish">Forgot password</button>
+    </div>
+  </div>
+
+  <!-- 2. confirm the email -->
+  <div id="sm-acc-confirm" hidden>
+    <div class="sm-auth-head">
+      <h2>Check your email</h2>
+      <p class="sub">We sent a 6-digit code to <strong id="sm-acc-sentto"></strong>. Type it in and you are done.</p>
+    </div>
+
+    <input id="sm-acc-code" class="sm-code" type="text" inputmode="numeric" autocomplete="one-time-code"
+           maxlength="6" placeholder="000000" aria-label="6-digit code from your email">
+
+    <button id="sm-acc-confirmgo" class="sm-auth-primary">Confirm</button>
+
+    <output id="sm-acc-confirmmsg" class="sm-auth-msg"></output>
+
+    <div class="sm-auth-alt">
+      <button id="sm-acc-resend" class="linkish">Send it again</button>
+      <span class="sm-auth-dot">·</span>
+      <button id="sm-acc-abandon" class="linkish sm-danger">Cancel</button>
+    </div>
+    <p class="limit">The code lasts 30 minutes. Cancelling removes the half-made account, so nothing is left behind.</p>
+  </div>
+
+  <!-- 3. signed in -->
+  <div id="sm-acc-signedin" hidden>
+    <div class="sm-acc-rows" id="sm-acc-stats"></div>
+    <div class="row">
+      <button id="sm-acc-out" class="secondary">Sign out</button>
+      <button id="sm-acc-cancel" class="linkish sm-danger" hidden>Cancel subscription</button>
+    </div>
+    <output id="sm-acc-cancelmsg" class="sm-auth-msg"></output>
+    <p class="limit" id="sm-acc-cancelnote" hidden></p>
+    <p class="limit" id="sm-acc-foot">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for, and your account stays exactly as it is.</p>
+  </div>
+</div>
+
+<div class="card paycard no-print" id="sm-pay">
+  <div class="payhead">
+    <div>
+      <h2>Pro</h2>
+      <p class="sub">Plan up to three debts and see your clear date. Pro takes the limit off and adds what you need when you do this every week.</p>
+    </div>
+    <div class="payprice"><span class="price">$12.00</span><span class="per">/month</span></div>
+  </div>
+  <ul class="checks pro"><li><strong>Every debt you have</strong><span class="why">Free stops after a few. Most people who need this have five or six.</span></li><li><strong>Both orders side by side</strong><span class="why">See in money and months what paying in a different order is worth. It is often years.</span></li><li><strong>The full month by month plan</strong><span class="why">Every payment to the end, so you can check you are on track instead of hoping.</span></li></ul>
+  <p class="sm-on-pro" id="sm-already-pro" hidden></p>
+    <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Get Pro — $12.00/month</a></div>
+    <p class="notice" id="sm-buy-note">You will be taken straight to a secure card form. Payment is handled by Stripe — your card details go to them, never to this page. Cancel any time.</p>
+    <p class="notice" id="sm-buy-status" hidden></p>
+  <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
+  <a href="./pricing.html">See everything in Pro</a></p>
+</div>
+<div class="card">
+  <h2>Who this is for</h2>
+  <p class="sub">Anyone carrying credit cards, loans or an overdraft and paying minimums</p>
+  <h2>The problem</h2>
+  <p class="sub">Paying minimums forever with no idea when it ends, and no idea that the order you pay in matters</p>
+  <h2>What it does about it</h2>
+  <p class="sub">Put in what you owe and see the date you are clear, what the interest costs, and what a different order would save</p>
+  
+</div>
+
+
+<div class="card no-print">
+  <h2>Did this do what you needed?</h2>
+  <p class="sub">One line of feedback decides what gets built next. Leave an email only if you want a reply.</p>
+  <form id="sm-feedback" class="grid">
+    <div><label for="sm-note">What would make this better?</label><input id="sm-note" name="note" maxlength="500" placeholder="It should also…"></div>
+    <div><label for="sm-email">Email (optional)</label><input id="sm-email" name="email" type="email" placeholder="you@example.com"></div>
+    <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
+  </form>
+</div>
+<footer class="site">
+  <p>Debt Payoff Planner — built and operated by SELFMADE.
+  Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
+  <p>Everything on this page runs in your browser. Your input is not uploaded or stored.</p>
+  <!-- Small, at the bottom, on every page. Stripe expects a customer to be
+       able to find the terms and the privacy policy from anywhere they might
+       be asked to pay, and so does anybody sensible. -->
+  <p class="legal"><a href="https://selfmade-api.selfmade-engine.workers.dev/privacy.html">Privacy</a>
+  · <a href="https://selfmade-api.selfmade-engine.workers.dev/terms.html">Terms &amp; refunds</a>
+  · <a href="./pricing.html">Pricing</a>
+  · Payments handled by Stripe. Card details never touch this page.</p>
+</footer>
+</div>
+<script>
+var SM_SLUG = "debt-payoff-planner";
+var SM_KIND = "tool";
+var SM_FILE_NAME = "debt-payoff-planner.pdf";
+var SM_TRACK_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/track";
+var SM_ORDER_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/order";
+var SM_FEEDBACK_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/feedback";
+var SM_LICENCE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/licence/verify";
+var SM_USE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/use";
+var SM_ACTIVATE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/activate";
+var SM_API_BASE = "https://selfmade-api.selfmade-engine.workers.dev";
+var SM_DAILY_LIMIT = 3;
+var SM_LIMIT_LABEL = "plans a day";
+var SM_PITCH = "Pro adds every debt you have, both orders side by side, the full month by month plan and download the plan.";
+var SM_CONTACT = "selfmade.engine@gmail.com";
+// Where the Upgrade button goes, and what it costs. Straight to checkout when
+// there is one, because a pricing page in between is a step people leave at.
+var SM_BUY_URL = "./pricing.html";
+var SM_PRICE = "$12.00";
+</script>
+<!-- Everything that builds window.SM has to run before the tool does.
+     The tool calls SM.pro() and SM.load() while painting for the first time,
+     and SM is assembled in two parts: LICENCE_JS creates it, PRO_TOOLKIT_JS
+     adds save/load/export to it.
+     With the tool first this threw "SM is not defined" on every page load;
+     moving only LICENCE_JS ahead of it turned that into "SM.load is not a
+     function", which is the same bug one step later. Both parts go first. -->
+<script>
+window.SM = (function(){
+  var KEY_STORE = 'sm_key_' + SM_SLUG;
+  var USE_STORE = 'sm_uses_' + SM_SLUG;
+  var state = { pro:false, key:null, checked:false, renewsAt:null };
+
+  function today(){ return new Date().toISOString().slice(0,10); }
+  function reads(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+  function writes(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+  // The server only accepts a key from the account that paid for it, so the
+  // signed-in session travels with every check.
+  function sessionHeaders(){ var t = reads('sm_session_' + SM_SLUG); return t ? { 'x-sm-session': t } : {}; }
+
+  function usesToday(){
+    try {
+      var raw = JSON.parse(reads(USE_STORE) || '{}');
+      return raw.day === today() ? (raw.n||0) : 0;
+    } catch(e){ return 0; }
+  }
+  function setUses(n){
+    writes(USE_STORE, JSON.stringify({ day: today(), n: n }));
+  }
+  function bump(){ setUses(usesToday()+1); }
+
+  /**
+   * Ask the server how much of today's allowance is actually left.
+   *
+   * This is what makes clearing site data pointless: the browser's own tally is
+   * only a display, and it is corrected from the server on every load.
+   */
+  function syncAllowance(){
+    if(!SM_DAILY_LIMIT || !SM_USE_URL) return;
+    fetch(SM_USE_URL + '?slug=' + encodeURIComponent(SM_SLUG) + '&limit=' + SM_DAILY_LIMIT + '&peek=1')
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if(typeof res.used === 'number'){
+          // The server is the authority in both directions.
+          setUses(res.used);
+          paint();
+        }
+      })
+      .catch(function(){ /* offline: the local tally stands until it can ask */ });
+  }
+
+  /** Tell the server one use has been spent, and obey it if it says no. */
+  function spend(){
+    if(!SM_DAILY_LIMIT || !SM_USE_URL) return;
+    fetch(SM_USE_URL + '?slug=' + encodeURIComponent(SM_SLUG) + '&limit=' + SM_DAILY_LIMIT)
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if(typeof res.used === 'number') setUses(res.used);
+        if(res.allowed === false){ lock('Unlimited use'); }
+        paint();
+      })
+      .catch(function(){});
+  }
+
+  function paint(){
+    var bar = document.getElementById('sm-tier');
+    if(!bar) return;
+    var pay = document.getElementById('sm-pay');
+    var navbuy = document.getElementById('sm-navbuy');
+
+    if(state.pro){
+      bar.innerHTML = '<span class="badge pro">PRO</span> Unlimited, all features on.'
+        + (state.renewsAt ? ' <span class="dim">Renews ' + state.renewsAt.slice(0,10) + '</span>' : '');
+      bar.className = 'tierbar pro';
+      // Somebody who has paid should never be asked again. Everything selling
+      // the upgrade comes off the page entirely.
+      if(pay) pay.hidden = true;
+      if(navbuy) navbuy.hidden = true;
+      return;
+    }
+
+    if(pay) pay.hidden = false;
+    if(navbuy) navbuy.hidden = false;
+
+    if (SM_DAILY_LIMIT) {
+      var left = Math.max(0, SM_DAILY_LIMIT - usesToday());
+      bar.innerHTML = left > 0
+        ? '<span class="badge">FREE</span> ' + left + ' of ' + SM_DAILY_LIMIT + ' ' + SM_LIMIT_LABEL + ' left today.'
+        : '<span class="badge">FREE</span> That is your ' + SM_DAILY_LIMIT + ' ' + SM_LIMIT_LABEL + ' for today. It resets tomorrow.';
+      bar.className = 'tierbar' + (left === 0 ? ' spent' : '');
+    }
+  }
+
+
+  /**
+   * Just back from paying. Turn everything on without asking for anything.
+   *
+   * The reference in the URL is only a lookup - the server will not hand over a
+   * subscription for it unless the payment platform has already confirmed the
+   * payment over a signed webhook. So a made-up reference gets nothing.
+   */
+  function claimPayment(reference){
+    var tries = 0;
+    say('Setting up your subscription…');
+
+    function attempt(){
+      tries += 1;
+      fetch(SM_ACTIVATE_URL + '?ref=' + encodeURIComponent(reference) + '&slug=' + encodeURIComponent(SM_SLUG))
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if(res.ok && res.key){
+            state.pro = true; state.key = res.key;
+            writes(KEY_STORE, res.key);
+            say('You are all set — Pro is on. Nothing else to do.', 'good');
+            cleanUrl();
+            paint();
+            return;
+          }
+          // The webhook is usually a moment behind the redirect.
+          if(res.status === 'pending' && tries < 6){
+            setTimeout(attempt, 1500);
+            return;
+          }
+          if(res.status === 'not_configured'){
+            say('Your payment went through. Your access link is in your email — open it on this device and you are done.', 'warn');
+          } else if(res.status === 'wrong_product'){
+            say('That payment was for a different tool. Open the link in your email for the right one.', 'warn');
+          } else {
+            say('Your payment went through, but this page could not switch Pro on yet. Check your email for the access link, or contact ' + SM_CONTACT + ' and it will be sorted.', 'warn');
+          }
+          cleanUrl();
+        })
+        .catch(function(){
+          if(tries < 6){ setTimeout(attempt, 1500); return; }
+          say('Your payment went through. Your access link is in your email.', 'warn');
+          cleanUrl();
+        });
+    }
+    attempt();
+  }
+
+  /** A quiet line at the top of the page, not an alert box. */
+  function say(text, tone){
+    var el = document.getElementById('sm-welcome');
+    if(!el){
+      el = document.createElement('div');
+      el.id = 'sm-welcome';
+      el.className = 'tierbar';
+      var first = document.querySelector('h1');
+      if(first && first.parentNode) first.parentNode.insertBefore(el, first);
+      else document.body.insertBefore(el, document.body.firstChild);
+    }
+    el.className = 'tierbar' + (tone === 'good' ? ' pro' : tone === 'warn' ? ' spent' : '');
+    el.textContent = text;
+  }
+
+  /** Take the payment reference out of the address bar. */
+  function cleanUrl(){
+    try {
+      var u = new URL(location.href);
+      u.searchParams.delete('paid');
+      u.searchParams.delete('key');
+      history.replaceState({}, '', u.pathname + (u.searchParams.toString() ? '?' + u.searchParams : '') + u.hash);
+    } catch(e){}
+  }
+
+  /**
+   * Show why something stopped, with a way to close it.
+   *
+   * Two different situations used to produce the same sentence. Wanting a
+   * Pro-only feature is "this is part of Pro"; filling up the free allowance is
+   * "you have used what free gives you" - and phrasing the second like the
+   * first read as though the product had broken.
+   *
+   * It can also be dismissed now. Before, it appeared and stayed, which on a
+   * small screen meant it sat on top of the thing somebody was trying to use
+   * with no way to get rid of it.
+   */
+  function lock(featureName, limit){
+    var box = document.getElementById('sm-lock');
+    if(!box) return;
+
+    // Saying "you have run out" and stopping there is a dead end. The moment
+    // somebody hits the limit is the moment the upgrade is worth something to
+    // them, so the message says plainly what Pro removes - and reassures them
+    // nothing they have typed is lost, because otherwise it reads as a crash.
+    var heading = limit
+      ? '<strong>' + (limit.daily
+          ? 'That is the free version used up for today.'
+          : 'That is as far as the free version goes.') + '</strong> '
+        + (limit.daily
+          ? 'It resets tomorrow, and nothing you have entered is lost. '
+          : 'What you have entered stays exactly as it is. ')
+        + '<span class="sm-lock-sell">Pro takes the limit off completely — '
+        + (limit.daily
+            ? 'use it as much as you like, every day'
+            : 'as many ' + SM_LIMIT_LABEL.replace(/ a day$/, '') + ' as you need, kept between visits')
+        + '.</span> ' + SM_PITCH
+      : '<strong>' + featureName + ' is part of Pro.</strong> ' + SM_PITCH;
+
+    box.innerHTML = '<button type="button" class="sm-lock-x" id="sm-lock-x" aria-label="Close">&times;</button>'
+      + heading
+      + '<div class="row"><a class="buy" href="' + SM_BUY_URL + '">Get Pro — ' + SM_PRICE + '/month</a></div>'
+      + '<div class="row"><input id="sm-key" placeholder="Already subscribed? Paste your key" style="max-width:280px">'
+      + '<button id="sm-key-go" class="secondary">Unlock</button><span id="sm-key-msg" class="badge"></span></div>';
+    box.hidden = false;
+
+    var go = document.getElementById('sm-key-go');
+    if(go) go.addEventListener('click', function(){ SM.activate(document.getElementById('sm-key').value); });
+
+    var shut = document.getElementById('sm-lock-x');
+    if(shut) shut.addEventListener('click', function(){ box.hidden = true; });
+
+    // Somewhere to look. Without this the message can appear off-screen and
+    // the click that triggered it looks like it did nothing at all.
+    if(box.scrollIntoView) box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
+  var SM = {
+    /** Is Pro on? */
+    pro: function(){ return state.pro; },
+
+    /**
+     * Switch Pro on because the signed-in ACCOUNT is entitled to it.
+     * This is the path that matters now; the key is the fallback.
+     */
+    grant: function(key, renewsAt){
+      state.pro = true;
+      state.key = key || state.key;
+      state.renewsAt = renewsAt || state.renewsAt;
+      if(key) writes(KEY_STORE, key);
+      paint();
+    },
+
+    /** Gate a Pro-only feature. Returns false and shows the upsell if not Pro. */
+    gate: function(featureName){
+      if(state.pro) return true;
+      lock(featureName);
+      return false;
+    },
+
+    /**
+     * The free allowance is used up, as opposed to a Pro-only feature being
+     * wanted. Separate because the two need different words: one is "you have
+     * finished what free gives you", the other is "this was never in free".
+     */
+    limit: function(){
+      if(state.pro) return true;
+      lock('', { daily: false });
+      return false;
+    },
+
+    /** Count one use of the free tier. Returns false once the daily limit is hit. */
+    use: function(){
+      if(state.pro) return true;
+      if(!SM_DAILY_LIMIT) return true;
+      if(usesToday() >= SM_DAILY_LIMIT){
+        lock('Unlimited use', { daily: true });
+        paint();
+        return false;
+      }
+      // Count it here so the number moves at once, and tell the server, which
+      // is the one that actually decides and will correct this if it disagrees.
+      bump();
+      spend();
+      paint();
+      return true;
+    },
+
+    /** Check a key with the server and turn Pro on if it is good. */
+    activate: function(key){
+      var msg = document.getElementById('sm-key-msg');
+      var clean = (key||'').trim();
+      if(!clean){ if(msg) msg.textContent = 'paste a key first'; return; }
+      if(msg) msg.textContent = 'checking...';
+      fetch(SM_LICENCE_URL + '?key=' + encodeURIComponent(clean) + '&slug=' + encodeURIComponent(SM_SLUG), { headers: sessionHeaders() })
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if(res.valid){
+            state.pro = true; state.key = clean; state.renewsAt = res.renewsAt;
+            writes(KEY_STORE, clean);
+            if(msg) msg.textContent = 'Pro is on';
+            var box = document.getElementById('sm-lock'); if(box) box.hidden = true;
+            paint();
+          } else {
+            if(msg) msg.textContent = res.reason === 'expired' ? 'that subscription has lapsed'
+              : res.reason === 'wrong_product' ? 'that key is for a different tool'
+              : res.reason === 'sign_in_first' ? 'sign in with the email you paid with, then use your key'
+              : res.reason === 'not_your_key' ? 'that key belongs to a different account'
+              : 'key not recognised';
+          }
+        })
+        .catch(function(){ if(msg) msg.textContent = 'could not check right now'; });
+    },
+
+    init: function(){
+      var params = new URLSearchParams(location.search);
+      paint();
+      syncAllowance();
+
+      // Straight back from a checkout: switch everything on, ask for nothing.
+      var paid = params.get('paid');
+      if(paid){ claimPayment(paid); return; }
+
+      var key = params.get('key') || reads(KEY_STORE);
+      if(!key) return;
+
+      function confirm(){
+        fetch(SM_LICENCE_URL + '?key=' + encodeURIComponent(key) + '&slug=' + encodeURIComponent(SM_SLUG), { headers: sessionHeaders() })
+          .then(function(r){ return r.json(); })
+          .then(function(res){
+            state.checked = true;
+            if(res.valid){
+              state.pro = true; state.key = key; state.renewsAt = res.renewsAt;
+              writes(KEY_STORE, key);
+            } else {
+              // Cancelled, lapsed, or used on too many devices. Pro goes off
+              // now rather than lasting until the tab is closed.
+              state.pro = false;
+              if(res.reason === 'too_many_devices') state.deviceProblem = true;
+            }
+            paint();
+          })
+          .catch(function(){
+            // No answer means no Pro. Failing open here would make the paid
+            // tier optional for anyone willing to go offline.
+            state.pro = false;
+            paint();
+          });
+      }
+
+      confirm();
+      // A subscription that was cancelled this morning should not still work
+      // this afternoon on a tab nobody closed.
+      setInterval(confirm, 60 * 60000);
+    }
+  };
+
+  if(document.readyState !== 'loading') SM.init();
+  else document.addEventListener('DOMContentLoaded', function(){ SM.init(); });
+  return SM;
+})();
+</script>
+<script>
+(function(){
+  if(!window.SM) return;
+
+  function store(name){ return 'sm_pro_' + SM_SLUG + '_' + name; }
+
+  SM.save = function(name, list){
+    if(!SM.gate('Saving')) return false;
+    try { localStorage.setItem(store(name), JSON.stringify(list)); return true; } catch(e){ return false; }
+  };
+
+  SM.load = function(name){
+    try { return JSON.parse(localStorage.getItem(store(name)) || '[]'); } catch(e){ return []; }
+  };
+
+  /** Download rows as CSV. Pro only. */
+  SM.exportCsv = function(filename, rows){
+    if(!SM.gate('CSV export')) return false;
+    var csv = rows.map(function(r){
+      return r.map(function(cell){
+        var v = String(cell == null ? '' : cell);
+        return /[",\n]/.test(v) ? '"' + v.replace(/"/g,'""') + '"' : v;
+      }).join(',');
+    }).join('\n');
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    return true;
+  };
+
+  /** Copy text, no gate - free users get this too. */
+  SM.copy = function(text, btn){
+    navigator.clipboard.writeText(text);
+    if(btn){ var old = btn.textContent; btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = old; }, 1500); }
+  };
+
+  /**
+   * Renders a bulk panel: many inputs in, many results out.
+   * cfg = { mount, placeholder, hint, run(lineArray) -> rowsArray, header }
+   */
+  SM.bulk = function(cfg){
+    var mount = document.getElementById(cfg.mount);
+    if(!mount) return;
+    mount.innerHTML =
+      '<h3>Bulk mode <span class="badge pro">PRO</span></h3>'
+      + '<p class="sub">' + cfg.hint + '</p>'
+      + '<textarea id="' + cfg.mount + '-in" placeholder="' + cfg.placeholder + '"></textarea>'
+      + '<div class="row"><button id="' + cfg.mount + '-go">Run all</button>'
+      + '<button id="' + cfg.mount + '-csv" class="secondary">Download CSV</button>'
+      + '<span id="' + cfg.mount + '-count" class="badge"></span></div>'
+      + '<output id="' + cfg.mount + '-out"></output>';
+
+    var rows = [];
+    function run(){
+      if(!SM.gate('Bulk mode')) return;
+      var lines = (document.getElementById(cfg.mount + '-in').value || '')
+        .split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
+      if(!lines.length){ document.getElementById(cfg.mount + '-out').textContent = 'Paste one per line above.'; return; }
+      rows = cfg.run(lines);
+      document.getElementById(cfg.mount + '-count').textContent = rows.length + ' done';
+      document.getElementById(cfg.mount + '-out').textContent =
+        rows.slice(0, 50).map(function(r){ return r.join('  ->  '); }).join('\n')
+        + (rows.length > 50 ? '\n... and ' + (rows.length - 50) + ' more in the CSV' : '');
+    }
+    document.getElementById(cfg.mount + '-go').addEventListener('click', run);
+    document.getElementById(cfg.mount + '-csv').addEventListener('click', function(){
+      if(!rows.length) run();
+      if(rows.length) SM.exportCsv(SM_SLUG + '-bulk.csv', [cfg.header].concat(rows));
+    });
+  };
+})();
+</script>
+<script data-sm="tool">
+var SMH = (function(){
+  function $(id){ return document.getElementById(id); }
+  function n(v){ var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, '')); return isFinite(x) ? x : 0; }
+  function num(id){ var e = $(id); return e ? n(e.value) : 0; }
+  function val(id){ var e = $(id); return e ? String(e.value || '').trim() : ''; }
+  function esc(s){
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
+      return c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&quot;';
+    });
+  }
+  var CUR = '$';
+  function setCur(s){ if(s) CUR = s; }
+  function cur(v){
+    var neg = v < 0;
+    var a = Math.abs(Math.round(v * 100) / 100).toFixed(2);
+    return (neg ? '-' : '') + CUR + a.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+  function hrs(v){ return (Math.round(v * 100) / 100).toFixed(2); }
+  function today(){ return new Date().toISOString().slice(0, 10); }
+  function fmtDate(d){
+    if(!(d instanceof Date)) d = new Date(d);
+    if(isNaN(d.getTime())) return '';
+    return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  function addMonths(d, m){ var x = new Date(d.getTime()); x.setMonth(x.getMonth() + m); return x; }
+  function table(head, rows, cls){
+    var h = '<tr>' + head.map(function(c){ return '<th>' + c + '</th>'; }).join('') + '</tr>';
+    var b = rows.map(function(r){
+      var rowCls = r.cls ? ' class="' + r.cls + '"' : '';
+      var cells = (r.cells || r);
+      return '<tr' + rowCls + '>' + cells.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>';
+    }).join('');
+    return '<table' + (cls ? ' class="' + cls + '"' : '') + '>' + h + b + '</table>';
+  }
+  function stat(k, v, note){
+    return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
+      (note ? '<div class="k" style="text-transform:none;letter-spacing:0;margin-top:4px">' + note + '</div>' : '') + '</div>';
+  }
+  return { $: $, n: n, num: num, val: val, esc: esc, cur: cur, setCur: setCur, hrs: hrs,
+           today: today, fmtDate: fmtDate, addMonths: addMonths, table: table, stat: stat };
+})();
+
+(function(){
+  var FREE_MAX = 3;
+  var debts = [];
+  try { debts = JSON.parse(localStorage.getItem('sm-debts') || '[]'); } catch(e){ debts = []; }
+  if(!(debts instanceof Array)) debts = [];
+  function persist(){ try { localStorage.setItem('sm-debts', JSON.stringify(debts)); } catch(e){} }
+
+  /**
+   * Run the plan month by month. Everyone pays their minimum; whatever is left
+   * of the budget goes at one debt until it is gone, then rolls onto the next.
+   */
+  function simulate(strategy){
+    var list = debts.map(function(d){ return { name: d.name, bal: SMH.n(d.bal), apr: SMH.n(d.apr), min: SMH.n(d.min) }; });
+    var extra = SMH.num('d-extra');
+    var budget = list.reduce(function(a, d){ return a + d.min; }, 0) + extra;
+    var order = list.slice().sort(function(a, b){
+      return strategy === 'snowball' ? a.bal - b.bal : b.apr - a.apr;
+    });
+    var months = 0, interest = 0, paid = 0, schedule = [], stalled = false;
+    var owed = function(){ return list.reduce(function(a, d){ return a + Math.max(0, d.bal); }, 0); };
+    var start = owed();
+    while(owed() > 0.005 && months < 600){
+      var before = owed();
+      months++;
+      var monthInterest = 0;
+      list.forEach(function(d){
+        if(d.bal <= 0) return;
+        var i = d.bal * (d.apr / 100 / 12);
+        d.bal += i; monthInterest += i;
+      });
+      interest += monthInterest;
+      var left = budget;
+      list.forEach(function(d){
+        if(d.bal <= 0 || left <= 0) return;
+        var p = Math.min(d.min, d.bal, left);
+        d.bal -= p; left -= p;
+      });
+      for(var k = 0; k < order.length && left > 0.005; k++){
+        var t = order[k];
+        if(t.bal <= 0.005) continue;
+        var p2 = Math.min(left, t.bal);
+        t.bal -= p2; left -= p2;
+      }
+      paid += budget - left;
+      schedule.push({ month: months, owed: owed(), interest: monthInterest, paid: budget - left });
+      if(owed() >= before - 0.005){ stalled = true; break; }
+    }
+    return { months: months, interest: interest, paid: paid, schedule: schedule,
+             stalled: stalled, budget: budget, start: start,
+             clearDate: SMH.addMonths(new Date(), months) };
+  }
+
+  function paintList(){
+    SMH.$('d-count').textContent = debts.length + (debts.length === 1 ? ' debt' : ' debts');
+    if(!debts.length){ SMH.$('d-list').innerHTML = '<p class="sub">Nothing added yet.</p>'; return; }
+    var rows = debts.map(function(d, i){
+      return { cells: [SMH.esc(d.name), SMH.cur(SMH.n(d.bal)), SMH.n(d.apr) + '%', SMH.cur(SMH.n(d.min)),
+        '<button class="secondary" data-del="' + i + '" style="padding:4px 10px">Remove</button>'] };
+    });
+    var total = debts.reduce(function(a, d){ return a + SMH.n(d.bal); }, 0);
+    rows.push({ cells: ['<strong>Total</strong>', '<strong>' + SMH.cur(total) + '</strong>', '', '', ''] });
+    SMH.$('d-list').innerHTML = SMH.table(['Debt', 'Balance', 'Rate', 'Minimum', ''], rows);
+    Array.prototype.forEach.call(SMH.$('d-list').querySelectorAll('[data-del]'), function(b){
+      b.addEventListener('click', function(){ debts.splice(Number(b.getAttribute('data-del')), 1); persist(); paint(); });
+    });
+  }
+
+  function paint(){
+    paintList();
+    var out = SMH.$('d-verdict');
+    if(!debts.length){
+      SMH.$('d-stats').innerHTML = '';
+      out.textContent = 'Add a debt to see when you would be clear.';
+      return;
+    }
+    var r = simulate(SMH.val('d-strategy'));
+    if(r.stalled){
+      SMH.$('d-stats').innerHTML = SMH.stat('Clear by', 'Not on this', 'the interest is winning');
+      out.textContent = 'On ' + SMH.cur(r.budget) + ' a month this never clears - the interest is growing as fast as you are paying it off.\n\n' +
+        'Two things move it: paying more each month, or getting the interest rate down (a balance transfer, or asking them directly - people do say yes).\n\n' +
+        'Try putting the extra payment up until the date appears.';
+      return;
+    }
+    var years = Math.floor(r.months / 12), rem = r.months % 12;
+    SMH.$('d-stats').innerHTML =
+      SMH.stat('Debt free', SMH.fmtDate(r.clearDate), r.months + ' months from now') +
+      SMH.stat('Interest you will pay', SMH.cur(r.interest), 'on top of what you borrowed') +
+      SMH.stat('Every month', SMH.cur(r.budget), 'minimums plus your extra');
+    out.textContent = 'You would be clear in ' +
+      (years ? years + (years === 1 ? ' year' : ' years') + (rem ? ' and ' + rem + ' months' : '') : r.months + ' months') +
+      ', on ' + SMH.fmtDate(r.clearDate) + '.\n\n' +
+      'You would pay ' + SMH.cur(r.paid) + ' in total, of which ' + SMH.cur(r.interest) + ' is interest.';
+  }
+
+  SMH.$('d-add').addEventListener('click', function(){
+    if(!SM.pro() && debts.length >= FREE_MAX){ SM.limit(); return; }
+    if(!SM.use()) return;
+    var name = SMH.val('d-name') || 'Debt ' + (debts.length + 1);
+    debts.push({ name: name, bal: SMH.num('d-bal'), apr: SMH.num('d-apr'), min: SMH.num('d-min') });
+    ['d-name', 'd-bal', 'd-apr', 'd-min'].forEach(function(id){ SMH.$(id).value = ''; });
+    persist(); paint();
+  });
+  SMH.$('d-clear').addEventListener('click', function(){ debts = []; persist(); paint(); });
+  ['d-extra', 'd-strategy'].forEach(function(id){
+    SMH.$(id).addEventListener('input', paint);
+    SMH.$(id).addEventListener('change', paint);
+  });
+
+  // ---- Pro ----
+  SMH.$('d-compare').addEventListener('click', function(){
+    if(!SM.gate('Comparing both orders')) return;
+    if(!debts.length) return;
+    var a = simulate('avalanche'), s = simulate('snowball');
+    var box = SMH.$('d-compare-out');
+    if(a.stalled || s.stalled){ box.innerHTML = '<p class="sub">Put the monthly amount up until at least one of them clears, then compare.</p>'; return; }
+    var saved = s.interest - a.interest, faster = s.months - a.months;
+    box.innerHTML = SMH.table(['Order', 'Debt free', 'Months', 'Interest paid'], [
+      ['Highest interest first', SMH.fmtDate(a.clearDate), a.months, SMH.cur(a.interest)],
+      ['Smallest balance first', SMH.fmtDate(s.clearDate), s.months, SMH.cur(s.interest)]
+    ]) + '<p class="notice">' + (saved > 0.5
+      ? 'Paying the highest interest first saves you ' + SMH.cur(saved) + (faster > 0 ? ' and gets you out ' + faster + ' months earlier' : '') + '. Paying the smallest first clears a whole debt sooner, which some people need to keep going. Both are fine - one just costs less.'
+      : 'There is almost nothing in it here, so pick whichever you will actually stick to.') + '</p>';
+    var r = simulate(SMH.val('d-strategy'));
+    SMH.$('d-schedule').innerHTML = '<h3>Month by month</h3>' + SMH.table(['Month', 'Paid', 'Interest', 'Still owed'],
+      r.schedule.map(function(m){ return [m.month, SMH.cur(m.paid), SMH.cur(m.interest), SMH.cur(m.owed)]; }));
+  });
+  SMH.$('d-export').addEventListener('click', function(){
+    if(!debts.length) return;
+    var r = simulate(SMH.val('d-strategy'));
+    SM.exportCsv('debt-plan.csv', [['Month', 'Paid', 'Interest', 'Still owed']].concat(
+      r.schedule.map(function(m){ return [m.month, m.paid.toFixed(2), m.interest.toFixed(2), m.owed.toFixed(2)]; })));
+  });
+
+  paint();
+})();</script>
+<script>
+(function(){
+  var SESSION_STORE = 'sm_session_' + SM_SLUG;
+  var PENDING_STORE = 'sm_pending_' + SM_SLUG;
+  var IS_DOWNLOAD = (typeof SM_KIND !== 'undefined' && SM_KIND === 'download');
+
+  function reads(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+  function writes(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+  function drops(k){ try { localStorage.removeItem(k); } catch(e){} }
+  function el(id){ return document.getElementById(id); }
+
+  function say(text, bad){
+    var m = el('sm-acc-msg');
+    if(!m) return;
+    m.textContent = text || '';
+    m.className = 'sm-auth-msg' + (bad ? ' bad' : '');
+  }
+  function sayConfirm(text, bad){
+    var m = el('sm-acc-confirmmsg');
+    if(!m) return;
+    m.textContent = text || '';
+    m.className = 'sm-auth-msg' + (bad ? ' bad' : '');
+  }
+
+  /** Only ever one of the three visible. */
+  function show(which){
+    var screens = ['sm-acc-choose','sm-acc-confirm','sm-acc-signedin'];
+    for(var i=0;i<screens.length;i++){
+      var box = el(screens[i]);
+      if(box) box.hidden = screens[i] !== which;
+    }
+  }
+
+  /**
+   * Show the account card. Returns false when there is none on this page.
+   *
+   * The pricing page carries this script but not the card, so it used to
+   * return quietly and the Subscribe button did nothing at all - which is
+   * indistinguishable from a broken button.
+   */
+  function open(why){
+    var box = el('sm-account');
+    if(!box) return false;
+    box.hidden = false;
+    // Signed in: show the account. This always showed the sign-in form, so
+    // after paying, "Account" opened a login box, the account view with Sign
+    // out and Cancel was unreachable, and it looked like signing in was broken.
+    if(reads(SESSION_STORE) && !why){ show('sm-acc-signedin'); refresh(); }
+    else show('sm-acc-choose');
+
+    // Retitle the card when it has been opened on the way to paying, so the
+    // reason is the first thing read rather than a line under the fields.
+    var title = el('sm-acc-title');
+    var sub = el('sm-acc-sub');
+    if(why && title) title.textContent = 'One step before payment';
+    if(why && sub) sub.textContent = why;
+
+    if(why) say(why);
+
+    // Flashed, because the card can already be on screen - in which case
+    // nothing visibly changes and the button looks broken.
+    box.classList.add('sm-attention');
+    setTimeout(function(){ box.classList.remove('sm-attention'); }, 1600);
+
+    box.scrollIntoView({ block: 'center' });
+    if(el('sm-acc-email')) el('sm-acc-email').focus();
+    return true;
+  }
+
+  /**
+   * Whether they were on their way to paying when they were asked to sign in.
+   *
+   * Kept in sessionStorage rather than a variable: signing in reloads the page,
+   * so anything held in memory is gone by the time it is needed.
+   */
+  function wasBuying(){
+    try { return sessionStorage.getItem('sm_buying_intent_' + SM_SLUG) === '1'; } catch(e){ return false; }
+  }
+  function clearBuying(){
+    try { sessionStorage.removeItem('sm_buying_intent_' + SM_SLUG); } catch(e){}
+  }
+
+  function post(path, payload){
+    return fetch(SM_API_BASE + path, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-sm-session': reads(SESSION_STORE) || '' },
+      body: JSON.stringify(payload || {})
+    }).then(function(r){ return r.json(); });
+  }
+
+  /** Where a confirmation link should come back to. */
+  function here(){ return location.href.split('?')[0].split('#')[0]; }
+
+  /* ---------------- signed in ---------------- */
+
+  /**
+   * Show the account, and let the rest of the page know what it is.
+   *
+   * Everything that depends on being Pro reads the same answer from here:
+   * the Buy button, the nav link, and the account card itself. They used to
+   * decide separately, which is how a subscriber was still shown Subscribe.
+   */
+  function paintAccount(data){
+    var signedIn = Boolean(data && data.signedIn);
+    var mine = signedIn
+      ? (data.entitlements || []).filter(function(e){ return e.slug === SM_SLUG; })[0]
+      : null;
+
+    // Per product, deliberately. Paying for one tool is paying for one tool.
+    var cancelled = mine && String(mine.status || '').toUpperCase() === 'CANCELLED';
+    window.SMstate = { signedIn: signedIn, pro: Boolean(mine), cancelled: cancelled, mine: mine || null };
+
+    // This is what carries Pro to another browser, a phone, a laptop. The
+    // server had already said this account is entitled - the answer came back
+    // on every sign-in - and nothing ever switched the tool on, so a paying
+    // customer signing in anywhere new was shown the free version and asked to
+    // pay again. The entitlement is server-checked; the key is re-verified
+    // (device limit included) on the next load.
+    if(mine && window.SM && window.SM.grant) window.SM.grant(mine.key, mine.renews_at);
+    tellThePage();
+
+    // The nav link says what it does: sign in, or open the account.
+    var nav = el('sm-navsignin');
+    if(nav) nav.textContent = signedIn ? 'Account' : 'Sign in';
+
+    if(!signedIn){ show('sm-acc-choose'); return; }
+    show('sm-acc-signedin');
+
+    var stats = el('sm-acc-stats');
+    if(stats){
+      var esc = function(t){ return String(t == null ? '' : t).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+      var row = function(k, v, mono){ return '<div class="sm-acc-row"><span class="k">' + k + '</span><span class="v' + (mono ? ' mono' : '') + '">' + esc(v) + '</span></div>'; };
+      stats.innerHTML =
+        row('Signed in as', data.account.email || '') +
+        row(IS_DOWNLOAD ? 'This download' : 'This tool', IS_DOWNLOAD ? (mine ? 'Yours' : 'Not bought yet') : (mine ? (cancelled ? 'Pro, ending' : 'Pro') : 'Free')) +
+        (mine && mine.renews_at && !IS_DOWNLOAD ? row(cancelled ? 'Ends' : 'Renews', String(mine.renews_at).slice(0, 10)) : '') +
+        (mine && mine.key && !IS_DOWNLOAD ? row('Your key', mine.key, true) : '');
+    }
+
+    // Cancelling belongs here, next to the subscription, not in an email
+    // somebody has to go and find.
+    var cancel = el('sm-acc-cancel');
+    if(cancel){
+      cancel.hidden = !mine || cancelled || IS_DOWNLOAD;
+      cancel.textContent = 'Cancel subscription';
+    }
+    // One message about cancelling, not three saying the same thing.
+    var foot = el('sm-acc-foot');
+    if(foot) foot.hidden = !mine || cancelled;
+    var note = el('sm-acc-cancelnote');
+    if(note){
+      note.hidden = !cancelled;
+      if(cancelled && mine.renews_at){
+        note.textContent = 'Cancelled. Pro stays on until ' + String(mine.renews_at).slice(0,10)
+          + ', then this goes back to the free version. Your account and everything in it stays.';
+      }
+    }
+  }
+
+  /**
+   * Tell the rest of the page whether this is a Pro subscriber.
+   *
+   * Offering Subscribe to somebody already subscribed is the single most
+   * common complaint about a page like this, and it happened because the Buy
+   * button never asked.
+   */
+  function tellThePage(){
+    var s = window.SMstate || { pro: false };
+    var buy = document.getElementById('sm-buy');
+    var already = document.getElementById('sm-already-pro');
+
+    if(buy) buy.hidden = Boolean(s.pro);
+    if(already){
+      already.hidden = !s.pro;
+      already.textContent = (typeof SM_KIND !== 'undefined' && SM_KIND === 'download')
+        ? 'You own this. Your download is at the top of the page.'
+        : s.cancelled
+        ? 'You are on Pro until the end of this month.'
+        : 'You are on Pro. Everything here is unlocked.';
+    }
+    var note = document.getElementById('sm-buy-note');
+    if(note) note.hidden = Boolean(s.pro);
+    var owned = document.getElementById('sm-owned');
+    if(owned) owned.hidden = !s.pro;
+  }
+
+  function refresh(){
+    var token = reads(SESSION_STORE);
+    if(!token){ paintAccount(null); return; }
+    fetch(SM_API_BASE + '/api/account/me', { headers: { 'x-sm-session': token } })
+      .then(function(r){ return r.json(); })
+      .then(paintAccount)
+      .catch(function(){ paintAccount(null); });
+  }
+
+  /**
+   * They are in. Reload rather than repaint.
+   *
+   * Signing in changes what half the page is allowed to show, and every locked
+   * panel decides that when it starts. Repainting this one card would leave
+   * somebody signed in and still looking at a locked tool, wondering what they
+   * paid for. A reload opens all of it at once.
+   */
+  function landInAccount(res){
+    if(res.sessionToken) writes(SESSION_STORE, res.sessionToken);
+    drops(PENDING_STORE);
+    var mine = (res.entitlements || []).filter(function(e){ return e.slug === SM_SLUG; })[0];
+
+    // They were part-way through buying when they were asked to sign in. Carry
+    // straight on to the card form rather than leaving them back on the page
+    // with no idea what happened to the thing they clicked.
+    if(!mine && wasBuying()){
+      say('Signed in. Taking you to the payment page…');
+      clearBuying();
+      setTimeout(function(){
+        if(window.SMbuy && window.SMbuy.checkout) window.SMbuy.checkout();
+        else location.reload();
+      }, 500);
+      return;
+    }
+    clearBuying();
+
+    say(mine ? 'Signed in. Pro is on — one moment.' : 'Signed in — one moment.');
+    sayConfirm('Confirmed. Signing you in…');
+    setTimeout(function(){ location.reload(); }, 700);
+  }
+
+  /* ---------------- confirming ---------------- */
+
+  function askToConfirm(email, note){
+    writes(PENDING_STORE, email);
+    var to = el('sm-acc-sentto');
+    if(to) to.textContent = email;
+    show('sm-acc-confirm');
+    sayConfirm(note || '');
+    var code = el('sm-acc-code');
+    if(code){ code.value = ''; code.focus(); }
+  }
+
+  function confirmWith(value){
+    var email = reads(PENDING_STORE) || (el('sm-acc-email') ? el('sm-acc-email').value.trim() : '');
+    var given = String(value || '').replace(/[^0-9a-zA-Z_-]/g, '');
+    if(!given){ sayConfirm('Type the code from the email.', true); return; }
+    sayConfirm('Checking…');
+    post('/api/account/verify', { email: email, code: given, slug: SM_SLUG })
+      .then(function(res){
+        // Confirmed but no session: the address was already confirmed, so a
+        // code cannot let anybody in. Send them to sign in rather than
+        // reloading into a page that claims they are signed in and is not.
+        if(res.ok && !res.sessionToken){
+          drops(PENDING_STORE);
+          show('sm-acc-choose');
+          say(res.reason || 'That address is already confirmed. Sign in with your password.');
+          if(el('sm-acc-pass')) el('sm-acc-pass').focus();
+          return;
+        }
+        if(res.ok) return landInAccount(res);
+        sayConfirm(res.reason || 'That code is not right.', true);
+        if(res.expired){
+          var again = el('sm-acc-resend');
+          if(again) again.focus();
+        }
+      })
+      .catch(function(){ sayConfirm('Could not reach the server. Try again in a moment.', true); });
+  }
+
+  /* ---------------- wiring ---------------- */
+
+  document.addEventListener('DOMContentLoaded', function(){
+    // Published so the Buy button can ask for an account before the card form.
+    window.SMaccount = { open: open, signedIn: function(){ return Boolean(reads(SESSION_STORE)); } };
+
+    var link = el('sm-navsignin');
+    // A page with no account card (pricing, docs) sends you to the one that has
+    // it, instead of a link that does nothing.
+    if(link) link.addEventListener('click', function(e){
+      e.preventDefault();
+      if(!open()) location.href = './?account=1';
+    });
+
+    // Arrived from the link in the email: confirm it and get out of the way.
+    var params = new URLSearchParams(location.search);
+    var confirmToken = params.get('confirm');
+    if(confirmToken){
+      var who = params.get('email') || reads(PENDING_STORE) || '';
+      open();
+      askToConfirm(who, 'Confirming…');
+      post('/api/account/verify', { email: who, token: confirmToken, slug: SM_SLUG })
+        .then(function(res){
+          if(res.ok && !res.sessionToken){
+            drops(PENDING_STORE);
+            show('sm-acc-choose');
+            say(res.reason || 'That address is already confirmed. Sign in with your password.');
+            return;
+          }
+          if(res.ok) return landInAccount(res);
+          sayConfirm(res.reason || 'That link is not valid any more. Ask for a new code.', true);
+        })
+        .catch(function(){ sayConfirm('Could not reach the server. Try the code instead.', true); });
+      return;
+    }
+
+    // Sent here from the pricing page to sign in before paying.
+    if(params.get('signin') && !reads(SESSION_STORE)){
+      open('Create an account or sign in, and payment opens straight after.');
+    } else if(params.get('account') || params.get('signin')){
+      open();
+    }
+
+    // Came back to a half-finished sign-up.
+    var pending = reads(PENDING_STORE);
+    if(pending && !reads(SESSION_STORE)) askToConfirm(pending, 'Still waiting on that code.');
+
+    var go = el('sm-acc-go');
+    if(go) go.addEventListener('click', function(){
+      var email = el('sm-acc-email').value.trim();
+      var pass = el('sm-acc-pass').value;
+      if(!email || !pass){ say('Email and password, please.', true); return; }
+      say('Signing in…');
+      post('/api/account/signin', { email: email, password: pass, slug: SM_SLUG })
+        .then(function(res){
+          if(res.ok) return landInAccount(res);
+          say(res.reason || 'That email and password do not match.', true);
+        })
+        .catch(function(){ say('Could not reach the server. Try again in a moment.', true); });
+    });
+
+    // Enter submits, from either field.
+    ['sm-acc-email','sm-acc-pass'].forEach(function(id){
+      var field = el(id);
+      if(field) field.addEventListener('keydown', function(e){
+        if(e.key === 'Enter'){ e.preventDefault(); el('sm-acc-go').click(); }
+      });
+    });
+
+    var make = el('sm-acc-new');
+    if(make) make.addEventListener('click', function(){
+      var email = el('sm-acc-email').value.trim();
+      var pass = el('sm-acc-pass').value;
+      if(!email || pass.length < 8){ say('An email, and a password of at least 8 characters.', true); return; }
+      say('Making your account…');
+      post('/api/account/signup', { email: email, password: pass, slug: SM_SLUG, returnTo: here() })
+        .then(function(res){
+          if(!res.ok){ say(res.reason || 'Could not make that account.', true); return; }
+          askToConfirm(email, res.sent === false
+            ? 'Account made. The email is on its way — it can take a few minutes.'
+            : '');
+        })
+        .catch(function(){ say('Could not reach the server. Try again in a moment.', true); });
+    });
+
+    var confirmGo = el('sm-acc-confirmgo');
+    if(confirmGo) confirmGo.addEventListener('click', function(){
+      confirmWith(el('sm-acc-code').value);
+    });
+
+    var code = el('sm-acc-code');
+    if(code){
+      code.addEventListener('keydown', function(e){
+        if(e.key === 'Enter'){ e.preventDefault(); confirmWith(code.value); }
+      });
+      // Six digits pasted or typed is unambiguous, so do not make them click.
+      code.addEventListener('input', function(){
+        var digits = code.value.replace(/[^0-9]/g, '');
+        if(digits.length === 6){ code.value = digits; confirmWith(digits); }
+      });
+    }
+
+    var resend = el('sm-acc-resend');
+    if(resend) resend.addEventListener('click', function(){
+      sayConfirm('Sending another…');
+      post('/api/account/resend', { email: reads(PENDING_STORE), slug: SM_SLUG, returnTo: here() })
+        .then(function(res){
+          sayConfirm(res.sent === false
+            ? 'On its way. It can take a few minutes.'
+            : 'Sent. Check your email again.');
+        })
+        .catch(function(){ sayConfirm('Could not reach the server.', true); });
+    });
+
+    var abandon = el('sm-acc-abandon');
+    if(abandon) abandon.addEventListener('click', function(){
+      var email = reads(PENDING_STORE);
+      post('/api/account/cancel-signup', { email: email }).catch(function(){});
+      drops(PENDING_STORE);
+      show('sm-acc-choose');
+      say('Stopped. Nothing was kept.');
+      if(el('sm-acc-pass')) el('sm-acc-pass').value = '';
+    });
+
+    var forgot = el('sm-acc-forgot');
+    if(forgot) forgot.addEventListener('click', function(){
+      var email = el('sm-acc-email').value.trim();
+      if(!email){ say('Put your email in first.', true); return; }
+      say('Sending…');
+      post('/api/account/password/request', { email: email, slug: SM_SLUG, returnTo: here() })
+        .then(function(res){ say(res.message || 'If that address has an account, a link is on its way.'); })
+        .catch(function(){ say('Could not reach the server.', true); });
+    });
+
+    var cancelSub = el('sm-acc-cancel');
+    if(cancelSub) cancelSub.addEventListener('click', function(){
+      var sure = window.confirm('Cancel your Pro subscription for this tool? You will not be charged again. You keep Pro until the end of the month you have paid for, and your account stays.');
+      if(!sure) return;
+      var msg = el('sm-acc-cancelmsg');
+      if(msg){ msg.textContent = 'Cancelling…'; msg.className = 'sm-auth-msg'; }
+      cancelSub.disabled = true;
+      post('/api/account/cancel-subscription', { slug: SM_SLUG })
+        .then(function(res){
+          cancelSub.disabled = false;
+          if(msg){ msg.textContent = res.message || res.reason || ''; msg.className = 'sm-auth-msg' + (res.ok ? '' : ' bad'); }
+          if(res.ok){ if(msg) msg.textContent = ''; refresh(); }
+        })
+        .catch(function(){
+          cancelSub.disabled = false;
+          if(msg){ msg.textContent = 'Could not reach the server. Nothing has changed - try again in a moment.'; msg.className = 'sm-auth-msg bad'; }
+        });
+    });
+
+    var out = el('sm-acc-out');
+    if(out) out.addEventListener('click', function(){
+      post('/api/account/signout', {}).catch(function(){});
+      drops(SESSION_STORE);
+      drops('sm_key_' + SM_SLUG);
+      location.reload();
+    });
+
+    refresh();
+  });
+})();</script>
+<script>
+(function(){
+  var form = document.getElementById('sm-feedback');
+  if(!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var email = (document.getElementById('sm-email')||{}).value || '';
+    var note = (document.getElementById('sm-note')||{}).value || '';
+    var status = document.getElementById('sm-status');
+    if(!note.trim()){ status.textContent = 'Write something first.'; return; }
+    status.textContent = 'Sending...';
+
+    // /api/feedback, not /api/track. This used to post to the visit counter,
+    // which records a page view and ignores the email and the message
+    // entirely - so every piece of feedback anybody ever sent was thrown away,
+    // while the page thanked them and said it had reached a person.
+    fetch(SM_FEEDBACK_URL, {
+      method:'POST',
+      headers:{'content-type':'application/json'},
+      body: JSON.stringify({slug: SM_SLUG, email: email, note: note})
+    }).then(function(r){ return r.json(); }).then(function(res){
+      if(res && res.ok === false){
+        status.textContent = res.reason || ('Could not send. Email us instead: ' + SM_CONTACT);
+        return;
+      }
+      status.textContent = (res && res.message) || 'Thank you - that reaches a person.';
+      form.reset();
+    }).catch(function(){
+      status.textContent = 'Could not send. Email us instead: ' + SM_CONTACT;
+    });
+  });
+})();</script>
+<script>
+(function(){
+  var form = document.getElementById('sm-order');
+  if(!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var status = document.getElementById('sm-order-status');
+    var email = (document.getElementById('sm-order-email')||{}).value || '';
+    if(!email){ status.textContent = 'email required'; return; }
+    status.textContent = 'sending...';
+    fetch(SM_ORDER_URL, {
+      method:'POST',
+      headers:{'content-type':'application/json'},
+      body: JSON.stringify({
+        slug: SM_SLUG,
+        email: email,
+        name: (document.getElementById('sm-order-name')||{}).value || '',
+        note: (document.getElementById('sm-order-note')||{}).value || ''
+      })
+    }).then(function(r){ return r.json(); }).then(function(res){
+      if(res.ok){
+        form.innerHTML = '<p class="sub">Thanks - check your email shortly for payment details.</p>';
+      } else {
+        status.textContent = res.error || 'could not send';
+      }
+    }).catch(function(){
+      status.textContent = 'could not send - email ' + SM_CONTACT;
+    });
+  });
+})();</script>
+<script>
+(function(){
+  var link = document.getElementById('sm-buy');
+  if(!link) return;
+
+  var SESSION_STORE = 'sm_session_' + SM_SLUG;
+  var CODE_STORE = 'sm_buying_' + SM_SLUG;
+  var status = document.getElementById('sm-buy-status');
+  var timer = null;
+  var started = 0;
+
+  function reads(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+  function writes(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+  function drops(k){ try { localStorage.removeItem(k); } catch(e){} }
+
+  function say(text, done){
+    if(!status) return;
+    status.hidden = !text;
+    status.textContent = text || '';
+    status.style.color = done ? 'var(--ok, #0a7)' : '';
+  }
+
+  function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+  /**
+   * Their payment landed: turn everything on where they are standing.
+   *
+   * The session token is the real unlock - it is their account, so it follows
+   * them to a phone as well. The licence key is written alongside it so the
+   * tool works even if they later sign out. Reloading is what makes the whole
+   * page agree, rather than trying to repaint each part by hand.
+   */
+  function unlock(data){
+    stop();
+    drops(CODE_STORE);
+    if(data.sessionToken) writes(SESSION_STORE, data.sessionToken);
+    if(data.key) writes('sm_key_' + SM_SLUG, data.key);
+    say('Payment received — everything is unlocked. Thank you.', true);
+    setTimeout(function(){ location.reload(); }, 1200);
+  }
+
+  function poll(code){
+    fetch(SM_API_BASE + '/api/checkout/waiting?code=' + encodeURIComponent(code))
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if(data.status === 'paid') return unlock(data);
+        if(data.status === 'unknown'){ stop(); drops(CODE_STORE); say(data.message); return; }
+        // Give up watching after a while rather than polling this forever. The
+        // email is already on its way, so nothing is lost by stopping.
+        if(Date.now() - started > 20 * 60 * 1000){
+          stop();
+          say('Still waiting. If you have paid, your access is on its way by email — you can close this.');
+          return;
+        }
+        say(data.message);
+      })
+      .catch(function(){});
+  }
+
+  function watch(code){
+    started = Date.now();
+    stop();
+    say('Waiting for the payment to come through…');
+    poll(code);
+    timer = setInterval(function(){ poll(code); }, 4000);
+  }
+
+  /**
+   * Buy.
+   *
+   * An account comes first, then the card. Paying without one worked, but left
+   * the subscription attached to nothing somebody could sign into: the licence
+   * belonged to an email address they may have typed differently at Stripe,
+   * the Pro they had paid for lived in that one browser, and opening the tool
+   * on a phone showed the free version with no way to prove otherwise.
+   *
+   * So: signed in already, go straight to the card form. Not signed in, open
+   * the account card, remember that a purchase was the intent, and continue to
+   * the card form the moment they are in. Nobody is asked to type their email
+   * twice, and the subscription lands on an account that exists.
+   *
+   * The tab is navigated rather than opened: a window.open after an await is
+   * blocked by every popup blocker, because by then the browser no longer
+   * considers it something the person did.
+   */
+  function goToCheckout(){
+    say('Opening the payment page…');
+    fetch(SM_API_BASE + '/api/checkout/start', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-sm-session': reads(SESSION_STORE) || '' },
+      body: JSON.stringify({ slug: SM_SLUG, returnTo: location.href.split('?')[0] })
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if(data && data.ok && data.code) writes(CODE_STORE, data.code);
+        if(data && data.ok && data.payUrl){ location.href = data.payUrl; return; }
+        var href = link.getAttribute('href');
+        if(href && href !== '#'){
+          if(data && data.code) watch(data.code);
+          window.open(href, '_blank', 'noopener');
+          return;
+        }
+        say('Could not open the payment page. Try again in a moment.');
+      })
+      .catch(function(){
+        var href = link.getAttribute('href');
+        if(href && href !== '#'){ window.open(href, '_blank', 'noopener'); return; }
+        say('Could not reach the server. Try again in a moment.');
+      });
+  }
+
+  // Published so the account card can continue to the card form once somebody
+  // has signed in, instead of stranding them back on the page.
+  window.SMbuy = { checkout: goToCheckout };
+
+  link.addEventListener('click', function(e){
+    e.preventDefault();
+
+    if(reads(SESSION_STORE)){ goToCheckout(); return; }
+
+    // Not signed in. Remember that they were on their way to paying, so the
+    // account card can carry straight on to the card form afterwards instead
+    // of dropping them back on the page wondering what happened.
+    try { sessionStorage.setItem('sm_buying_intent_' + SM_SLUG, '1'); } catch(err){}
+
+    // Say something where the click happened, first. The account card can be
+    // most of a page away, and a message that appears only inside it reads as
+    // "the button is broken" - which is exactly how this was reported.
+    say('Sign in or create an account below to continue — it takes a moment.');
+
+    var opened = window.SMaccount && window.SMaccount.open
+      && window.SMaccount.open('Create an account or sign in, and payment opens straight after.');
+
+    if(!opened){
+      // This page has no account card - the pricing page is like that. Send
+      // them to the product itself, where there is one. The intent is already
+      // in sessionStorage, so signing in there carries on to payment.
+      say('Taking you to sign in…');
+      location.href = './?signin=1';
+    }
+  });
+
+  // Came back to the page mid-purchase - carry on waiting where they left off.
+  var pending = reads(CODE_STORE);
+  if(pending) watch(pending);
+})();</script>
+</body>
+</html>
