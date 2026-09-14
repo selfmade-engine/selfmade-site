@@ -8,16 +8,16 @@
 <meta property="og:title" content="Money Mindset &amp; Your First Real Budget">
 <meta property="og:description" content="Stop feeling broke and start feeling in control — a workbook with budget pages that survive real life. Printable PDF, 17 pages, instant download.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://selfmade-api.selfmade-engine.workers.dev/p/money-mindset-your-first-real-budget/og.png">
+<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/money-mindset-your-first-real-budget/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Money Mindset &amp; Your First Real Budget">
 <!-- summary_large_image rather than summary: without a picture a shared link
      renders as a grey rectangle, which costs more clicks than any wording. -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://selfmade-api.selfmade-engine.workers.dev/p/money-mindset-your-first-real-budget/og.png">
-<link rel="canonical" href="https://selfmade-api.selfmade-engine.workers.dev/p/money-mindset-your-first-real-budget/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Money Mindset & Your First Real Budget","description":"Stop feeling broke and start feeling in control — a workbook with budget pages that survive real life","url":"https://selfmade-api.selfmade-engine.workers.dev/p/money-mindset-your-first-real-budget/","image":"https://selfmade-api.selfmade-engine.workers.dev/p/money-mindset-your-first-real-budget/og.png","offers":{"@type":"Offer","price":"12.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
+<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/money-mindset-your-first-real-budget/og.png">
+<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/money-mindset-your-first-real-budget/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Money Mindset & Your First Real Budget","description":"Stop feeling broke and start feeling in control — a workbook with budget pages that survive real life","url":"https://selfmade-engine.github.io/selfmade-site/p/money-mindset-your-first-real-budget/","image":"https://selfmade-engine.github.io/selfmade-site/p/money-mindset-your-first-real-budget/og.png","offers":{"@type":"Offer","price":"12.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
 <link rel="stylesheet" href="./style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
@@ -104,14 +104,14 @@
 
   <!-- 3. signed in -->
   <div id="sm-acc-signedin" hidden>
-    <div class="grid cols-3" id="sm-acc-stats"></div>
+    <div class="sm-acc-rows" id="sm-acc-stats"></div>
     <div class="row">
       <button id="sm-acc-out" class="secondary">Sign out</button>
       <button id="sm-acc-cancel" class="linkish sm-danger" hidden>Cancel subscription</button>
     </div>
     <output id="sm-acc-cancelmsg" class="sm-auth-msg"></output>
     <p class="limit" id="sm-acc-cancelnote" hidden></p>
-    <p class="limit">A one-time purchase: there is nothing to cancel and nothing more will be charged.</p>
+    <p class="limit" id="sm-acc-foot">A one-time purchase: there is nothing to cancel and nothing more will be charged.</p>
   </div>
 </div>
 <div class="card paycard no-print" id="sm-pay">
@@ -208,6 +208,9 @@ window.SM = (function(){
   function today(){ return new Date().toISOString().slice(0,10); }
   function reads(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
   function writes(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+  // The server only accepts a key from the account that paid for it, so the
+  // signed-in session travels with every check.
+  function sessionHeaders(){ var t = reads('sm_session_' + SM_SLUG); return t ? { 'x-sm-session': t } : {}; }
 
   function usesToday(){
     try {
@@ -464,7 +467,7 @@ window.SM = (function(){
       var clean = (key||'').trim();
       if(!clean){ if(msg) msg.textContent = 'paste a key first'; return; }
       if(msg) msg.textContent = 'checking...';
-      fetch(SM_LICENCE_URL + '?key=' + encodeURIComponent(clean) + '&slug=' + encodeURIComponent(SM_SLUG))
+      fetch(SM_LICENCE_URL + '?key=' + encodeURIComponent(clean) + '&slug=' + encodeURIComponent(SM_SLUG), { headers: sessionHeaders() })
         .then(function(r){ return r.json(); })
         .then(function(res){
           if(res.valid){
@@ -476,6 +479,8 @@ window.SM = (function(){
           } else {
             if(msg) msg.textContent = res.reason === 'expired' ? 'that subscription has lapsed'
               : res.reason === 'wrong_product' ? 'that key is for a different tool'
+              : res.reason === 'sign_in_first' ? 'sign in with the email you paid with, then use your key'
+              : res.reason === 'not_your_key' ? 'that key belongs to a different account'
               : 'key not recognised';
           }
         })
@@ -495,7 +500,7 @@ window.SM = (function(){
       if(!key) return;
 
       function confirm(){
-        fetch(SM_LICENCE_URL + '?key=' + encodeURIComponent(key) + '&slug=' + encodeURIComponent(SM_SLUG))
+        fetch(SM_LICENCE_URL + '?key=' + encodeURIComponent(key) + '&slug=' + encodeURIComponent(SM_SLUG), { headers: sessionHeaders() })
           .then(function(r){ return r.json(); })
           .then(function(res){
             state.checked = true;
@@ -784,12 +789,13 @@ window.SM = (function(){
 
     var stats = el('sm-acc-stats');
     if(stats){
+      var esc = function(t){ return String(t == null ? '' : t).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+      var row = function(k, v, mono){ return '<div class="sm-acc-row"><span class="k">' + k + '</span><span class="v' + (mono ? ' mono' : '') + '">' + esc(v) + '</span></div>'; };
       stats.innerHTML =
-        '<div class="stat"><div class="k">Signed in as</div><div class="v">' + (data.account.email||'') + '</div></div>' +
-        '<div class="stat"><div class="k">' + (IS_DOWNLOAD ? 'This download' : 'This tool') + '</div><div class="v">' + (IS_DOWNLOAD ? (mine ? 'Yours' : 'Not bought yet') : (mine ? (cancelled ? 'Pro, ending' : 'Pro') : 'Free')) + '</div></div>' +
-        (mine && mine.renews_at && !IS_DOWNLOAD
-          ? '<div class="stat"><div class="k">' + (cancelled ? 'Ends' : 'Renews') + '</div><div class="v">' + String(mine.renews_at).slice(0,10) + '</div></div>'
-          : '');
+        row('Signed in as', data.account.email || '') +
+        row(IS_DOWNLOAD ? 'This download' : 'This tool', IS_DOWNLOAD ? (mine ? 'Yours' : 'Not bought yet') : (mine ? (cancelled ? 'Pro, ending' : 'Pro') : 'Free')) +
+        (mine && mine.renews_at && !IS_DOWNLOAD ? row(cancelled ? 'Ends' : 'Renews', String(mine.renews_at).slice(0, 10)) : '') +
+        (mine && mine.key && !IS_DOWNLOAD ? row('Your key', mine.key, true) : '');
     }
 
     // Cancelling belongs here, next to the subscription, not in an email
@@ -799,6 +805,9 @@ window.SM = (function(){
       cancel.hidden = !mine || cancelled || IS_DOWNLOAD;
       cancel.textContent = 'Cancel subscription';
     }
+    // One message about cancelling, not three saying the same thing.
+    var foot = el('sm-acc-foot');
+    if(foot) foot.hidden = !mine || cancelled;
     var note = el('sm-acc-cancelnote');
     if(note){
       note.hidden = !cancelled;
@@ -1061,7 +1070,7 @@ window.SM = (function(){
         .then(function(res){
           cancelSub.disabled = false;
           if(msg){ msg.textContent = res.message || res.reason || ''; msg.className = 'sm-auth-msg' + (res.ok ? '' : ' bad'); }
-          if(res.ok) refresh();
+          if(res.ok){ if(msg) msg.textContent = ''; refresh(); }
         })
         .catch(function(){
           cancelSub.disabled = false;
