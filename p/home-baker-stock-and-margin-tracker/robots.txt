@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://selfmade-api.selfmade-engine.workers.dev/p/home-baker-stock-and-margin-tracker/sitemap.xml
