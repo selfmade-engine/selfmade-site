@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://selfmade-api.selfmade-engine.workers.dev/p/simple-cleaning-schedule-checklist/sitemap.xml
