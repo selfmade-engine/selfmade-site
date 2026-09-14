@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://selfmade-api.selfmade-engine.workers.dev/p/payday-and-bills-planner/</loc><changefreq>weekly</changefreq></url>
-  <url><loc>https://selfmade-api.selfmade-engine.workers.dev/p/payday-and-bills-planner/docs.html</loc><changefreq>weekly</changefreq></url>
-  <url><loc>https://selfmade-api.selfmade-engine.workers.dev/p/payday-and-bills-planner/pricing.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://selfmade-engine.github.io/selfmade-site/p/payday-and-bills-planner/</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://selfmade-engine.github.io/selfmade-site/p/payday-and-bills-planner/docs.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://selfmade-engine.github.io/selfmade-site/p/payday-and-bills-planner/pricing.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://selfmade-engine.github.io/selfmade-site/p/payday-and-bills-planner/guides/what-can-i-spend.html</loc><changefreq>monthly</changefreq></url>
 </urlset>
