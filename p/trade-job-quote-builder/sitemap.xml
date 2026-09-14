@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://selfmade-api.selfmade-engine.workers.dev/p/trade-job-quote-builder/</loc><changefreq>weekly</changefreq></url>
-  <url><loc>https://selfmade-api.selfmade-engine.workers.dev/p/trade-job-quote-builder/docs.html</loc><changefreq>weekly</changefreq></url>
-  <url><loc>https://selfmade-api.selfmade-engine.workers.dev/p/trade-job-quote-builder/pricing.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://selfmade-engine.github.io/selfmade-site/p/trade-job-quote-builder/</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://selfmade-engine.github.io/selfmade-site/p/trade-job-quote-builder/docs.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://selfmade-engine.github.io/selfmade-site/p/trade-job-quote-builder/pricing.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://selfmade-engine.github.io/selfmade-site/p/trade-job-quote-builder/guides/how-to-price-a-job.html</loc><changefreq>monthly</changefreq></url>
 </urlset>
