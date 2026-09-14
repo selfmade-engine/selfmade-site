@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Family Carer Bills and Payday Planner — pricing</title>
-<meta name="description" content="Pricing for Family Carer Bills and Payday Planner.">
-<meta property="og:title" content="Family Carer Bills and Payday Planner — pricing">
-<meta property="og:description" content="Pricing for Family Carer Bills and Payday Planner.">
+<title>Carer Bills Planner — pricing</title>
+<meta name="description" content="Pricing for Carer Bills Planner.">
+<meta property="og:title" content="Carer Bills Planner — pricing">
+<meta property="og:description" content="Pricing for Carer Bills Planner.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Family Carer Bills and Payday Planner — pricing">
+<meta property="og:image:alt" content="Carer Bills Planner — pricing">
 <!-- summary_large_image rather than summary: without a picture a shared link
      renders as a grey rectangle, which costs more clicks than any wording. -->
 <meta name="twitter:card" content="summary_large_image">
@@ -24,7 +24,7 @@
 <body>
 <div class="wrap">
 <header class="site">
-  <a class="brand" href="./">Family Carer Bills and Payday Planner</a>
+  <a class="brand" href="./">Carer Bills Planner</a>
   <nav><a href="./">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html" aria-current="page">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
 </header>
 
@@ -73,7 +73,7 @@
   </form>
 </div>
 <footer class="site">
-  <p>Family Carer Bills and Payday Planner — built and operated by SELFMADE, an autonomous business agent.
+  <p>Carer Bills Planner — built and operated by SELFMADE, an autonomous business agent.
   Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
   <p>Everything on this page runs in your browser. Your input is not uploaded or stored.</p>
   <!-- Small, at the bottom, on every page. Stripe expects a customer to be
@@ -87,6 +87,8 @@
 </div>
 <script>
 var SM_SLUG = "family-carer-bills-and-payday-planner";
+var SM_KIND = "tool";
+var SM_FILE_NAME = "family-carer-bills-and-payday-planner.pdf";
 var SM_TRACK_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/track";
 var SM_ORDER_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/order";
 var SM_FEEDBACK_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/feedback";
@@ -119,6 +121,9 @@ window.SM = (function(){
   function today(){ return new Date().toISOString().slice(0,10); }
   function reads(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
   function writes(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+  // The server only accepts a key from the account that paid for it, so the
+  // signed-in session travels with every check.
+  function sessionHeaders(){ var t = reads('sm_session_' + SM_SLUG); return t ? { 'x-sm-session': t } : {}; }
 
   function usesToday(){
     try {
@@ -375,7 +380,7 @@ window.SM = (function(){
       var clean = (key||'').trim();
       if(!clean){ if(msg) msg.textContent = 'paste a key first'; return; }
       if(msg) msg.textContent = 'checking...';
-      fetch(SM_LICENCE_URL + '?key=' + encodeURIComponent(clean) + '&slug=' + encodeURIComponent(SM_SLUG))
+      fetch(SM_LICENCE_URL + '?key=' + encodeURIComponent(clean) + '&slug=' + encodeURIComponent(SM_SLUG), { headers: sessionHeaders() })
         .then(function(r){ return r.json(); })
         .then(function(res){
           if(res.valid){
@@ -387,6 +392,8 @@ window.SM = (function(){
           } else {
             if(msg) msg.textContent = res.reason === 'expired' ? 'that subscription has lapsed'
               : res.reason === 'wrong_product' ? 'that key is for a different tool'
+              : res.reason === 'sign_in_first' ? 'sign in with the email you paid with, then use your key'
+              : res.reason === 'not_your_key' ? 'that key belongs to a different account'
               : 'key not recognised';
           }
         })
@@ -406,7 +413,7 @@ window.SM = (function(){
       if(!key) return;
 
       function confirm(){
-        fetch(SM_LICENCE_URL + '?key=' + encodeURIComponent(key) + '&slug=' + encodeURIComponent(SM_SLUG))
+        fetch(SM_LICENCE_URL + '?key=' + encodeURIComponent(key) + '&slug=' + encodeURIComponent(SM_SLUG), { headers: sessionHeaders() })
           .then(function(r){ return r.json(); })
           .then(function(res){
             state.checked = true;
@@ -522,6 +529,7 @@ window.SM = (function(){
 (function(){
   var SESSION_STORE = 'sm_session_' + SM_SLUG;
   var PENDING_STORE = 'sm_pending_' + SM_SLUG;
+  var IS_DOWNLOAD = (typeof SM_KIND !== 'undefined' && SM_KIND === 'download');
 
   function reads(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
   function writes(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
@@ -647,21 +655,25 @@ window.SM = (function(){
 
     var stats = el('sm-acc-stats');
     if(stats){
+      var esc = function(t){ return String(t == null ? '' : t).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+      var row = function(k, v, mono){ return '<div class="sm-acc-row"><span class="k">' + k + '</span><span class="v' + (mono ? ' mono' : '') + '">' + esc(v) + '</span></div>'; };
       stats.innerHTML =
-        '<div class="stat"><div class="k">Signed in as</div><div class="v">' + (data.account.email||'') + '</div></div>' +
-        '<div class="stat"><div class="k">This tool</div><div class="v">' + (mine ? (cancelled ? 'Pro, ending' : 'Pro') : 'Free') + '</div></div>' +
-        (mine && mine.renews_at
-          ? '<div class="stat"><div class="k">' + (cancelled ? 'Ends' : 'Renews') + '</div><div class="v">' + String(mine.renews_at).slice(0,10) + '</div></div>'
-          : '');
+        row('Signed in as', data.account.email || '') +
+        row(IS_DOWNLOAD ? 'This download' : 'This tool', IS_DOWNLOAD ? (mine ? 'Yours' : 'Not bought yet') : (mine ? (cancelled ? 'Pro, ending' : 'Pro') : 'Free')) +
+        (mine && mine.renews_at && !IS_DOWNLOAD ? row(cancelled ? 'Ends' : 'Renews', String(mine.renews_at).slice(0, 10)) : '') +
+        (mine && mine.key && !IS_DOWNLOAD ? row('Your key', mine.key, true) : '');
     }
 
     // Cancelling belongs here, next to the subscription, not in an email
     // somebody has to go and find.
     var cancel = el('sm-acc-cancel');
     if(cancel){
-      cancel.hidden = !mine || cancelled;
+      cancel.hidden = !mine || cancelled || IS_DOWNLOAD;
       cancel.textContent = 'Cancel subscription';
     }
+    // One message about cancelling, not three saying the same thing.
+    var foot = el('sm-acc-foot');
+    if(foot) foot.hidden = !mine || cancelled;
     var note = el('sm-acc-cancelnote');
     if(note){
       note.hidden = !cancelled;
@@ -687,12 +699,16 @@ window.SM = (function(){
     if(buy) buy.hidden = Boolean(s.pro);
     if(already){
       already.hidden = !s.pro;
-      already.textContent = s.cancelled
+      already.textContent = (typeof SM_KIND !== 'undefined' && SM_KIND === 'download')
+        ? 'You own this. Your download is at the top of the page.'
+        : s.cancelled
         ? 'You are on Pro until the end of this month.'
         : 'You are on Pro. Everything here is unlocked.';
     }
     var note = document.getElementById('sm-buy-note');
     if(note) note.hidden = Boolean(s.pro);
+    var owned = document.getElementById('sm-owned');
+    if(owned) owned.hidden = !s.pro;
   }
 
   function refresh(){
@@ -920,7 +936,7 @@ window.SM = (function(){
         .then(function(res){
           cancelSub.disabled = false;
           if(msg){ msg.textContent = res.message || res.reason || ''; msg.className = 'sm-auth-msg' + (res.ok ? '' : ' bad'); }
-          if(res.ok) refresh();
+          if(res.ok){ if(msg) msg.textContent = ''; refresh(); }
         })
         .catch(function(){
           cancelSub.disabled = false;
