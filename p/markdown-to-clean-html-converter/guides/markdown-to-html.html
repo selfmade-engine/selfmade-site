@@ -3,155 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Markdown to Clean HTML Converter</title>
-<meta name="description" content="Convert markdown to clean, styled, email-safe HTML you can copy. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Markdown to Clean HTML Converter">
-<meta property="og:description" content="Convert markdown to clean, styled, email-safe HTML you can copy. Free to use, nothing to install, works in your browser.">
+<title>Markdown to html</title>
+<meta name="description" content="Pasting from editors drags in broken markup and inline styles. Markdown to Clean HTML Converter works it out for you, free, in your browser — nothing to i…">
+<meta property="og:title" content="Markdown to html">
+<meta property="og:description" content="Pasting from editors drags in broken markup and inline styles. Markdown to Clean HTML Converter works it out for you, free, in your browser — nothing to i…">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/markdown-to-clean-html-converter/og.png">
+<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/markdown-to-clean-html-converter/guides/markdown-to-html.html/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Markdown to Clean HTML Converter">
+<meta property="og:image:alt" content="Markdown to html">
 <!-- summary_large_image rather than summary: without a picture a shared link
      renders as a grey rectangle, which costs more clicks than any wording. -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/markdown-to-clean-html-converter/og.png">
-<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/markdown-to-clean-html-converter/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Markdown to Clean HTML Converter","description":"Convert markdown to clean, styled, email-safe HTML you can copy. Free to use, nothing to install, works in your browser.","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"https://selfmade-engine.github.io/selfmade-site/p/markdown-to-clean-html-converter/","offers":{"@type":"Offer","price":"5.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
-<link rel="stylesheet" href="./style.css">
+<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/markdown-to-clean-html-converter/guides/markdown-to-html.html/og.png">
+<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/markdown-to-clean-html-converter/guides/markdown-to-html.html">
+
+<link rel="stylesheet" href="../style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
 <body>
 <div class="wrap">
 <header class="site">
-  <a class="brand" href="./">Markdown to Clean HTML Converter</a>
-  <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
+  <a class="brand" href="../">Markdown to Clean HTML Converter</a>
+  <nav><a href="./">Tool</a><a href="../docs.html">Docs</a><a href="../pricing.html">Pricing</a></nav>
 </header>
 
-<h1>Convert markdown to clean</h1>
-<p class="sub">Convert markdown to clean, styled, email-safe HTML you can copy. Free to use, nothing to install, works in your browser.</p>
-<ul class="checks"><li>Built for newsletter writers and cms users pasting formatted content</li><li>Fixes: pasting from editors drags in broken markup and inline styles</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $5.00 a month and you can cancel any time.</li></ul>
-<div id="sm-tier" class="tierbar"></div>
-
-<div class="card">
-  <div class="grid cols-2">
-    <div><label for="k-in">Markdown</label><textarea id="k-in"># Hello
-
-Some **bold** text with a [link](https://example.com).
-
-- one
-- two
-
-> a quote
-
-`inline code`</textarea></div>
-    <div><label for="k-out">Clean HTML</label><textarea id="k-out" readonly></textarea></div>
-  </div>
-  <div class="row"><button id="k-copy">Copy HTML</button><label style="text-transform:none;font-weight:400"><input type="checkbox" id="k-inline" style="width:auto;margin-right:8px">Inline styles (email safe)</label></div>
-  <h3>Preview</h3>
-  <div class="stat" id="k-prev"></div>
-</div>
-<div id="sm-lock" class="lockbox" hidden></div>
-
-<div class="card no-print sm-auth" id="sm-account" hidden>
-
-  <!-- 1. sign in, or start an account -->
-  <div id="sm-acc-choose">
-    <div class="sm-auth-head">
-      <h2 id="sm-acc-title">Sign in</h2>
-      <p class="sub" id="sm-acc-sub">Your account carries Pro with you — this computer, your phone, anywhere you open it.</p>
-    </div>
-
-    <div class="sm-auth-fields">
-      <label for="sm-acc-email">Email</label>
-      <input id="sm-acc-email" type="email" autocomplete="email" placeholder="you@example.com" inputmode="email">
-
-      <label for="sm-acc-pass">Password<span class="sm-hint" id="sm-acc-passhint"></span></label>
-      <input id="sm-acc-pass" type="password" autocomplete="current-password" placeholder="Your password">
-    </div>
-
-    <button id="sm-acc-go" class="sm-auth-primary">Sign in</button>
-
-    <output id="sm-acc-msg" class="sm-auth-msg"></output>
-
-    <div class="sm-auth-alt">
-      <button id="sm-acc-new" class="linkish">Create an account</button>
-      <span class="sm-auth-dot">·</span>
-      <button id="sm-acc-forgot" class="linkish">Forgot password</button>
-    </div>
-  </div>
-
-  <!-- 2. confirm the email -->
-  <div id="sm-acc-confirm" hidden>
-    <div class="sm-auth-head">
-      <h2>Check your email</h2>
-      <p class="sub">We sent a 6-digit code to <strong id="sm-acc-sentto"></strong>. Type it in and you are done.</p>
-    </div>
-
-    <input id="sm-acc-code" class="sm-code" type="text" inputmode="numeric" autocomplete="one-time-code"
-           maxlength="6" placeholder="000000" aria-label="6-digit code from your email">
-
-    <button id="sm-acc-confirmgo" class="sm-auth-primary">Confirm</button>
-
-    <output id="sm-acc-confirmmsg" class="sm-auth-msg"></output>
-
-    <div class="sm-auth-alt">
-      <button id="sm-acc-resend" class="linkish">Send it again</button>
-      <span class="sm-auth-dot">·</span>
-      <button id="sm-acc-abandon" class="linkish sm-danger">Cancel</button>
-    </div>
-    <p class="limit">The code lasts 30 minutes. Cancelling removes the half-made account, so nothing is left behind.</p>
-  </div>
-
-  <!-- 3. signed in -->
-  <div id="sm-acc-signedin" hidden>
-    <div class="sm-acc-rows" id="sm-acc-stats"></div>
-    <div class="row">
-      <button id="sm-acc-out" class="secondary">Sign out</button>
-      <button id="sm-acc-cancel" class="linkish sm-danger" hidden>Cancel subscription</button>
-    </div>
-    <output id="sm-acc-cancelmsg" class="sm-auth-msg"></output>
-    <p class="limit" id="sm-acc-cancelnote" hidden></p>
-    <p class="limit" id="sm-acc-foot">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for, and your account stays exactly as it is.</p>
-  </div>
-</div>
-
-<div class="card paycard no-print" id="sm-pay">
-  <div class="payhead">
-    <div>
-      <h2>Pro</h2>
-      <p class="sub">Convert up to 5,000 characters at a time. Pro takes the limit off and adds what you need when you do this every week.</p>
-    </div>
-    <div class="payprice"><span class="price">$5.00</span><span class="per">/month</span></div>
-  </div>
-  <ul class="checks pro"><li><strong>No length limit</strong><span class="why">Whole newsletters and long posts in one go.</span></li><li><strong>Custom CSS themes</strong><span class="why">Output that already matches your brand instead of needing a pass afterwards.</span></li><li><strong>Saved presets</strong><span class="why">The same settings every time without re-picking them.</span></li></ul>
-  <p class="sm-on-pro" id="sm-already-pro" hidden></p>
-    <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Get Pro — $5.00/month</a></div>
-    <p class="notice" id="sm-buy-note">You will be taken straight to a secure card form. Payment is handled by Stripe — your card details go to them, never to this page. Cancel any time.</p>
-    <p class="notice" id="sm-buy-status" hidden></p>
-  <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
-  <a href="./pricing.html">See everything in Pro</a></p>
-</div>
-<div class="card">
-  <h2>Who this is for</h2>
-  <p class="sub">Newsletter writers and CMS users pasting formatted content</p>
-  <h2>The problem</h2>
-  <p class="sub">Pasting from editors drags in broken markup and inline styles</p>
-  <h2>What it does about it</h2>
-  <p class="sub">Convert markdown to clean, styled, email-safe HTML you can copy</p>
-  
-</div>
-<div class="card"><h2>Guides</h2><ul class="checks"><li><a href="./guides/markdown-to-html.html">Markdown to html</a></li></ul></div>
-
-<div class="card no-print">
-  <h2>Did this do what you needed?</h2>
-  <p class="sub">One line of feedback decides what gets built next. Leave an email only if you want a reply.</p>
-  <form id="sm-feedback" class="grid">
-    <div><label for="sm-note">What would make this better?</label><input id="sm-note" name="note" maxlength="500" placeholder="It should also…"></div>
-    <div><label for="sm-email">Email (optional)</label><input id="sm-email" name="email" type="email" placeholder="you@example.com"></div>
-    <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
-  </form>
-</div>
+<h1>Markdown to html</h1>
+<p class="sub">Pasting from editors drags in broken markup and inline styles. Markdown to Clean HTML Converter works it out for you, free, in your browser — nothing to i…</p>
+<div class="card"><h2>The short answer</h2><p class="sub">Pasting from editors drags in broken markup and inline styles. Markdown to Clean HTML Converter works it out for you, free, in your browser — nothing to install and nothing uploaded.</p></div>
+<div class="card"><h2>Supported syntax</h2><p class="sub">Headings, bold, italic, inline code, fenced code blocks, links, images, unordered lists, blockquotes and horizontal rules. Input is HTML-escaped first, so pasted markdown cannot inject markup.</p></div>
+<div class="card"><h2>Why it is worth doing at all</h2><p class="sub">Newsletter writers and CMS users pasting formatted content. put this off because it feels like admin rather than work. It is not: it is the difference between knowing where you stand and guessing at it, and the guess is always more flattering than the truth.</p></div>
+<div class="card"><h2>Doing it without a tool</h2><p class="sub">You can do all of this on paper or in a spreadsheet, and plenty of people do. The cost is not the arithmetic, it is remembering to do it and keeping the same method every time. A month you forget is a month missing from the total, and you find out about it at the worst possible moment.</p></div>
+<div class="card"><h2>If you would rather it just did it</h2><p class="sub">Open Markdown to Clean HTML Converter, put the numbers in, and read the answer. The free version is enough to try it properly, and Pro takes the limit off.</p></div>
+<div class="card"><h2>Try it</h2><p class="sub">Markdown to Clean HTML Converter does this in your browser, free, with no signup.</p><p><a class="buy" href="../">Open Markdown to Clean HTML Converter</a></p></div>
+<p class="notice">Written by SELFMADE, which also built the tool this page is about. That is a bias worth knowing about while you read it.</p>
 <footer class="site">
   <p>Markdown to Clean HTML Converter — built and operated by SELFMADE.
   Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
@@ -176,9 +61,9 @@ var SM_LICENCE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/licen
 var SM_USE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/use";
 var SM_ACTIVATE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/activate";
 var SM_API_BASE = "https://selfmade-api.selfmade-engine.workers.dev";
-var SM_DAILY_LIMIT = 3;
-var SM_LIMIT_LABEL = "conversions a day";
-var SM_PITCH = "Pro adds no length limit, custom css themes and saved presets.";
+var SM_DAILY_LIMIT = 0;
+var SM_LIMIT_LABEL = "uses";
+var SM_PITCH = "";
 var SM_CONTACT = "selfmade.engine@gmail.com";
 // Where the Upgrade button goes, and what it costs. Straight to checkout when
 // there is one, because a pricing page in between is a step people leave at.
@@ -604,79 +489,7 @@ window.SM = (function(){
   };
 })();
 </script>
-<script data-sm="tool">
-(function(){
-  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function inlineSpans(s){
-    return s
-      .replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, '<img alt="$1" src="$2">')
-      .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>')
-      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-      .replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>')
-      .replace(/`([^`]+)`/g, '<code>$1</code>');
-  }
-  function convert(md){
-    var lines = md.replace(/\r/g,'').split('\n');
-    var html = [], inList=false, inQuote=false, inCode=false, para=[];
-    function flushPara(){ if(para.length){ html.push('<p>' + inlineSpans(para.join(' ')) + '</p>'); para=[]; } }
-    function closeList(){ if(inList){ html.push('</ul>'); inList=false; } }
-    function closeQuote(){ if(inQuote){ html.push('</blockquote>'); inQuote=false; } }
-    for(var i=0;i<lines.length;i++){
-      var raw=lines[i], line=esc(raw);
-      if(/^\s*```/.test(raw)){
-        flushPara(); closeList(); closeQuote();
-        html.push(inCode ? '</code></pre>' : '<pre><code>');
-        inCode=!inCode; continue;
-      }
-      if(inCode){ html.push(line); continue; }
-      var h = line.match(/^(#{1,6})\s+(.*)$/);
-      if(h){ flushPara(); closeList(); closeQuote(); html.push('<h'+h[1].length+'>'+inlineSpans(h[2])+'</h'+h[1].length+'>'); continue; }
-      if(/^\s*[-*+]\s+/.test(line)){
-        flushPara(); closeQuote();
-        if(!inList){ html.push('<ul>'); inList=true; }
-        html.push('<li>' + inlineSpans(line.replace(/^\s*[-*+]\s+/,'')) + '</li>');
-        continue;
-      }
-      if(/^\s*&gt;\s?/.test(line)){
-        flushPara(); closeList();
-        if(!inQuote){ html.push('<blockquote>'); inQuote=true; }
-        html.push('<p>' + inlineSpans(line.replace(/^\s*&gt;\s?/,'')) + '</p>');
-        continue;
-      }
-      if(/^\s*(---|\*\*\*)\s*$/.test(line)){ flushPara(); closeList(); closeQuote(); html.push('<hr>'); continue; }
-      if(!line.trim()){ flushPara(); closeList(); closeQuote(); continue; }
-      para.push(line.trim());
-    }
-    flushPara(); closeList(); closeQuote();
-    if(inCode) html.push('</code></pre>');
-    return html.join('\n');
-  }
-  function styleInline(html){
-    return html
-      .replace(/<p>/g,'<p style="margin:0 0 16px;font:16px/1.6 Arial,sans-serif;color:#111">')
-      .replace(/<h1>/g,'<h1 style="font:700 26px Arial,sans-serif;margin:24px 0 8px;color:#111">')
-      .replace(/<h2>/g,'<h2 style="font:700 20px Arial,sans-serif;margin:20px 0 8px;color:#111">')
-      .replace(/<h3>/g,'<h3 style="font:700 17px Arial,sans-serif;margin:18px 0 6px;color:#111">')
-      .replace(/<ul>/g,'<ul style="margin:0 0 16px 20px;padding:0;font:16px/1.6 Arial,sans-serif;color:#111">')
-      .replace(/<blockquote>/g,'<blockquote style="margin:0 0 16px;padding:8px 16px;border-left:3px solid #ddd;color:#555">')
-      .replace(/<a /g,'<a style="color:#0b62d0" ')
-      .replace(/<code>/g,'<code style="background:#f2f2f2;padding:2px 5px;border-radius:4px;font-family:monospace">');
-  }
-  var input=document.getElementById('k-in'), output=document.getElementById('k-out'), prev=document.getElementById('k-prev');
-  function run(){
-    var html=convert(input.value);
-    if(document.getElementById('k-inline').checked) html=styleInline(html);
-    output.value=html;
-    prev.innerHTML=html;
-  }
-  input.addEventListener('input', run);
-  document.getElementById('k-inline').addEventListener('change', run);
-  document.getElementById('k-copy').addEventListener('click', function(){
-    navigator.clipboard.writeText(output.value);
-    var b=this; b.textContent='Copied'; setTimeout(function(){ b.textContent='Copy HTML'; },1500);
-  });
-  run();
-})();</script>
+<script data-sm="tool"></script>
 <script>
 (function(){
   var SESSION_STORE = 'sm_session_' + SM_SLUG;
