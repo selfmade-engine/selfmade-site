@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://selfmade-api.selfmade-engine.workers.dev/p/couples-debt-payoff-planner/sitemap.xml
