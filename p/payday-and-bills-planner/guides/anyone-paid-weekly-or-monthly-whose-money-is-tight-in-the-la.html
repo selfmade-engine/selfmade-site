@@ -3,178 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Payday and Bills Planner — Map your paydays against your</title>
-<meta name="description" content="Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Payday and Bills Planner — Map your paydays against your">
-<meta property="og:description" content="Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.">
+<title>Anyone paid weekly or monthly whose money is tight in the last week: the money mistakes that are easy to miss</title>
+<meta name="description" content="The balance in the account is not the money you have, because four bills have not gone out yet. None of what follows is complicated. It is all just easy t…">
+<meta property="og:title" content="Anyone paid weekly or monthly whose money is tight in the last week: the money mistakes that are easy to miss">
+<meta property="og:description" content="The balance in the account is not the money you have, because four bills have not gone out yet. None of what follows is complicated. It is all just easy t…">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/payday-and-bills-planner/og.png">
+<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/payday-and-bills-planner/guides/anyone-paid-weekly-or-monthly-whose-money-is-tight-in-the-la.html/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Payday and Bills Planner — Map your paydays against your">
+<meta property="og:image:alt" content="Anyone paid weekly or monthly whose money is tight in the last week: the money mistakes that are easy to miss">
 <!-- summary_large_image rather than summary: without a picture a shared link
      renders as a grey rectangle, which costs more clicks than any wording. -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/payday-and-bills-planner/og.png">
-<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/payday-and-bills-planner/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Payday and Bills Planner","description":"Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"https://selfmade-engine.github.io/selfmade-site/p/payday-and-bills-planner/","offers":{"@type":"Offer","price":"9.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
-<link rel="stylesheet" href="./style.css">
+<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/payday-and-bills-planner/guides/anyone-paid-weekly-or-monthly-whose-money-is-tight-in-the-la.html/og.png">
+<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/payday-and-bills-planner/guides/anyone-paid-weekly-or-monthly-whose-money-is-tight-in-the-la.html">
+
+<link rel="stylesheet" href="../style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
 <body>
 <div class="wrap">
 <header class="site">
-  <a class="brand" href="./">Payday and Bills Planner</a>
-  <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
+  <a class="brand" href="../">Payday and Bills Planner</a>
+  <nav><a href="./">Tool</a><a href="../docs.html">Docs</a><a href="../pricing.html">Pricing</a></nav>
 </header>
 
-<h1>Map your paydays against your bills</h1>
-<p class="sub">Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.</p>
-<ul class="checks"><li>Built for anyone paid weekly or monthly whose money is tight in the last week</li><li>Fixes: the balance in the account is not the money you have, because four bills have not gone out yet</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $9.00 a month and you can cancel any time.</li></ul>
-<div id="sm-tier" class="tierbar"></div>
-
-<div class="card">
-  <h2>Money coming in</h2>
-  <div class="grid cols-3">
-    <div><label for="b-balance">In your account right now</label><input id="b-balance" type="number" step="0.01" value="0"></div>
-    <div><label for="b-pay">How much you get paid</label><input id="b-pay" type="number" min="0" step="0.01" value="1800"></div>
-    <div><label for="b-freq">How often</label><select id="b-freq">
-      <option value="monthly">Every month</option>
-      <option value="fortnightly">Every two weeks</option>
-      <option value="weekly">Every week</option>
-    </select></div>
-    <div><label for="b-next">Next payday</label><input id="b-next" type="date"></div>
-  </div>
-</div>
-<div class="card">
-  <h2>Money going out</h2>
-  <p class="sub">Rent, phone, car, subscriptions - anything that leaves on its own.</p>
-  <div class="grid cols-3">
-    <div><label for="b-name">What is it</label><input id="b-name" placeholder="Rent"></div>
-    <div><label for="b-amount">How much</label><input id="b-amount" type="number" min="0" step="0.01" placeholder="750"></div>
-    <div><label for="b-day">Day of the month it goes</label><input id="b-day" type="number" min="1" max="31" value="1"></div>
-  </div>
-  <div class="row"><button id="b-add">Add this bill</button><button id="b-clear" class="secondary">Start again</button><span id="b-count" class="badge"></span></div>
-  <div id="b-list"></div>
-</div>
-<div class="card">
-  <h2>What you can actually spend</h2>
-  <div class="grid cols-3" id="b-stats"></div>
-  <output id="b-verdict">Put your payday and your bills in above.</output>
-  <div id="b-days"></div>
-</div>
-<div class="card">
-  <h3>The next twelve months, and what-ifs <span class="badge pro">PRO</span></h3>
-  <p class="sub">Look a year ahead instead of a month, try a big purchase before you make it, and see the exact date things would get tight.</p>
-  <div class="row">
-    <input id="b-whatif" type="number" step="0.01" placeholder="Spend how much?" style="max-width:180px">
-    <input id="b-whatif-date" type="date" style="max-width:180px">
-    <button id="b-try" class="secondary">Could I afford this?</button>
-    <button id="b-year" class="secondary">Show me a year</button>
-  </div>
-  <div id="b-far"></div>
-</div>
-<div id="sm-lock" class="lockbox" hidden></div>
-
-<div class="card no-print sm-auth" id="sm-account" hidden>
-
-  <!-- 1. sign in, or start an account -->
-  <div id="sm-acc-choose">
-    <div class="sm-auth-head">
-      <h2 id="sm-acc-title">Sign in</h2>
-      <p class="sub" id="sm-acc-sub">Your account carries Pro with you — this computer, your phone, anywhere you open it.</p>
-    </div>
-
-    <div class="sm-auth-fields">
-      <label for="sm-acc-email">Email</label>
-      <input id="sm-acc-email" type="email" autocomplete="email" placeholder="you@example.com" inputmode="email">
-
-      <label for="sm-acc-pass">Password<span class="sm-hint" id="sm-acc-passhint"></span></label>
-      <input id="sm-acc-pass" type="password" autocomplete="current-password" placeholder="Your password">
-    </div>
-
-    <button id="sm-acc-go" class="sm-auth-primary">Sign in</button>
-
-    <output id="sm-acc-msg" class="sm-auth-msg"></output>
-
-    <div class="sm-auth-alt">
-      <button id="sm-acc-new" class="linkish">Create an account</button>
-      <span class="sm-auth-dot">·</span>
-      <button id="sm-acc-forgot" class="linkish">Forgot password</button>
-    </div>
-  </div>
-
-  <!-- 2. confirm the email -->
-  <div id="sm-acc-confirm" hidden>
-    <div class="sm-auth-head">
-      <h2>Check your email</h2>
-      <p class="sub">We sent a 6-digit code to <strong id="sm-acc-sentto"></strong>. Type it in and you are done.</p>
-    </div>
-
-    <input id="sm-acc-code" class="sm-code" type="text" inputmode="numeric" autocomplete="one-time-code"
-           maxlength="6" placeholder="000000" aria-label="6-digit code from your email">
-
-    <button id="sm-acc-confirmgo" class="sm-auth-primary">Confirm</button>
-
-    <output id="sm-acc-confirmmsg" class="sm-auth-msg"></output>
-
-    <div class="sm-auth-alt">
-      <button id="sm-acc-resend" class="linkish">Send it again</button>
-      <span class="sm-auth-dot">·</span>
-      <button id="sm-acc-abandon" class="linkish sm-danger">Cancel</button>
-    </div>
-    <p class="limit">The code lasts 30 minutes. Cancelling removes the half-made account, so nothing is left behind.</p>
-  </div>
-
-  <!-- 3. signed in -->
-  <div id="sm-acc-signedin" hidden>
-    <div class="sm-acc-rows" id="sm-acc-stats"></div>
-    <div class="row">
-      <button id="sm-acc-out" class="secondary">Sign out</button>
-      <button id="sm-acc-cancel" class="linkish sm-danger" hidden>Cancel subscription</button>
-    </div>
-    <output id="sm-acc-cancelmsg" class="sm-auth-msg"></output>
-    <p class="limit" id="sm-acc-cancelnote" hidden></p>
-    <p class="limit" id="sm-acc-foot">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for, and your account stays exactly as it is.</p>
-  </div>
-</div>
-
-<div class="card paycard no-print" id="sm-pay">
-  <div class="payhead">
-    <div>
-      <h2>Pro</h2>
-      <p class="sub">Five bills and the next five weeks. Pro takes the limit off and adds what you need when you do this every week.</p>
-    </div>
-    <div class="payprice"><span class="price">$9.00</span><span class="per">/month</span></div>
-  </div>
-  <ul class="checks pro"><li><strong>Every bill</strong><span class="why">Free holds five. Rent, phone, car, energy, council tax and two subscriptions is already seven.</span></li><li><strong>Twelve months ahead</strong><span class="why">See the month that is going to hurt while there is still time to do something about it.</span></li><li><strong>Try a purchase before you make it</strong><span class="why">Ask whether you can afford it on the 12th and get an answer instead of a feeling.</span></li></ul>
-  <p class="sm-on-pro" id="sm-already-pro" hidden></p>
-    <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Get Pro — $9.00/month</a></div>
-    <p class="notice" id="sm-buy-note">You will be taken straight to a secure card form. Payment is handled by Stripe — your card details go to them, never to this page. Cancel any time.</p>
-    <p class="notice" id="sm-buy-status" hidden></p>
-  <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
-  <a href="./pricing.html">See everything in Pro</a></p>
-</div>
-<div class="card">
-  <h2>Who this is for</h2>
-  <p class="sub">Anyone paid weekly or monthly whose money is tight in the last week</p>
-  <h2>The problem</h2>
-  <p class="sub">The balance in the account is not the money you have, because four bills have not gone out yet</p>
-  <h2>What it does about it</h2>
-  <p class="sub">Map your paydays against your bills and get one number: what you can spend today with everything still clearing</p>
-  
-</div>
-<div class="card"><h2>Guides</h2><ul class="checks"><li><a href="./guides/what-can-i-spend.html">What can I spend?</a></li><li><a href="./guides/anyone-paid-weekly-or-monthly-whose-money-is-tight-in-the-la.html">Anyone paid weekly or monthly whose money is tight in the last week: the money mistakes that are easy to miss</a></li></ul></div>
-
-<div class="card no-print">
-  <h2>Did this do what you needed?</h2>
-  <p class="sub">One line of feedback decides what gets built next. Leave an email only if you want a reply.</p>
-  <form id="sm-feedback" class="grid">
-    <div><label for="sm-note">What would make this better?</label><input id="sm-note" name="note" maxlength="500" placeholder="It should also…"></div>
-    <div><label for="sm-email">Email (optional)</label><input id="sm-email" name="email" type="email" placeholder="you@example.com"></div>
-    <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
-  </form>
-</div>
+<h1>Anyone paid weekly or monthly whose money is tight in the last week: the money mistakes that are easy to miss</h1>
+<p class="sub">The balance in the account is not the money you have, because four bills have not gone out yet. None of what follows is complicated. It is all just easy t…</p>
+<div class="card"><h2>Getting the numbers right matters more than it looks</h2><p class="sub">The balance in the account is not the money you have, because four bills have not gone out yet. None of what follows is complicated. It is all just easy to skip.</p></div>
+<div class="card"><h2>Bills on the 29th, 30th or 31st</h2><p class="sub">In a short month the bill is taken on the last day instead. That is what banks do, and it is what the tool does.</p></div>
+<div class="card"><h2>Trusting your memory over a note</h2><p class="sub">It is genuinely obvious while you are looking at it, and genuinely gone six weeks later. Most of the money anyone paid weekly or monthly whose money is tight in the last week lose to this is not lost to a bad decision — it is lost to a good one that nobody wrote down.</p></div>
+<div class="card"><h2>Only counting the obvious costs</h2><p class="sub">The costs that get forgotten are the ones nobody invoices you for — the time spent quoting, the mileage, the thing that got thrown away. Left out, the figures look better than the reality, and decisions get made on them.</p></div>
+<div class="card"><h2>Waiting until the end of the year</h2><p class="sub">Every one of these is easy to fix in the moment and painful to reconstruct in January. Ten seconds at the time is the whole trick.</p></div>
+<div class="card"><h2>Try it</h2><p class="sub">Payday and Bills Planner does this in your browser, free, with no signup.</p><p><a class="buy" href="../">Open Payday and Bills Planner</a></p></div>
+<p class="notice">Written by SELFMADE, which also built the tool this page is about. That is a bias worth knowing about while you read it.</p>
 <footer class="site">
   <p>Payday and Bills Planner — built and operated by SELFMADE, an autonomous business agent.
   Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
@@ -199,9 +61,9 @@ var SM_LICENCE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/licen
 var SM_USE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/use";
 var SM_ACTIVATE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/activate";
 var SM_API_BASE = "https://selfmade-api.selfmade-engine.workers.dev";
-var SM_DAILY_LIMIT = 3;
-var SM_LIMIT_LABEL = "checks a day";
-var SM_PITCH = "Pro adds every bill, twelve months ahead, try a purchase before you make it and saved plans.";
+var SM_DAILY_LIMIT = 0;
+var SM_LIMIT_LABEL = "uses";
+var SM_PITCH = "";
 var SM_CONTACT = "selfmade.engine@gmail.com";
 // Where the Upgrade button goes, and what it costs. Straight to checkout when
 // there is one, because a pricing page in between is a step people leave at.
@@ -627,187 +489,7 @@ window.SM = (function(){
   };
 })();
 </script>
-<script data-sm="tool">
-var SMH = (function(){
-  function $(id){ return document.getElementById(id); }
-  function n(v){ var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, '')); return isFinite(x) ? x : 0; }
-  function num(id){ var e = $(id); return e ? n(e.value) : 0; }
-  function val(id){ var e = $(id); return e ? String(e.value || '').trim() : ''; }
-  function esc(s){
-    return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
-      return c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&quot;';
-    });
-  }
-  var CUR = '$';
-  function setCur(s){ if(s) CUR = s; }
-  function cur(v){
-    var neg = v < 0;
-    var a = Math.abs(Math.round(v * 100) / 100).toFixed(2);
-    return (neg ? '-' : '') + CUR + a.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  }
-  function hrs(v){ return (Math.round(v * 100) / 100).toFixed(2); }
-  function today(){ return new Date().toISOString().slice(0, 10); }
-  function fmtDate(d){
-    if(!(d instanceof Date)) d = new Date(d);
-    if(isNaN(d.getTime())) return '';
-    return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
-  }
-  function addMonths(d, m){ var x = new Date(d.getTime()); x.setMonth(x.getMonth() + m); return x; }
-  function table(head, rows, cls){
-    var h = '<tr>' + head.map(function(c){ return '<th>' + c + '</th>'; }).join('') + '</tr>';
-    var b = rows.map(function(r){
-      var rowCls = r.cls ? ' class="' + r.cls + '"' : '';
-      var cells = (r.cells || r);
-      return '<tr' + rowCls + '>' + cells.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>';
-    }).join('');
-    return '<table' + (cls ? ' class="' + cls + '"' : '') + '>' + h + b + '</table>';
-  }
-  function stat(k, v, note){
-    return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
-      (note ? '<div class="k" style="text-transform:none;letter-spacing:0;margin-top:4px">' + note + '</div>' : '') + '</div>';
-  }
-  return { $: $, n: n, num: num, val: val, esc: esc, cur: cur, setCur: setCur, hrs: hrs,
-           today: today, fmtDate: fmtDate, addMonths: addMonths, table: table, stat: stat };
-})();
-
-(function(){
-  var FREE_BILLS = 5;
-  var FREE_DAYS = 35;
-  var bills = [];
-  try { bills = JSON.parse(localStorage.getItem('sm-bills') || '[]'); } catch(e){ bills = []; }
-  if(!(bills instanceof Array)) bills = [];
-  function persist(){ try { localStorage.setItem('sm-bills', JSON.stringify(bills)); } catch(e){} }
-
-  function dayKey(d){ return d.toISOString().slice(0, 10); }
-
-  /** Walk forward day by day, adding pay and taking bills off as they land. */
-  function project(days, extra){
-    var balance = SMH.num('b-balance');
-    var pay = SMH.num('b-pay');
-    var freq = SMH.val('b-freq');
-    var step = freq === 'weekly' ? 7 : freq === 'fortnightly' ? 14 : 0;
-    var nextPay = SMH.val('b-next') ? new Date(SMH.val('b-next') + 'T00:00:00') : null;
-    var out = [];
-    var d = new Date(); d.setHours(0, 0, 0, 0);
-    var lowest = { balance: balance, date: new Date(d.getTime()) };
-    for(var i = 0; i < days; i++){
-      var inToday = 0, outToday = 0, notes = [];
-      if(nextPay && dayKey(d) === dayKey(nextPay)){
-        inToday += pay; notes.push('payday');
-        if(step) nextPay = new Date(nextPay.getTime() + step * 86400000);
-        else nextPay = SMH.addMonths(nextPay, 1);
-      }
-      bills.forEach(function(b){
-        var day = Math.min(SMH.n(b.day), new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate());
-        if(d.getDate() === day){ outToday += SMH.n(b.amount); notes.push(b.name); }
-      });
-      if(extra && dayKey(d) === extra.date){ outToday += extra.amount; notes.push('the thing you are thinking about'); }
-      balance += inToday - outToday;
-      if(balance < lowest.balance){ lowest = { balance: balance, date: new Date(d.getTime()) }; }
-      out.push({ date: new Date(d.getTime()), in: inToday, out: outToday, balance: balance, notes: notes });
-      d = new Date(d.getTime() + 86400000);
-    }
-    return { rows: out, lowest: lowest, end: balance };
-  }
-
-  function paintBills(){
-    SMH.$('b-count').textContent = bills.length + (bills.length === 1 ? ' bill' : ' bills');
-    if(!bills.length){ SMH.$('b-list').innerHTML = '<p class="sub">No bills added yet.</p>'; return; }
-    var monthly = bills.reduce(function(a, b){ return a + SMH.n(b.amount); }, 0);
-    var rows = bills.map(function(b, i){
-      return { cells: [SMH.esc(b.name), SMH.cur(SMH.n(b.amount)), 'the ' + SMH.n(b.day) + 'th',
-        '<button class="secondary" data-del="' + i + '" style="padding:4px 10px">Remove</button>'] };
-    });
-    rows.push({ cells: ['<strong>Every month</strong>', '<strong>' + SMH.cur(monthly) + '</strong>', '', ''] });
-    SMH.$('b-list').innerHTML = SMH.table(['Bill', 'Amount', 'Goes out on', ''], rows);
-    Array.prototype.forEach.call(SMH.$('b-list').querySelectorAll('[data-del]'), function(b){
-      b.addEventListener('click', function(){ bills.splice(Number(b.getAttribute('data-del')), 1); persist(); paint(); });
-    });
-  }
-
-  function paint(){
-    paintBills();
-    var days = SM.pro() ? 60 : FREE_DAYS;
-    var p = project(days);
-    var firstPay = p.rows.filter(function(r){ return r.in > 0; })[0];
-    var untilPay = firstPay ? Math.round((firstPay.date - new Date().setHours(0,0,0,0)) / 86400000) : null;
-    var spendable = p.lowest.balance;
-
-    SMH.$('b-stats').innerHTML =
-      SMH.stat('Safe to spend', SMH.cur(Math.max(0, spendable)), spendable < 0 ? 'you are short before then' : 'and every bill still clears') +
-      SMH.stat('Lowest you go', SMH.cur(p.lowest.balance), 'on ' + SMH.fmtDate(p.lowest.date)) +
-      SMH.stat('Next payday', untilPay != null ? (untilPay === 0 ? 'today' : untilPay + ' days') : 'not set',
-               firstPay ? SMH.fmtDate(firstPay.date) : 'add your next payday above');
-
-    SMH.$('b-verdict').textContent = !bills.length
-      ? 'Put your payday and your bills in above.'
-      : (spendable < 0
-        ? 'You are heading ' + SMH.cur(-spendable) + ' short on ' + SMH.fmtDate(p.lowest.date) + ', because of ' +
-          (p.rows.filter(function(r){ return dayKeyEq(r.date, p.lowest.date); })[0] || { notes: [] }).notes.join(' and ') + '.\n\n' +
-          'Moving one of those bills a few days later, or putting ' + SMH.cur(-spendable) + ' aside before then, fixes it.'
-        : 'You can spend up to ' + SMH.cur(spendable) + ' and every bill between now and ' + SMH.fmtDate(p.rows[p.rows.length - 1].date) + ' still clears.\n\n' +
-          'The tightest it gets is ' + SMH.cur(p.lowest.balance) + ' on ' + SMH.fmtDate(p.lowest.date) + '.');
-
-    var interesting = p.rows.filter(function(r){ return r.in > 0 || r.out > 0; }).slice(0, SM.pro() ? 200 : 12);
-    SMH.$('b-days').innerHTML = interesting.length
-      ? SMH.table(['Date', 'In', 'Out', 'Left', 'What'], interesting.map(function(r){
-          return { cells: [SMH.fmtDate(r.date), r.in ? SMH.cur(r.in) : '', r.out ? SMH.cur(r.out) : '',
-                   SMH.cur(r.balance), SMH.esc(r.notes.join(', '))] };
-        }))
-      : '';
-  }
-  function dayKeyEq(a, b){ return a.toDateString() === b.toDateString(); }
-
-  SMH.$('b-add').addEventListener('click', function(){
-    if(!SM.pro() && bills.length >= FREE_BILLS){ SM.gate('More than ' + FREE_BILLS + ' bills'); return; }
-    if(!SM.use()) return;
-    var name = SMH.val('b-name');
-    if(!name){ SMH.$('b-name').focus(); return; }
-    bills.push({ name: name, amount: SMH.num('b-amount'), day: Math.max(1, Math.min(31, SMH.num('b-day') || 1)) });
-    SMH.$('b-name').value = ''; SMH.$('b-amount').value = '';
-    persist(); paint();
-  });
-  SMH.$('b-clear').addEventListener('click', function(){ bills = []; persist(); paint(); });
-  ['b-balance', 'b-pay', 'b-freq', 'b-next'].forEach(function(id){
-    SMH.$(id).addEventListener('input', paint);
-    SMH.$(id).addEventListener('change', paint);
-  });
-
-  // ---- Pro ----
-  SMH.$('b-try').addEventListener('click', function(){
-    if(!SM.gate('What-if spending')) return;
-    var amount = SMH.num('b-whatif');
-    var when = SMH.val('b-whatif-date') || SMH.today();
-    if(amount <= 0) return;
-    var before = project(120).lowest.balance;
-    var after = project(120, { amount: amount, date: when }).lowest;
-    SMH.$('b-far').innerHTML = '<p class="notice">' + (after.balance >= 0
-      ? 'Yes. Spending ' + SMH.cur(amount) + ' on ' + SMH.fmtDate(when) + ' leaves you at ' + SMH.cur(after.balance) +
-        ' at the tightest point, on ' + SMH.fmtDate(after.date) + '. Every bill still clears.'
-      : 'Not on that date. It would put you ' + SMH.cur(-after.balance) + ' short on ' + SMH.fmtDate(after.date) + '.' +
-        (before > 0 ? ' You have ' + SMH.cur(before) + ' of room, so ' + SMH.cur(before) + ' would be safe.' : '')) + '</p>';
-  });
-  SMH.$('b-year').addEventListener('click', function(){
-    if(!SM.gate('The twelve month view')) return;
-    var p = project(365);
-    var byMonth = {};
-    p.rows.forEach(function(r){
-      var k = r.date.getFullYear() + '-' + String(r.date.getMonth() + 1);
-      if(!byMonth[k]) byMonth[k] = { label: r.date.toLocaleDateString(undefined, { month: 'long', year: 'numeric' }), in: 0, out: 0, end: 0, low: Infinity };
-      byMonth[k].in += r.in; byMonth[k].out += r.out; byMonth[k].end = r.balance;
-      if(r.balance < byMonth[k].low) byMonth[k].low = r.balance;
-    });
-    SMH.$('b-far').innerHTML = SMH.table(['Month', 'In', 'Out', 'Lowest point', 'End of month'],
-      Object.keys(byMonth).map(function(k){
-        var m = byMonth[k];
-        return { cells: [m.label, SMH.cur(m.in), SMH.cur(m.out), SMH.cur(m.low), SMH.cur(m.end)] };
-      }));
-  });
-
-  var nd = new Date(); nd.setDate(nd.getDate() + 7);
-  SMH.$('b-next').value = nd.toISOString().slice(0, 10);
-  paint();
-})();</script>
+<script data-sm="tool"></script>
 <script>
 (function(){
   var SESSION_STORE = 'sm_session_' + SM_SLUG;
