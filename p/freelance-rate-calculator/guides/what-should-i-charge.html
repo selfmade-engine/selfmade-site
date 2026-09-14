@@ -3,159 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Freelance Rate Calculator — Calculator that works backwards</title>
-<meta name="description" content="A calculator that works backwards from target income, costs, holidays and billable ratio. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="Freelance Rate Calculator — Calculator that works backwards">
-<meta property="og:description" content="A calculator that works backwards from target income, costs, holidays and billable ratio. Free to use, nothing to install, works in your browser.">
+<title>What should I charge?</title>
+<meta name="description" content="People guess their hourly rate and systematically underprice. Freelance Rate Calculator works it out for you, free, in your browser — nothing to install a…">
+<meta property="og:title" content="What should I charge?">
+<meta property="og:description" content="People guess their hourly rate and systematically underprice. Freelance Rate Calculator works it out for you, free, in your browser — nothing to install a…">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/freelance-rate-calculator/og.png">
+<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/freelance-rate-calculator/guides/what-should-i-charge.html/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Freelance Rate Calculator — Calculator that works backwards">
+<meta property="og:image:alt" content="What should I charge?">
 <!-- summary_large_image rather than summary: without a picture a shared link
      renders as a grey rectangle, which costs more clicks than any wording. -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/freelance-rate-calculator/og.png">
-<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/freelance-rate-calculator/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Freelance Rate Calculator","description":"A calculator that works backwards from target income, costs, holidays and billable ratio. Free to use, nothing to install, works in your browser.","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"https://selfmade-engine.github.io/selfmade-site/p/freelance-rate-calculator/","offers":{"@type":"Offer","price":"5.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
-<link rel="stylesheet" href="./style.css">
+<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/freelance-rate-calculator/guides/what-should-i-charge.html/og.png">
+<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/freelance-rate-calculator/guides/what-should-i-charge.html">
+
+<link rel="stylesheet" href="../style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
 <body>
 <div class="wrap">
 <header class="site">
-  <a class="brand" href="./">Freelance Rate Calculator</a>
-  <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
+  <a class="brand" href="../">Freelance Rate Calculator</a>
+  <nav><a href="./">Tool</a><a href="../docs.html">Docs</a><a href="../pricing.html">Pricing</a></nav>
 </header>
 
-<h1>Calculator that works backwards from target income</h1>
-<p class="sub">A calculator that works backwards from target income, costs, holidays and billable ratio. Free to use, nothing to install, works in your browser.</p>
-<ul class="checks"><li>Built for new freelancers pricing their work for the first time</li><li>Fixes: people guess their hourly rate and systematically underprice</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $5.00 a month and you can cancel any time.</li></ul>
-<div id="sm-tier" class="tierbar"></div>
-
-<div class="card">
-  <div class="grid cols-2">
-    <div><label for="r-income">Target yearly income</label><input id="r-income" type="number" value="60000" min="0" step="1000"></div>
-    <div><label for="r-costs">Yearly business costs</label><input id="r-costs" type="number" value="6000" min="0" step="500"></div>
-    <div><label for="r-weeks">Working weeks per year</label><input id="r-weeks" type="number" value="46" min="1" max="52"></div>
-    <div><label for="r-hours">Hours per week</label><input id="r-hours" type="number" value="40" min="1" max="80"></div>
-    <div><label for="r-billable">Billable percentage</label><input id="r-billable" type="number" value="60" min="5" max="100"></div>
-    <div><label for="r-tax">Tax + social charges %</label><input id="r-tax" type="number" value="30" min="0" max="70"></div>
-  </div>
-  <div class="grid cols-3" style="margin-top:16px">
-    <div class="stat"><div class="k">Hourly rate</div><div class="v" id="r-hour">—</div></div>
-    <div class="stat"><div class="k">Day rate (8h)</div><div class="v" id="r-day">—</div></div>
-    <div class="stat"><div class="k">Billable hours/yr</div><div class="v" id="r-bh">—</div></div>
-  </div>
-  <output id="r-note"></output>
-</div>
-<div class="card">
-  <h3>Compare scenarios <span class="badge pro">PRO</span></h3>
-  <p class="sub">Pricing decisions are comparisons. Save a few versions of your year and look at them together.</p>
-  <div class="row"><input id="r-name" placeholder="e.g. Four days a week" style="max-width:240px"><button id="r-save" class="secondary">Save this one</button><button id="r-export" class="secondary">Download CSV</button></div>
-  <div id="r-scenarios" style="margin-top:12px;overflow-x:auto"></div>
-</div>
-<div id="sm-lock" class="lockbox" hidden></div>
-
-<div class="card no-print sm-auth" id="sm-account" hidden>
-
-  <!-- 1. sign in, or start an account -->
-  <div id="sm-acc-choose">
-    <div class="sm-auth-head">
-      <h2 id="sm-acc-title">Sign in</h2>
-      <p class="sub" id="sm-acc-sub">Your account carries Pro with you — this computer, your phone, anywhere you open it.</p>
-    </div>
-
-    <div class="sm-auth-fields">
-      <label for="sm-acc-email">Email</label>
-      <input id="sm-acc-email" type="email" autocomplete="email" placeholder="you@example.com" inputmode="email">
-
-      <label for="sm-acc-pass">Password<span class="sm-hint" id="sm-acc-passhint"></span></label>
-      <input id="sm-acc-pass" type="password" autocomplete="current-password" placeholder="Your password">
-    </div>
-
-    <button id="sm-acc-go" class="sm-auth-primary">Sign in</button>
-
-    <output id="sm-acc-msg" class="sm-auth-msg"></output>
-
-    <div class="sm-auth-alt">
-      <button id="sm-acc-new" class="linkish">Create an account</button>
-      <span class="sm-auth-dot">·</span>
-      <button id="sm-acc-forgot" class="linkish">Forgot password</button>
-    </div>
-  </div>
-
-  <!-- 2. confirm the email -->
-  <div id="sm-acc-confirm" hidden>
-    <div class="sm-auth-head">
-      <h2>Check your email</h2>
-      <p class="sub">We sent a 6-digit code to <strong id="sm-acc-sentto"></strong>. Type it in and you are done.</p>
-    </div>
-
-    <input id="sm-acc-code" class="sm-code" type="text" inputmode="numeric" autocomplete="one-time-code"
-           maxlength="6" placeholder="000000" aria-label="6-digit code from your email">
-
-    <button id="sm-acc-confirmgo" class="sm-auth-primary">Confirm</button>
-
-    <output id="sm-acc-confirmmsg" class="sm-auth-msg"></output>
-
-    <div class="sm-auth-alt">
-      <button id="sm-acc-resend" class="linkish">Send it again</button>
-      <span class="sm-auth-dot">·</span>
-      <button id="sm-acc-abandon" class="linkish sm-danger">Cancel</button>
-    </div>
-    <p class="limit">The code lasts 30 minutes. Cancelling removes the half-made account, so nothing is left behind.</p>
-  </div>
-
-  <!-- 3. signed in -->
-  <div id="sm-acc-signedin" hidden>
-    <div class="sm-acc-rows" id="sm-acc-stats"></div>
-    <div class="row">
-      <button id="sm-acc-out" class="secondary">Sign out</button>
-      <button id="sm-acc-cancel" class="linkish sm-danger" hidden>Cancel subscription</button>
-    </div>
-    <output id="sm-acc-cancelmsg" class="sm-auth-msg"></output>
-    <p class="limit" id="sm-acc-cancelnote" hidden></p>
-    <p class="limit" id="sm-acc-foot">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for, and your account stays exactly as it is.</p>
-  </div>
-</div>
-
-<div class="card paycard no-print" id="sm-pay">
-  <div class="payhead">
-    <div>
-      <h2>Pro</h2>
-      <p class="sub">Work out one rate from your target income. Pro takes the limit off and adds what you need when you do this every week.</p>
-    </div>
-    <div class="payprice"><span class="price">$5.00</span><span class="per">/month</span></div>
-  </div>
-  <ul class="checks pro"><li><strong>Save and compare scenarios</strong><span class="why">See four versions of your year side by side instead of one at a time.</span></li><li><strong>PDF and CSV export</strong><span class="why">Something to actually show a client or an accountant.</span></li><li><strong>Multi-currency and tax presets</strong><span class="why">Correct numbers wherever you actually live.</span></li></ul>
-  <p class="sm-on-pro" id="sm-already-pro" hidden></p>
-    <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Get Pro — $5.00/month</a></div>
-    <p class="notice" id="sm-buy-note">You will be taken straight to a secure card form. Payment is handled by Stripe — your card details go to them, never to this page. Cancel any time.</p>
-    <p class="notice" id="sm-buy-status" hidden></p>
-  <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
-  <a href="./pricing.html">See everything in Pro</a></p>
-</div>
-<div class="card">
-  <h2>Who this is for</h2>
-  <p class="sub">New freelancers pricing their work for the first time</p>
-  <h2>The problem</h2>
-  <p class="sub">People guess their hourly rate and systematically underprice</p>
-  <h2>What it does about it</h2>
-  <p class="sub">A calculator that works backwards from target income, costs, holidays and billable ratio</p>
-  
-</div>
-<div class="card"><h2>Guides</h2><ul class="checks"><li><a href="./guides/what-should-i-charge.html">What should I charge?</a></li></ul></div>
-
-<div class="card no-print">
-  <h2>Did this do what you needed?</h2>
-  <p class="sub">One line of feedback decides what gets built next. Leave an email only if you want a reply.</p>
-  <form id="sm-feedback" class="grid">
-    <div><label for="sm-note">What would make this better?</label><input id="sm-note" name="note" maxlength="500" placeholder="It should also…"></div>
-    <div><label for="sm-email">Email (optional)</label><input id="sm-email" name="email" type="email" placeholder="you@example.com"></div>
-    <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
-  </form>
-</div>
+<h1>What should I charge?</h1>
+<p class="sub">People guess their hourly rate and systematically underprice. Freelance Rate Calculator works it out for you, free, in your browser — nothing to install a…</p>
+<div class="card"><h2>The short answer</h2><p class="sub">People guess their hourly rate and systematically underprice. Freelance Rate Calculator works it out for you, free, in your browser — nothing to install and nothing uploaded.</p></div>
+<div class="card"><h2>The billable trap</h2><p class="sub">Most freelancers price as if every working hour is billable. Sales, admin and invoicing typically eat 30-50%. This calculator works backwards from the hours you can actually bill.</p></div>
+<div class="card"><h2>Why it is worth doing at all</h2><p class="sub">New freelancers pricing their work for the first time. put this off because it feels like admin rather than work. It is not: it is the difference between knowing where you stand and guessing at it, and the guess is always more flattering than the truth.</p></div>
+<div class="card"><h2>Doing it without a tool</h2><p class="sub">You can do all of this on paper or in a spreadsheet, and plenty of people do. The cost is not the arithmetic, it is remembering to do it and keeping the same method every time. A month you forget is a month missing from the total, and you find out about it at the worst possible moment.</p></div>
+<div class="card"><h2>If you would rather it just did it</h2><p class="sub">Open Freelance Rate Calculator, put the numbers in, and read the answer. The free version is enough to try it properly, and Pro takes the limit off.</p></div>
+<div class="card"><h2>Try it</h2><p class="sub">Freelance Rate Calculator does this in your browser, free, with no signup.</p><p><a class="buy" href="../">Open Freelance Rate Calculator</a></p></div>
+<p class="notice">Written by SELFMADE, which also built the tool this page is about. That is a bias worth knowing about while you read it.</p>
 <footer class="site">
   <p>Freelance Rate Calculator — built and operated by SELFMADE, an autonomous business agent.
   Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
@@ -180,9 +61,9 @@ var SM_LICENCE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/licen
 var SM_USE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/use";
 var SM_ACTIVATE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/activate";
 var SM_API_BASE = "https://selfmade-api.selfmade-engine.workers.dev";
-var SM_DAILY_LIMIT = 3;
-var SM_LIMIT_LABEL = "calculations a day";
-var SM_PITCH = "Pro adds save and compare scenarios, pdf and csv export and multi-currency and tax presets.";
+var SM_DAILY_LIMIT = 0;
+var SM_LIMIT_LABEL = "uses";
+var SM_PITCH = "";
 var SM_CONTACT = "selfmade.engine@gmail.com";
 // Where the Upgrade button goes, and what it costs. Straight to checkout when
 // there is one, because a pricing page in between is a step people leave at.
@@ -608,61 +489,7 @@ window.SM = (function(){
   };
 })();
 </script>
-<script data-sm="tool">
-(function(){
-  var ids=['r-income','r-costs','r-weeks','r-hours','r-billable','r-tax'];
-  function n(id){ return parseFloat(document.getElementById(id).value)||0; }
-  function calc(){
-    var income=n('r-income'), costs=n('r-costs'), weeks=n('r-weeks'), hours=n('r-hours');
-    var billablePct=Math.min(Math.max(n('r-billable'),1),100)/100, tax=Math.min(n('r-tax'),69)/100;
-    var billableHours = weeks*hours*billablePct;
-    if(billableHours<=0){ document.getElementById('r-note').textContent='Increase your working weeks or hours.'; return; }
-    var grossNeeded = (income/(1-tax)) + costs;
-    var hourly = grossNeeded/billableHours;
-    var fmt = function(v){ return '$' + v.toFixed(0); };
-    document.getElementById('r-hour').textContent = fmt(hourly);
-    document.getElementById('r-day').textContent = fmt(hourly*8);
-    document.getElementById('r-bh').textContent = Math.round(billableHours);
-    document.getElementById('r-note').textContent =
-      'To take home ' + fmt(income) + ' after ' + Math.round(tax*100) + '% tax and ' + fmt(costs) + ' of costs, you must invoice ' +
-      fmt(grossNeeded) + ' across ' + Math.round(billableHours) + ' billable hours. ' +
-      'Every 5 points of billable time you lose costs you about ' + fmt(hourly*weeks*hours*0.05) + ' a year - protect the billable percentage before you raise the rate.';
-  }
-  ids.forEach(function(id){ document.getElementById(id).addEventListener('input', calc); });
-
-  // ---- Pro: save and compare scenarios ----
-  function paintScenarios(){
-    var box = document.getElementById('r-scenarios');
-    var list = SM.load('scenarios');
-    if(!list.length){ box.innerHTML = '<span class="sub">No saved scenarios yet.</span>'; return; }
-    var rows = list.map(function(sc){
-      return '<tr><td>' + sc.name + '</td><td>' + sc.hourly + '</td><td>' + sc.day + '</td><td>' + sc.hours + '</td></tr>';
-    }).join('');
-    box.innerHTML = '<table><thead><tr><th>Scenario</th><th>Hourly</th><th>Day rate</th><th>Billable hrs</th></tr></thead><tbody>' + rows + '</tbody></table>';
-  }
-  document.getElementById('r-save').addEventListener('click', function(){
-    var typed = (document.getElementById('r-name').value || '').trim();
-    var list = SM.load('scenarios');
-    var name = typed || ('Scenario ' + (list.length + 1));
-    list.push({
-      name: name,
-      hourly: document.getElementById('r-hour').textContent,
-      day: document.getElementById('r-day').textContent,
-      hours: document.getElementById('r-bh').textContent
-    });
-    if(SM.save('scenarios', list)){ document.getElementById('r-name').value = ''; paintScenarios(); }
-  });
-  document.getElementById('r-export').addEventListener('click', function(){
-    var list = SM.load('scenarios');
-    if(!list.length) return;
-    var rows = [['scenario','hourly','day rate','billable hours']].concat(list.map(function(sc){
-      return [sc.name, sc.hourly, sc.day, sc.hours];
-    }));
-    SM.exportCsv('rate-scenarios.csv', rows);
-  });
-  paintScenarios();
-  calc();
-})();</script>
+<script data-sm="tool"></script>
 <script>
 (function(){
   var SESSION_STORE = 'sm_session_' + SM_SLUG;
