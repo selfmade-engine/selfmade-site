@@ -1,0 +1,15 @@
+{
+  "name": "Freelancer Printable Bundle",
+  "slug": "bundle-freelancers",
+  "kind": "download",
+  "bundle": true,
+  "includes": [
+    "freelancer-budget-planner",
+    "freelancer-goal-setting-planner",
+    "freelancer-side-hustle-income-expense-tracker"
+  ],
+  "price": 15.3,
+  "full": 17,
+  "builtAt": "2026-09-15T21:46:30.933Z",
+  "builtBy": "SELFMADE"
+}
