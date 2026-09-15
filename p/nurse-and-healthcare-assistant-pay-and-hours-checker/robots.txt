@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://selfmade-api.selfmade-engine.workers.dev/p/nurse-and-healthcare-assistant-pay-and-hours-checker/sitemap.xml
