@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://selfmade-api.selfmade-engine.workers.dev/p/small-shop-owner-staff-hours-and-wage-cost-tracker/sitemap.xml
