@@ -1,0 +1,1508 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Two-Income Household Bills Planner</title>
+<meta name="description" content="Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.">
+<meta property="og:title" content="Two-Income Household Bills Planner">
+<meta property="og:description" content="Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://selfmade-api.selfmade-engine.workers.dev/p/two-income-household-bills-and-payday-planner/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Two-Income Household Bills Planner">
+<!-- summary_large_image rather than summary: without a picture a shared link
+     renders as a grey rectangle, which costs more clicks than any wording. -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://selfmade-api.selfmade-engine.workers.dev/p/two-income-household-bills-and-payday-planner/og.png">
+<link rel="canonical" href="https://selfmade-api.selfmade-engine.workers.dev/p/two-income-household-bills-and-payday-planner/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Two-Income Household Bills Planner","description":"Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"https://selfmade-api.selfmade-engine.workers.dev/p/two-income-household-bills-and-payday-planner/","offers":{"@type":"Offer","price":"9.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
+<link rel="stylesheet" href="./style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
+</head>
+<body>
+<div class="wrap">
+<header class="site">
+  <a class="brand" href="./">Two-Income Household Bills Planner</a>
+  <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
+</header>
+
+<h1>Never be short when bills are due</h1>
+<p class="sub">Map your paydays against your bills and get one number: what you can spend today with everything still clearing. Free to use, nothing to install, works in your browser.</p>
+<ul class="checks"><li>Built for couples with separate accounts</li><li>Fixes: the balance in the account is not the money you have, because four bills have not gone out yet — and couples with separate accounts feel this hardest</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $9.00 a month and you can cancel any time.</li></ul>
+<div id="sm-tier" class="tierbar"></div>
+
+<div class="card">
+  <h2>Money coming in</h2>
+  <div class="grid cols-3">
+    <div><label for="s-balance">In your account right now</label><input id="s-balance" type="number" step="0.01" value="0"></div>
+    <div><label for="s-pay">How much you get paid</label><input id="s-pay" type="number" step="0.01" min="0" value="1200"></div>
+    <div><label for="s-every">How often (days — 0 for monthly)</label><input id="s-every" type="number" step="7" min="0" value="0"></div>
+    <div><label for="s-nextPay">Next payday</label><input id="s-nextPay" type="date"></div>
+  </div>
+</div>
+<div class="card">
+  <h2>Money going out</h2>
+  <p class="sub">Rent, phone, energy, subscriptions — anything that leaves on its own. Who paid for what, and who is owed.</p>
+  <div class="grid cols-3">
+    <div><label for="f-name">What is it</label><input id="f-name" type="text" placeholder="Rent"></div>
+    <div><label for="f-amount">How much</label><input id="f-amount" type="number" step="0.01" min="0" value="0"></div>
+    <div><label for="f-day">Day of the month it goes</label><input id="f-day" type="number" step="1" min="1" max="31" value="1"></div>
+  </div>
+  <div class="row">
+    <button id="g-add">Add this bill</button>
+    <button id="g-clear" class="secondary">Start again</button>
+    <span id="g-count" class="badge"></span>
+  </div>
+  <div id="g-list"></div>
+</div>
+<div class="card">
+  <h2>What you can actually spend</h2>
+  <div class="grid cols-3" id="g-stats"></div>
+  <output id="g-verdict">Put your payday and your bills in above.</output>
+  <div id="g-timeline"></div>
+</div>
+<div class="card">
+  <h3>Look further ahead <span class="badge pro">PRO</span></h3>
+  <p class="sub">Free holds a few bills and the week ahead. Rent, phone, car, energy and two subscriptions is already six, and Pro shows a year ahead so you can see the month that is going to hurt while there is still time.</p>
+  <div class="row">
+    <button id="g-far" class="secondary">Show me a year</button>
+    <button id="g-export" class="secondary">Download it</button>
+  </div>
+  <div id="g-farout"></div>
+</div>
+<div id="sm-lock" class="lockbox" hidden></div>
+
+<div class="card no-print sm-auth" id="sm-account" hidden>
+
+  <!-- 1. sign in, or start an account -->
+  <div id="sm-acc-choose">
+    <div class="sm-auth-head">
+      <h2 id="sm-acc-title">Sign in</h2>
+      <p class="sub" id="sm-acc-sub">Your account carries Pro with you — this computer, your phone, anywhere you open it.</p>
+    </div>
+
+    <div class="sm-auth-fields">
+      <label for="sm-acc-email">Email</label>
+      <input id="sm-acc-email" type="email" autocomplete="email" placeholder="you@example.com" inputmode="email">
+
+      <label for="sm-acc-pass">Password<span class="sm-hint" id="sm-acc-passhint"></span></label>
+      <input id="sm-acc-pass" type="password" autocomplete="current-password" placeholder="Your password">
+    </div>
+
+    <button id="sm-acc-go" class="sm-auth-primary">Sign in</button>
+
+    <output id="sm-acc-msg" class="sm-auth-msg"></output>
+
+    <div class="sm-auth-alt">
+      <button id="sm-acc-new" class="linkish">Create an account</button>
+      <span class="sm-auth-dot">·</span>
+      <button id="sm-acc-forgot" class="linkish">Forgot password</button>
+    </div>
+  </div>
+
+  <!-- 2. confirm the email -->
+  <div id="sm-acc-confirm" hidden>
+    <div class="sm-auth-head">
+      <h2>Check your email</h2>
+      <p class="sub">We sent a 6-digit code to <strong id="sm-acc-sentto"></strong>. Type it in and you are done.</p>
+    </div>
+
+    <input id="sm-acc-code" class="sm-code" type="text" inputmode="numeric" autocomplete="one-time-code"
+           maxlength="6" placeholder="000000" aria-label="6-digit code from your email">
+
+    <button id="sm-acc-confirmgo" class="sm-auth-primary">Confirm</button>
+
+    <output id="sm-acc-confirmmsg" class="sm-auth-msg"></output>
+
+    <div class="sm-auth-alt">
+      <button id="sm-acc-resend" class="linkish">Send it again</button>
+      <span class="sm-auth-dot">·</span>
+      <button id="sm-acc-abandon" class="linkish sm-danger">Cancel</button>
+    </div>
+    <p class="limit">The code lasts 30 minutes. Cancelling removes the half-made account, so nothing is left behind.</p>
+  </div>
+
+  <!-- 3. signed in -->
+  <div id="sm-acc-signedin" hidden>
+    <div class="sm-acc-rows" id="sm-acc-stats"></div>
+    <div class="row">
+      <button id="sm-acc-out" class="secondary">Sign out</button>
+      <button id="sm-acc-cancel" class="linkish sm-danger" hidden>Cancel subscription</button>
+    </div>
+    <output id="sm-acc-cancelmsg" class="sm-auth-msg"></output>
+    <p class="limit" id="sm-acc-cancelnote" hidden></p>
+    <p class="limit" id="sm-acc-foot">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for, and your account stays exactly as it is.</p>
+  </div>
+</div>
+
+<div class="card paycard no-print" id="sm-pay">
+  <div class="payhead">
+    <div>
+      <h2>Pro</h2>
+      <p class="sub">The next five weeks, free, with everything working. Pro takes the limit off and adds what you need when you do this every week.</p>
+    </div>
+    <div class="payprice"><span class="price">$9.00</span><span class="per">/month</span></div>
+  </div>
+  <ul class="checks pro"><li><strong>Twelve months ahead, not five weeks</strong><span class="why">The month that is going to hurt is usually four months out. Seeing it now is the only time you can do anything about it.</span></li><li><strong>Try a purchase before you make it</strong><span class="why">Ask whether you can afford it on the 12th and get an answer instead of a feeling.</span></li><li><strong>Every bill, not just the first few</strong><span class="why">Free covers 3. Rent, phone, car, energy, council tax and two subscriptions is already seven, and a partial picture gives a confident wrong answer.</span></li></ul>
+  <p class="sm-on-pro" id="sm-already-pro" hidden></p>
+    <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Get Pro — $9.00/month</a></div>
+    <p class="notice" id="sm-buy-note">You will be taken straight to a secure card form. Payment is handled by Stripe — your card details go to them, never to this page. Cancel any time.</p>
+    <p class="notice" id="sm-buy-status" hidden></p>
+  <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
+  <a href="./pricing.html">See everything in Pro</a></p>
+</div>
+<div class="card">
+  <h2>Who this is for</h2>
+  <p class="sub">couples with separate accounts</p>
+  <h2>The problem</h2>
+  <p class="sub">The balance in the account is not the money you have, because four bills have not gone out yet — and couples with separate accounts feel this hardest</p>
+  <h2>What it does about it</h2>
+  <p class="sub">Map your paydays against your bills and get one number: what you can spend today with everything still clearing</p>
+  
+</div>
+
+
+<div class="card no-print">
+  <h2>Did this do what you needed?</h2>
+  <p class="sub">One line of feedback decides what gets built next. Leave an email only if you want a reply.</p>
+  <form id="sm-feedback" class="grid">
+    <div><label for="sm-note">What would make this better?</label><input id="sm-note" name="note" maxlength="500" placeholder="It should also…"></div>
+    <div><label for="sm-email">Email (optional)</label><input id="sm-email" name="email" type="email" placeholder="you@example.com"></div>
+    <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
+  </form>
+</div>
+<footer class="site">
+  <p>Two-Income Household Bills Planner — built and operated by SELFMADE.
+  Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
+  <p>Everything on this page runs in your browser. Your input is not uploaded or stored.</p>
+  <!-- Small, at the bottom, on every page. Stripe expects a customer to be
+       able to find the terms and the privacy policy from anywhere they might
+       be asked to pay, and so does anybody sensible. -->
+  <p class="legal"><a href="https://selfmade-api.selfmade-engine.workers.dev/privacy.html">Privacy</a>
+  · <a href="https://selfmade-api.selfmade-engine.workers.dev/terms.html">Terms &amp; refunds</a>
+  · <a href="./pricing.html">Pricing</a>
+  · Payments handled by Stripe. Card details never touch this page.</p>
+</footer>
+</div>
+<script>
+var SM_SLUG = "two-income-household-bills-and-payday-planner";
+var SM_KIND = "tool";
+var SM_FILE_NAME = "two-income-household-bills-and-payday-planner.pdf";
+var SM_TRACK_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/track";
+var SM_ORDER_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/order";
+var SM_FEEDBACK_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/feedback";
+var SM_LICENCE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/licence/verify";
+var SM_USE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/use";
+var SM_ACTIVATE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/activate";
+var SM_API_BASE = "https://selfmade-api.selfmade-engine.workers.dev";
+var SM_DAILY_LIMIT = 10;
+var SM_LIMIT_LABEL = "checks a day";
+var SM_PITCH = "Pro adds twelve months ahead, not five weeks, try a purchase before you make it, every bill, not just the first few and kept between visits.";
+var SM_CONTACT = "selfmade.engine@gmail.com";
+// Where the Upgrade button goes, and what it costs. Straight to checkout when
+// there is one, because a pricing page in between is a step people leave at.
+var SM_BUY_URL = "./pricing.html";
+var SM_PRICE = "$9.00";
+</script>
+<!-- Everything that builds window.SM has to run before the tool does.
+     The tool calls SM.pro() and SM.load() while painting for the first time,
+     and SM is assembled in two parts: LICENCE_JS creates it, PRO_TOOLKIT_JS
+     adds save/load/export to it.
+     With the tool first this threw "SM is not defined" on every page load;
+     moving only LICENCE_JS ahead of it turned that into "SM.load is not a
+     function", which is the same bug one step later. Both parts go first. -->
+<script>
+window.SM = (function(){
+  var KEY_STORE = 'sm_key_' + SM_SLUG;
+  var USE_STORE = 'sm_uses_' + SM_SLUG;
+  var state = { pro:false, key:null, checked:false, renewsAt:null };
+
+  function today(){ return new Date().toISOString().slice(0,10); }
+  function reads(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+  function writes(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+  // The server only accepts a key from the account that paid for it, so the
+  // signed-in session travels with every check.
+  function sessionHeaders(){ var t = reads('sm_session_' + SM_SLUG); return t ? { 'x-sm-session': t } : {}; }
+
+  function usesToday(){
+    try {
+      var raw = JSON.parse(reads(USE_STORE) || '{}');
+      return raw.day === today() ? (raw.n||0) : 0;
+    } catch(e){ return 0; }
+  }
+  function setUses(n){
+    writes(USE_STORE, JSON.stringify({ day: today(), n: n }));
+  }
+  function bump(){ setUses(usesToday()+1); }
+
+  /**
+   * Ask the server how much of today's allowance is actually left.
+   *
+   * This is what makes clearing site data pointless: the browser's own tally is
+   * only a display, and it is corrected from the server on every load.
+   */
+  function syncAllowance(){
+    if(!SM_DAILY_LIMIT || !SM_USE_URL) return;
+    fetch(SM_USE_URL + '?slug=' + encodeURIComponent(SM_SLUG) + '&limit=' + SM_DAILY_LIMIT + '&peek=1')
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if(typeof res.used === 'number'){
+          // The server is the authority in both directions.
+          setUses(res.used);
+          paint();
+        }
+      })
+      .catch(function(){ /* offline: the local tally stands until it can ask */ });
+  }
+
+  /** Tell the server one use has been spent, and obey it if it says no. */
+  function spend(){
+    if(!SM_DAILY_LIMIT || !SM_USE_URL) return;
+    fetch(SM_USE_URL + '?slug=' + encodeURIComponent(SM_SLUG) + '&limit=' + SM_DAILY_LIMIT)
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if(typeof res.used === 'number') setUses(res.used);
+        if(res.allowed === false){ lock('Unlimited use'); }
+        paint();
+      })
+      .catch(function(){});
+  }
+
+  function paint(){
+    var bar = document.getElementById('sm-tier');
+    if(!bar) return;
+    var pay = document.getElementById('sm-pay');
+    var navbuy = document.getElementById('sm-navbuy');
+
+    if(state.pro){
+      bar.innerHTML = '<span class="badge pro">PRO</span> Unlimited, all features on.'
+        + (state.renewsAt ? ' <span class="dim">Renews ' + state.renewsAt.slice(0,10) + '</span>' : '');
+      bar.className = 'tierbar pro';
+      // Somebody who has paid should never be asked again. Everything selling
+      // the upgrade comes off the page entirely.
+      if(pay) pay.hidden = true;
+      if(navbuy) navbuy.hidden = true;
+      return;
+    }
+
+    if(pay) pay.hidden = false;
+    if(navbuy) navbuy.hidden = false;
+
+    if (SM_DAILY_LIMIT) {
+      var left = Math.max(0, SM_DAILY_LIMIT - usesToday());
+      bar.innerHTML = left > 0
+        ? '<span class="badge">FREE</span> ' + left + ' of ' + SM_DAILY_LIMIT + ' ' + SM_LIMIT_LABEL + ' left today.'
+        : '<span class="badge">FREE</span> That is your ' + SM_DAILY_LIMIT + ' ' + SM_LIMIT_LABEL + ' for today. It resets tomorrow.';
+      bar.className = 'tierbar' + (left === 0 ? ' spent' : '');
+    }
+  }
+
+
+  /**
+   * Just back from paying. Turn everything on without asking for anything.
+   *
+   * The reference in the URL is only a lookup - the server will not hand over a
+   * subscription for it unless the payment platform has already confirmed the
+   * payment over a signed webhook. So a made-up reference gets nothing.
+   */
+  function claimPayment(reference){
+    var tries = 0;
+    say('Setting up your subscription…');
+
+    function attempt(){
+      tries += 1;
+      fetch(SM_ACTIVATE_URL + '?ref=' + encodeURIComponent(reference) + '&slug=' + encodeURIComponent(SM_SLUG))
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if(res.ok && res.key){
+            state.pro = true; state.key = res.key;
+            writes(KEY_STORE, res.key);
+            say('You are all set — Pro is on. Nothing else to do.', 'good');
+            cleanUrl();
+            paint();
+            return;
+          }
+          // The webhook is usually a moment behind the redirect.
+          if(res.status === 'pending' && tries < 6){
+            setTimeout(attempt, 1500);
+            return;
+          }
+          if(res.status === 'not_configured'){
+            say('Your payment went through. Your access link is in your email — open it on this device and you are done.', 'warn');
+          } else if(res.status === 'wrong_product'){
+            say('That payment was for a different tool. Open the link in your email for the right one.', 'warn');
+          } else {
+            say('Your payment went through, but this page could not switch Pro on yet. Check your email for the access link, or contact ' + SM_CONTACT + ' and it will be sorted.', 'warn');
+          }
+          cleanUrl();
+        })
+        .catch(function(){
+          if(tries < 6){ setTimeout(attempt, 1500); return; }
+          say('Your payment went through. Your access link is in your email.', 'warn');
+          cleanUrl();
+        });
+    }
+    attempt();
+  }
+
+  /** A quiet line at the top of the page, not an alert box. */
+  function say(text, tone){
+    var el = document.getElementById('sm-welcome');
+    if(!el){
+      el = document.createElement('div');
+      el.id = 'sm-welcome';
+      el.className = 'tierbar';
+      var first = document.querySelector('h1');
+      if(first && first.parentNode) first.parentNode.insertBefore(el, first);
+      else document.body.insertBefore(el, document.body.firstChild);
+    }
+    el.className = 'tierbar' + (tone === 'good' ? ' pro' : tone === 'warn' ? ' spent' : '');
+    el.textContent = text;
+  }
+
+  /** Take the payment reference out of the address bar. */
+  function cleanUrl(){
+    try {
+      var u = new URL(location.href);
+      u.searchParams.delete('paid');
+      u.searchParams.delete('key');
+      history.replaceState({}, '', u.pathname + (u.searchParams.toString() ? '?' + u.searchParams : '') + u.hash);
+    } catch(e){}
+  }
+
+  /**
+   * Show why something stopped, with a way to close it.
+   *
+   * Two different situations used to produce the same sentence. Wanting a
+   * Pro-only feature is "this is part of Pro"; filling up the free allowance is
+   * "you have used what free gives you" - and phrasing the second like the
+   * first read as though the product had broken.
+   *
+   * It can also be dismissed now. Before, it appeared and stayed, which on a
+   * small screen meant it sat on top of the thing somebody was trying to use
+   * with no way to get rid of it.
+   */
+  function lock(featureName, limit){
+    var box = document.getElementById('sm-lock');
+    if(!box) return;
+
+    // Saying "you have run out" and stopping there is a dead end. The moment
+    // somebody hits the limit is the moment the upgrade is worth something to
+    // them, so the message says plainly what Pro removes - and reassures them
+    // nothing they have typed is lost, because otherwise it reads as a crash.
+    var heading = limit
+      ? '<strong>' + (limit.daily
+          ? 'That is the free version used up for today.'
+          : 'That is as far as the free version goes.') + '</strong> '
+        + (limit.daily
+          ? 'It resets tomorrow, and nothing you have entered is lost. '
+          : 'What you have entered stays exactly as it is. ')
+        + '<span class="sm-lock-sell">Pro takes the limit off completely — '
+        + (limit.daily
+            ? 'use it as much as you like, every day'
+            : 'as many ' + SM_LIMIT_LABEL.replace(/ a day$/, '') + ' as you need, kept between visits')
+        + '.</span> ' + SM_PITCH
+      : '<strong>' + featureName + ' is part of Pro.</strong> ' + SM_PITCH;
+
+    box.innerHTML = '<button type="button" class="sm-lock-x" id="sm-lock-x" aria-label="Close">&times;</button>'
+      + heading
+      + '<div class="row"><a class="buy" href="' + SM_BUY_URL + '">Get Pro — ' + SM_PRICE + '/month</a></div>'
+      + '<div class="row"><input id="sm-key" placeholder="Already subscribed? Paste your key" style="max-width:280px">'
+      + '<button id="sm-key-go" class="secondary">Unlock</button><span id="sm-key-msg" class="badge"></span></div>';
+    box.hidden = false;
+
+    var go = document.getElementById('sm-key-go');
+    if(go) go.addEventListener('click', function(){ SM.activate(document.getElementById('sm-key').value); });
+
+    var shut = document.getElementById('sm-lock-x');
+    if(shut) shut.addEventListener('click', function(){ box.hidden = true; });
+
+    // Somewhere to look. Without this the message can appear off-screen and
+    // the click that triggered it looks like it did nothing at all.
+    if(box.scrollIntoView) box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
+  var SM = {
+    /** Is Pro on? */
+    pro: function(){ return state.pro; },
+
+    /**
+     * Switch Pro on because the signed-in ACCOUNT is entitled to it.
+     * This is the path that matters now; the key is the fallback.
+     */
+    grant: function(key, renewsAt){
+      state.pro = true;
+      state.key = key || state.key;
+      state.renewsAt = renewsAt || state.renewsAt;
+      if(key) writes(KEY_STORE, key);
+      paint();
+    },
+
+    /** Gate a Pro-only feature. Returns false and shows the upsell if not Pro. */
+    gate: function(featureName){
+      if(state.pro) return true;
+      lock(featureName);
+      return false;
+    },
+
+    /**
+     * The free allowance is used up, as opposed to a Pro-only feature being
+     * wanted. Separate because the two need different words: one is "you have
+     * finished what free gives you", the other is "this was never in free".
+     */
+    limit: function(){
+      if(state.pro) return true;
+      lock('', { daily: false });
+      return false;
+    },
+
+    /** Count one use of the free tier. Returns false once the daily limit is hit. */
+    use: function(){
+      if(state.pro) return true;
+      if(!SM_DAILY_LIMIT) return true;
+      if(usesToday() >= SM_DAILY_LIMIT){
+        lock('Unlimited use', { daily: true });
+        paint();
+        return false;
+      }
+      // Count it here so the number moves at once, and tell the server, which
+      // is the one that actually decides and will correct this if it disagrees.
+      bump();
+      spend();
+      paint();
+      return true;
+    },
+
+    /** Check a key with the server and turn Pro on if it is good. */
+    activate: function(key){
+      var msg = document.getElementById('sm-key-msg');
+      var clean = (key||'').trim();
+      if(!clean){ if(msg) msg.textContent = 'paste a key first'; return; }
+      if(msg) msg.textContent = 'checking...';
+      fetch(SM_LICENCE_URL + '?key=' + encodeURIComponent(clean) + '&slug=' + encodeURIComponent(SM_SLUG), { headers: sessionHeaders() })
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          if(res.valid){
+            state.pro = true; state.key = clean; state.renewsAt = res.renewsAt;
+            writes(KEY_STORE, clean);
+            if(msg) msg.textContent = 'Pro is on';
+            var box = document.getElementById('sm-lock'); if(box) box.hidden = true;
+            paint();
+          } else {
+            if(msg) msg.textContent = res.reason === 'expired' ? 'that subscription has lapsed'
+              : res.reason === 'wrong_product' ? 'that key is for a different tool'
+              : res.reason === 'sign_in_first' ? 'sign in with the email you paid with, then use your key'
+              : res.reason === 'not_your_key' ? 'that key belongs to a different account'
+              : 'key not recognised';
+          }
+        })
+        .catch(function(){ if(msg) msg.textContent = 'could not check right now'; });
+    },
+
+    init: function(){
+      var params = new URLSearchParams(location.search);
+      paint();
+      syncAllowance();
+
+      // Straight back from a checkout: switch everything on, ask for nothing.
+      var paid = params.get('paid');
+      if(paid){ claimPayment(paid); return; }
+
+      var key = params.get('key') || reads(KEY_STORE);
+      if(!key) return;
+
+      function confirm(){
+        fetch(SM_LICENCE_URL + '?key=' + encodeURIComponent(key) + '&slug=' + encodeURIComponent(SM_SLUG), { headers: sessionHeaders() })
+          .then(function(r){ return r.json(); })
+          .then(function(res){
+            state.checked = true;
+            if(res.valid){
+              state.pro = true; state.key = key; state.renewsAt = res.renewsAt;
+              writes(KEY_STORE, key);
+            } else {
+              // Cancelled, lapsed, or used on too many devices. Pro goes off
+              // now rather than lasting until the tab is closed.
+              state.pro = false;
+              if(res.reason === 'too_many_devices') state.deviceProblem = true;
+            }
+            paint();
+          })
+          .catch(function(){
+            // No answer means no Pro. Failing open here would make the paid
+            // tier optional for anyone willing to go offline.
+            state.pro = false;
+            paint();
+          });
+      }
+
+      confirm();
+      // A subscription that was cancelled this morning should not still work
+      // this afternoon on a tab nobody closed.
+      setInterval(confirm, 60 * 60000);
+    }
+  };
+
+  if(document.readyState !== 'loading') SM.init();
+  else document.addEventListener('DOMContentLoaded', function(){ SM.init(); });
+  return SM;
+})();
+</script>
+<script>
+(function(){
+  if(!window.SM) return;
+
+  function store(name){ return 'sm_pro_' + SM_SLUG + '_' + name; }
+
+  SM.save = function(name, list){
+    if(!SM.gate('Saving')) return false;
+    try { localStorage.setItem(store(name), JSON.stringify(list)); return true; } catch(e){ return false; }
+  };
+
+  SM.load = function(name){
+    try { return JSON.parse(localStorage.getItem(store(name)) || '[]'); } catch(e){ return []; }
+  };
+
+  /** Download rows as CSV. Pro only. */
+  SM.exportCsv = function(filename, rows){
+    if(!SM.gate('CSV export')) return false;
+    var csv = rows.map(function(r){
+      return r.map(function(cell){
+        var v = String(cell == null ? '' : cell);
+        return /[",\n]/.test(v) ? '"' + v.replace(/"/g,'""') + '"' : v;
+      }).join(',');
+    }).join('\n');
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    return true;
+  };
+
+  /** Copy text, no gate - free users get this too. */
+  SM.copy = function(text, btn){
+    navigator.clipboard.writeText(text);
+    if(btn){ var old = btn.textContent; btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = old; }, 1500); }
+  };
+
+  /**
+   * Renders a bulk panel: many inputs in, many results out.
+   * cfg = { mount, placeholder, hint, run(lineArray) -> rowsArray, header }
+   */
+  SM.bulk = function(cfg){
+    var mount = document.getElementById(cfg.mount);
+    if(!mount) return;
+    mount.innerHTML =
+      '<h3>Bulk mode <span class="badge pro">PRO</span></h3>'
+      + '<p class="sub">' + cfg.hint + '</p>'
+      + '<textarea id="' + cfg.mount + '-in" placeholder="' + cfg.placeholder + '"></textarea>'
+      + '<div class="row"><button id="' + cfg.mount + '-go">Run all</button>'
+      + '<button id="' + cfg.mount + '-csv" class="secondary">Download CSV</button>'
+      + '<span id="' + cfg.mount + '-count" class="badge"></span></div>'
+      + '<output id="' + cfg.mount + '-out"></output>';
+
+    var rows = [];
+    function run(){
+      if(!SM.gate('Bulk mode')) return;
+      var lines = (document.getElementById(cfg.mount + '-in').value || '')
+        .split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
+      if(!lines.length){ document.getElementById(cfg.mount + '-out').textContent = 'Paste one per line above.'; return; }
+      rows = cfg.run(lines);
+      document.getElementById(cfg.mount + '-count').textContent = rows.length + ' done';
+      document.getElementById(cfg.mount + '-out').textContent =
+        rows.slice(0, 50).map(function(r){ return r.join('  ->  '); }).join('\n')
+        + (rows.length > 50 ? '\n... and ' + (rows.length - 50) + ' more in the CSV' : '');
+    }
+    document.getElementById(cfg.mount + '-go').addEventListener('click', run);
+    document.getElementById(cfg.mount + '-csv').addEventListener('click', function(){
+      if(!rows.length) run();
+      if(rows.length) SM.exportCsv(SM_SLUG + '-bulk.csv', [cfg.header].concat(rows));
+    });
+  };
+})();
+</script>
+<script data-sm="tool">
+function SMN(v){
+  if (typeof v === 'number') return isFinite(v) ? v : 0;
+  var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, ''));
+  return isFinite(x) ? x : 0;
+}
+/**
+ * Whole days from today until a date. Negative once it has gone past.
+ *
+ * Both ends are flattened to midnight first, so "tomorrow" is 1 all day rather
+ * than 0 in the evening and 1 in the morning - a countdown that changes with
+ * the time of day reads as broken.
+ */
+function SMdays(v){
+  if (!v) return 0;
+  var text = String(v).trim();
+  var b = null;
+  // A plain "2026-04-01" is parsed as UTC midnight by the browser, which reads
+  // back as the day BEFORE anywhere west of Greenwich. Somebody typing a date
+  // means that date where they are, so it is built locally instead.
+  //
+  // Split rather than matched, because a regular expression written inside a
+  // template literal has to survive two rounds of escaping and quietly loses
+  // its backslashes if it does not.
+  var bits = text.split('-');
+  if (bits.length === 3 && bits[0].length === 4) {
+    var y = Number(bits[0]), mo = Number(bits[1]), da = Number(bits[2].slice(0, 2));
+    if (y && mo && da) b = new Date(y, mo - 1, da);
+  }
+  if (!b) {
+    var parsed = new Date(text);
+    if (isNaN(parsed.getTime())) return 0;
+    b = new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+  }
+  if (isNaN(b.getTime())) return 0;
+  var a = new Date(); a.setHours(0,0,0,0);
+  return Math.round((b - a) / 86400000);
+}
+var CUR = "$";
+function SMD(id){ var e = document.getElementById(id); return e; }
+function SMV(id){ var e = SMD(id); return e ? String(e.value == null ? '' : e.value).trim() : ''; }
+function SMmoney(v){
+  var neg = v < 0;
+  var a = Math.abs(Math.round(v * 100) / 100).toFixed(2);
+  return (neg ? '-' : '') + CUR + a.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+function SMnum(v, dp){
+  var d = dp == null ? 2 : dp;
+  var n = Math.round(SMN(v) * Math.pow(10, d)) / Math.pow(10, d);
+  return d === 0 ? String(n) : n.toFixed(d);
+}
+function SMesc(s){
+  return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
+    return c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&quot;';
+  });
+}
+function SMtable(head, rows){
+  return '<table><tr>' + head.map(function(h){ return '<th>' + h + '</th>'; }).join('') + '</tr>' +
+    rows.map(function(r){ return '<tr>' + r.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>'; }).join('') +
+    '</table>';
+}
+function SMstat(k, v, note){
+  return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
+    (note ? '<div class="k" style="text-transform:none;letter-spacing:0;margin-top:4px">' + note + '</div>' : '') + '</div>';
+}
+/** A dropdown stores its numeric value; the table should show the words. */
+function SMlabel(f, v){
+  if (f && f.options && f.options.length && typeof f.options[0] === 'object') {
+    for (var i = 0; i < f.options.length; i++) {
+      if (String(f.options[i].value) === String(v)) return f.options[i].label;
+    }
+  }
+  return v;
+}
+function SMtoday(){ return new Date().toISOString().slice(0, 10); }
+function SMfmtDate(d){
+  var x = (d instanceof Date) ? d : new Date(d);
+  if (isNaN(x.getTime())) return String(d || '');
+  return x.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+}
+(function(){
+  var FIELDS = [{"id":"name","label":"What is it","type":"text","placeholder":"Rent"},{"id":"amount","label":"How much","type":"number","default":0,"min":0,"step":0.01},{"id":"day","label":"Day of the month it goes","type":"number","default":1,"min":1,"max":31,"step":1}];
+  var FREE_MAX = 3;
+  var items = [];
+  try { items = JSON.parse(localStorage.getItem("sm-couple--bills-vs-pay") || '[]'); } catch(e){ items = []; }
+  if (!(items instanceof Array)) items = [];
+  function persist(){ try { localStorage.setItem("sm-couple--bills-vs-pay", JSON.stringify(items)); } catch(e){} }
+
+  function derive(r, T){
+    var out = {};
+    for (var k in r) out[k] = r[k];
+    
+    return out;
+  }
+  function settings(){
+    var T = {};
+    T.balance = SMN(SMV('s-balance'));
+    T.pay = SMN(SMV('s-pay'));
+    T.every = SMN(SMV('s-every'));
+    T.nextPay = SMN(SMV('s-nextPay'));
+    return T;
+  }
+  function compute(){
+    var T = settings();
+    var rowsD = items.map(function(r){ return derive(r, T); });
+    (function(rows){
+      T.monthly = rows.reduce(function(a, r){ return a + (SMN(r.amount)); }, 0);
+    })(rowsD);
+    return { rows: rowsD, T: T };
+  }
+
+  /**
+   * Walk day by day. Each item lands on its own day of the month, and the
+   * running balance is what actually matters - not the total, the lowest point.
+   */
+  function project(days){
+    var T = settings();
+    var balance = SMN(T.balance);
+    var incomeAmount = SMN(T.pay);
+    var incomeEvery = SMN(T.every);
+    var nextIncome = (SMV('s-nextPay') ? new Date(SMV('s-nextPay') + 'T00:00:00') : null);
+    var out = [];
+    var d = new Date(); d.setHours(0,0,0,0);
+    var lowest = { balance: balance, date: new Date(d.getTime()), why: [] };
+    var T0 = settings();
+    var rowsD = items.map(function(r){ return derive(r, T0); });
+
+    for (var i = 0; i < days; i++) {
+      var inToday = 0, outToday = 0, why = [];
+      if (nextIncome && d.toDateString() === nextIncome.toDateString()) {
+        inToday += incomeAmount;
+        why.push("payday");
+        if (incomeEvery > 0) nextIncome = new Date(nextIncome.getTime() + incomeEvery * 86400000);
+        else { var nx = new Date(nextIncome.getTime()); nx.setMonth(nx.getMonth() + 1); nextIncome = nx; }
+      }
+      for (var k = 0; k < rowsD.length; k++) {
+        var it = rowsD[k];
+        var lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+        var due = Math.min(SMN(it.day), lastDay);
+        if (d.getDate() === due) {
+          outToday += SMN(it.amount);
+          why.push(String(it.name || 'a payment'));
+        }
+      }
+      balance += inToday - outToday;
+      if (balance < lowest.balance) lowest = { balance: balance, date: new Date(d.getTime()), why: why.slice() };
+      out.push({ date: new Date(d.getTime()), in: inToday, out: outToday, balance: balance, why: why });
+      d = new Date(d.getTime() + 86400000);
+    }
+    return { days: out, lowest: lowest, end: balance };
+  }
+
+  function paint(){
+    SMD('g-count').textContent = items.length + ' ' + "bills";
+    var c = compute();
+    var T = c.T;
+    var days = SM.pro() ? 365 : 7;
+    var p = project(days);
+    var safe = p.lowest.balance;
+
+    SMD('g-stats').innerHTML = [
+      SMstat("Safe to spend", SMmoney(Math.max(0, safe)), safe < 0 ? 'you go short before then' : 'and everything still clears'),
+      SMstat('Lowest you go', SMmoney(p.lowest.balance), 'on ' + SMfmtDate(p.lowest.date)),
+      SMstat("Bills a month", SMmoney(T.monthly), "everything on autopilot")
+    ].filter(Boolean).join('');
+
+    var out = [];
+    (function(rows){
+      if (SMN(T.monthly) > 0) out.push("Your bills come to " + SMmoney(T.monthly) + " a month.");
+    })(c.rows);
+    if (safe < 0) {
+      out.unshift('You are heading ' + SMmoney(-safe) + ' short on ' + SMfmtDate(p.lowest.date) +
+        (p.lowest.why.length ? ', because of ' + p.lowest.why.join(' and ') : '') + '.');
+    } else if (items.length) {
+      out.unshift('You can spend up to ' + SMmoney(safe) + ' and everything between now and ' +
+        SMfmtDate(p.days[p.days.length - 1].date) + ' still clears.');
+    }
+    SMD('g-verdict').textContent = items.length ? out.join('\n\n') : "Put your payday and your bills in above.";
+
+    if (!items.length) { SMD('g-list').innerHTML = '<p class="sub">Nothing added yet.</p>'; SMD('g-timeline').innerHTML = ''; return; }
+    var head = FIELDS.map(function(f){ return SMesc(f.label); }).concat(['']);
+    SMD('g-list').innerHTML = SMtable(head, items.map(function(r, i){
+      return FIELDS.map(function(f){ return SMesc(SMlabel(f, r[f.id])); })
+        .concat(['<button class="secondary" data-del="' + i + '" style="padding:4px 10px">Remove</button>']);
+    }));
+    Array.prototype.forEach.call(SMD('g-list').querySelectorAll('[data-del]'), function(b){
+      b.addEventListener('click', function(){ items.splice(Number(b.getAttribute('data-del')), 1); persist(); paint(); });
+    });
+
+    var interesting = p.days.filter(function(x){ return x.in > 0 || x.out > 0; }).slice(0, SM.pro() ? 200 : 12);
+    SMD('g-timeline').innerHTML = interesting.length
+      ? SMtable(['Date', 'In', 'Out', 'Left', 'What'], interesting.map(function(x){
+          return [SMfmtDate(x.date), x.in ? SMmoney(x.in) : '', x.out ? SMmoney(x.out) : '', SMmoney(x.balance), SMesc(x.why.join(', '))];
+        }))
+      : '';
+  }
+
+  SMD('g-add').addEventListener('click', function(){
+    if (!SM.pro() && items.length >= FREE_MAX) { SM.limit(); return; }
+    if (!SM.use()) return;
+    var r = {};
+    for (var i = 0; i < FIELDS.length; i++) { r[FIELDS[i].id] = SMV('f-' + FIELDS[i].id); }
+    if (!r["name"]) { var el = SMD('f-' + "name"); if (el) el.focus(); return; }
+    items.push(r);
+    if (SMD('f-name')) SMD('f-name').value = '';
+    if (SMD('f-amount')) SMD('f-amount').value = '';
+    persist(); paint();
+  });
+  SMD('g-clear').addEventListener('click', function(){ items = []; persist(); paint(); });
+  if (SMD('s-balance')) { SMD('s-balance').addEventListener('input', paint); SMD('s-balance').addEventListener('change', paint); }
+  if (SMD('s-pay')) { SMD('s-pay').addEventListener('input', paint); SMD('s-pay').addEventListener('change', paint); }
+  if (SMD('s-every')) { SMD('s-every').addEventListener('input', paint); SMD('s-every').addEventListener('change', paint); }
+  if (SMD('s-nextPay')) { SMD('s-nextPay').addEventListener('input', paint); SMD('s-nextPay').addEventListener('change', paint); }
+
+  SMD('g-far').addEventListener('click', function(){
+    if (!SM.gate('The twelve month view')) return;
+    var p = project(365);
+    var byMonth = {};
+    p.days.forEach(function(x){
+      var k = x.date.getFullYear() + '-' + String(x.date.getMonth() + 1);
+      if (!byMonth[k]) byMonth[k] = { label: x.date.toLocaleDateString(undefined, { month: 'long', year: 'numeric' }), in: 0, out: 0, low: Infinity, end: 0 };
+      byMonth[k].in += x.in; byMonth[k].out += x.out; byMonth[k].end = x.balance;
+      if (x.balance < byMonth[k].low) byMonth[k].low = x.balance;
+    });
+    SMD('g-farout').innerHTML = SMtable(['Month', 'In', 'Out', 'Lowest point', 'End of month'],
+      Object.keys(byMonth).map(function(k){
+        var m = byMonth[k];
+        return [m.label, SMmoney(m.in), SMmoney(m.out), SMmoney(m.low), SMmoney(m.end)];
+      }));
+  });
+  SMD('g-export').addEventListener('click', function(){
+    var p = project(SM.pro() ? 365 : 7);
+    SM.exportCsv("couple--bills-vs-pay.csv", [['Date', 'In', 'Out', 'Balance', 'What']].concat(
+      p.days.filter(function(x){ return x.in || x.out; }).map(function(x){
+        return [x.date.toISOString().slice(0,10), x.in.toFixed(2), x.out.toFixed(2), x.balance.toFixed(2), x.why.join('; ')];
+      })));
+  });
+
+  (function(){ var el = SMD('s-nextPay'); if (el && !el.value) { var n = new Date(); n.setDate(n.getDate() + 7); el.value = n.toISOString().slice(0,10); } })();
+  paint();
+})();</script>
+<script>
+(function(){
+  var SESSION_STORE = 'sm_session_' + SM_SLUG;
+  var PENDING_STORE = 'sm_pending_' + SM_SLUG;
+  var IS_DOWNLOAD = (typeof SM_KIND !== 'undefined' && SM_KIND === 'download');
+
+  function reads(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+  function writes(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+  function drops(k){ try { localStorage.removeItem(k); } catch(e){} }
+  function el(id){ return document.getElementById(id); }
+
+  function say(text, bad){
+    var m = el('sm-acc-msg');
+    if(!m) return;
+    m.textContent = text || '';
+    m.className = 'sm-auth-msg' + (bad ? ' bad' : '');
+  }
+  function sayConfirm(text, bad){
+    var m = el('sm-acc-confirmmsg');
+    if(!m) return;
+    m.textContent = text || '';
+    m.className = 'sm-auth-msg' + (bad ? ' bad' : '');
+  }
+
+  /** Only ever one of the three visible. */
+  function show(which){
+    var screens = ['sm-acc-choose','sm-acc-confirm','sm-acc-signedin'];
+    for(var i=0;i<screens.length;i++){
+      var box = el(screens[i]);
+      if(box) box.hidden = screens[i] !== which;
+    }
+  }
+
+  /**
+   * Show the account card. Returns false when there is none on this page.
+   *
+   * The pricing page carries this script but not the card, so it used to
+   * return quietly and the Subscribe button did nothing at all - which is
+   * indistinguishable from a broken button.
+   */
+  function open(why){
+    var box = el('sm-account');
+    if(!box) return false;
+    box.hidden = false;
+    // Signed in: show the account. This always showed the sign-in form, so
+    // after paying, "Account" opened a login box, the account view with Sign
+    // out and Cancel was unreachable, and it looked like signing in was broken.
+    if(reads(SESSION_STORE) && !why){ show('sm-acc-signedin'); refresh(); }
+    else show('sm-acc-choose');
+
+    // Retitle the card when it has been opened on the way to paying, so the
+    // reason is the first thing read rather than a line under the fields.
+    var title = el('sm-acc-title');
+    var sub = el('sm-acc-sub');
+    if(why && title) title.textContent = 'One step before payment';
+    if(why && sub) sub.textContent = why;
+
+    if(why) say(why);
+
+    // Flashed, because the card can already be on screen - in which case
+    // nothing visibly changes and the button looks broken.
+    box.classList.add('sm-attention');
+    setTimeout(function(){ box.classList.remove('sm-attention'); }, 1600);
+
+    box.scrollIntoView({ block: 'center' });
+    if(el('sm-acc-email')) el('sm-acc-email').focus();
+    return true;
+  }
+
+  /**
+   * Whether they were on their way to paying when they were asked to sign in.
+   *
+   * Kept in sessionStorage rather than a variable: signing in reloads the page,
+   * so anything held in memory is gone by the time it is needed.
+   */
+  function wasBuying(){
+    try { return sessionStorage.getItem('sm_buying_intent_' + SM_SLUG) === '1'; } catch(e){ return false; }
+  }
+  function clearBuying(){
+    try { sessionStorage.removeItem('sm_buying_intent_' + SM_SLUG); } catch(e){}
+  }
+
+  function post(path, payload){
+    return fetch(SM_API_BASE + path, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-sm-session': reads(SESSION_STORE) || '' },
+      body: JSON.stringify(payload || {})
+    }).then(function(r){ return r.json(); });
+  }
+
+  /** Where a confirmation link should come back to. */
+  function here(){ return location.href.split('?')[0].split('#')[0]; }
+
+  /* ---------------- signed in ---------------- */
+
+  /**
+   * Show the account, and let the rest of the page know what it is.
+   *
+   * Everything that depends on being Pro reads the same answer from here:
+   * the Buy button, the nav link, and the account card itself. They used to
+   * decide separately, which is how a subscriber was still shown Subscribe.
+   */
+  function paintAccount(data){
+    var signedIn = Boolean(data && data.signedIn);
+    var mine = signedIn
+      ? (data.entitlements || []).filter(function(e){ return e.slug === SM_SLUG; })[0]
+      : null;
+
+    // Per product, deliberately. Paying for one tool is paying for one tool.
+    var cancelled = mine && String(mine.status || '').toUpperCase() === 'CANCELLED';
+    window.SMstate = { signedIn: signedIn, pro: Boolean(mine), cancelled: cancelled, mine: mine || null };
+
+    // This is what carries Pro to another browser, a phone, a laptop. The
+    // server had already said this account is entitled - the answer came back
+    // on every sign-in - and nothing ever switched the tool on, so a paying
+    // customer signing in anywhere new was shown the free version and asked to
+    // pay again. The entitlement is server-checked; the key is re-verified
+    // (device limit included) on the next load.
+    if(mine && window.SM && window.SM.grant) window.SM.grant(mine.key, mine.renews_at);
+    tellThePage();
+
+    // The nav link says what it does: sign in, or open the account.
+    var nav = el('sm-navsignin');
+    if(nav) nav.textContent = signedIn ? 'Account' : 'Sign in';
+
+    if(!signedIn){ show('sm-acc-choose'); return; }
+    show('sm-acc-signedin');
+
+    var stats = el('sm-acc-stats');
+    if(stats){
+      var esc = function(t){ return String(t == null ? '' : t).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+      var row = function(k, v, mono){ return '<div class="sm-acc-row"><span class="k">' + k + '</span><span class="v' + (mono ? ' mono' : '') + '">' + esc(v) + '</span></div>'; };
+      stats.innerHTML =
+        row('Signed in as', data.account.email || '') +
+        row(IS_DOWNLOAD ? 'This download' : 'This tool', IS_DOWNLOAD ? (mine ? 'Yours' : 'Not bought yet') : (mine ? (cancelled ? 'Pro, ending' : 'Pro') : 'Free')) +
+        (mine && mine.renews_at && !IS_DOWNLOAD ? row(cancelled ? 'Ends' : 'Renews', String(mine.renews_at).slice(0, 10)) : '') +
+        (mine && mine.key && !IS_DOWNLOAD ? row('Your key', mine.key, true) : '');
+    }
+
+    // Cancelling belongs here, next to the subscription, not in an email
+    // somebody has to go and find.
+    var cancel = el('sm-acc-cancel');
+    if(cancel){
+      cancel.hidden = !mine || cancelled || IS_DOWNLOAD;
+      cancel.textContent = 'Cancel subscription';
+    }
+    // One message about cancelling, not three saying the same thing.
+    var foot = el('sm-acc-foot');
+    if(foot) foot.hidden = !mine || cancelled;
+    var note = el('sm-acc-cancelnote');
+    if(note){
+      note.hidden = !cancelled;
+      if(cancelled && mine.renews_at){
+        note.textContent = 'Cancelled. Pro stays on until ' + String(mine.renews_at).slice(0,10)
+          + ', then this goes back to the free version. Your account and everything in it stays.';
+      }
+    }
+  }
+
+  /**
+   * Tell the rest of the page whether this is a Pro subscriber.
+   *
+   * Offering Subscribe to somebody already subscribed is the single most
+   * common complaint about a page like this, and it happened because the Buy
+   * button never asked.
+   */
+  function tellThePage(){
+    var s = window.SMstate || { pro: false };
+    var buy = document.getElementById('sm-buy');
+    var already = document.getElementById('sm-already-pro');
+
+    if(buy) buy.hidden = Boolean(s.pro);
+    if(already){
+      already.hidden = !s.pro;
+      already.textContent = (typeof SM_KIND !== 'undefined' && SM_KIND === 'download')
+        ? 'You own this. Your download is at the top of the page.'
+        : s.cancelled
+        ? 'You are on Pro until the end of this month.'
+        : 'You are on Pro. Everything here is unlocked.';
+    }
+    var note = document.getElementById('sm-buy-note');
+    if(note) note.hidden = Boolean(s.pro);
+    var owned = document.getElementById('sm-owned');
+    if(owned) owned.hidden = !s.pro;
+  }
+
+  function refresh(){
+    var token = reads(SESSION_STORE);
+    if(!token){ paintAccount(null); return; }
+    fetch(SM_API_BASE + '/api/account/me', { headers: { 'x-sm-session': token } })
+      .then(function(r){ return r.json(); })
+      .then(paintAccount)
+      .catch(function(){ paintAccount(null); });
+  }
+
+  /**
+   * They are in. Reload rather than repaint.
+   *
+   * Signing in changes what half the page is allowed to show, and every locked
+   * panel decides that when it starts. Repainting this one card would leave
+   * somebody signed in and still looking at a locked tool, wondering what they
+   * paid for. A reload opens all of it at once.
+   */
+  function landInAccount(res){
+    if(res.sessionToken) writes(SESSION_STORE, res.sessionToken);
+    drops(PENDING_STORE);
+    var mine = (res.entitlements || []).filter(function(e){ return e.slug === SM_SLUG; })[0];
+
+    // They were part-way through buying when they were asked to sign in. Carry
+    // straight on to the card form rather than leaving them back on the page
+    // with no idea what happened to the thing they clicked.
+    if(!mine && wasBuying()){
+      say('Signed in. Taking you to the payment page…');
+      clearBuying();
+      setTimeout(function(){
+        if(window.SMbuy && window.SMbuy.checkout) window.SMbuy.checkout();
+        else location.reload();
+      }, 500);
+      return;
+    }
+    clearBuying();
+
+    say(mine ? 'Signed in. Pro is on — one moment.' : 'Signed in — one moment.');
+    sayConfirm('Confirmed. Signing you in…');
+    setTimeout(function(){ location.reload(); }, 700);
+  }
+
+  /* ---------------- confirming ---------------- */
+
+  function askToConfirm(email, note){
+    writes(PENDING_STORE, email);
+    var to = el('sm-acc-sentto');
+    if(to) to.textContent = email;
+    show('sm-acc-confirm');
+    sayConfirm(note || '');
+    var code = el('sm-acc-code');
+    if(code){ code.value = ''; code.focus(); }
+  }
+
+  function confirmWith(value){
+    var email = reads(PENDING_STORE) || (el('sm-acc-email') ? el('sm-acc-email').value.trim() : '');
+    var given = String(value || '').replace(/[^0-9a-zA-Z_-]/g, '');
+    if(!given){ sayConfirm('Type the code from the email.', true); return; }
+    sayConfirm('Checking…');
+    post('/api/account/verify', { email: email, code: given, slug: SM_SLUG })
+      .then(function(res){
+        // Confirmed but no session: the address was already confirmed, so a
+        // code cannot let anybody in. Send them to sign in rather than
+        // reloading into a page that claims they are signed in and is not.
+        if(res.ok && !res.sessionToken){
+          drops(PENDING_STORE);
+          show('sm-acc-choose');
+          say(res.reason || 'That address is already confirmed. Sign in with your password.');
+          if(el('sm-acc-pass')) el('sm-acc-pass').focus();
+          return;
+        }
+        if(res.ok) return landInAccount(res);
+        sayConfirm(res.reason || 'That code is not right.', true);
+        if(res.expired){
+          var again = el('sm-acc-resend');
+          if(again) again.focus();
+        }
+      })
+      .catch(function(){ sayConfirm('Could not reach the server. Try again in a moment.', true); });
+  }
+
+  /* ---------------- wiring ---------------- */
+
+  document.addEventListener('DOMContentLoaded', function(){
+    // Published so the Buy button can ask for an account before the card form.
+    window.SMaccount = { open: open, signedIn: function(){ return Boolean(reads(SESSION_STORE)); } };
+
+    var link = el('sm-navsignin');
+    // A page with no account card (pricing, docs) sends you to the one that has
+    // it, instead of a link that does nothing.
+    if(link) link.addEventListener('click', function(e){
+      e.preventDefault();
+      if(!open()) location.href = './?account=1';
+    });
+
+    // Arrived from the link in the email: confirm it and get out of the way.
+    var params = new URLSearchParams(location.search);
+    var confirmToken = params.get('confirm');
+    if(confirmToken){
+      var who = params.get('email') || reads(PENDING_STORE) || '';
+      open();
+      askToConfirm(who, 'Confirming…');
+      post('/api/account/verify', { email: who, token: confirmToken, slug: SM_SLUG })
+        .then(function(res){
+          if(res.ok && !res.sessionToken){
+            drops(PENDING_STORE);
+            show('sm-acc-choose');
+            say(res.reason || 'That address is already confirmed. Sign in with your password.');
+            return;
+          }
+          if(res.ok) return landInAccount(res);
+          sayConfirm(res.reason || 'That link is not valid any more. Ask for a new code.', true);
+        })
+        .catch(function(){ sayConfirm('Could not reach the server. Try the code instead.', true); });
+      return;
+    }
+
+    // Sent here from the pricing page to sign in before paying.
+    if(params.get('signin') && !reads(SESSION_STORE)){
+      open('Create an account or sign in, and payment opens straight after.');
+    } else if(params.get('account') || params.get('signin')){
+      open();
+    }
+
+    // Came back to a half-finished sign-up.
+    var pending = reads(PENDING_STORE);
+    if(pending && !reads(SESSION_STORE)) askToConfirm(pending, 'Still waiting on that code.');
+
+    var go = el('sm-acc-go');
+    if(go) go.addEventListener('click', function(){
+      var email = el('sm-acc-email').value.trim();
+      var pass = el('sm-acc-pass').value;
+      if(!email || !pass){ say('Email and password, please.', true); return; }
+      say('Signing in…');
+      post('/api/account/signin', { email: email, password: pass, slug: SM_SLUG })
+        .then(function(res){
+          if(res.ok) return landInAccount(res);
+          say(res.reason || 'That email and password do not match.', true);
+        })
+        .catch(function(){ say('Could not reach the server. Try again in a moment.', true); });
+    });
+
+    // Enter submits, from either field.
+    ['sm-acc-email','sm-acc-pass'].forEach(function(id){
+      var field = el(id);
+      if(field) field.addEventListener('keydown', function(e){
+        if(e.key === 'Enter'){ e.preventDefault(); el('sm-acc-go').click(); }
+      });
+    });
+
+    var make = el('sm-acc-new');
+    if(make) make.addEventListener('click', function(){
+      var email = el('sm-acc-email').value.trim();
+      var pass = el('sm-acc-pass').value;
+      if(!email || pass.length < 8){ say('An email, and a password of at least 8 characters.', true); return; }
+      say('Making your account…');
+      post('/api/account/signup', { email: email, password: pass, slug: SM_SLUG, returnTo: here() })
+        .then(function(res){
+          if(!res.ok){ say(res.reason || 'Could not make that account.', true); return; }
+          askToConfirm(email, res.sent === false
+            ? 'Account made. The email is on its way — it can take a few minutes.'
+            : '');
+        })
+        .catch(function(){ say('Could not reach the server. Try again in a moment.', true); });
+    });
+
+    var confirmGo = el('sm-acc-confirmgo');
+    if(confirmGo) confirmGo.addEventListener('click', function(){
+      confirmWith(el('sm-acc-code').value);
+    });
+
+    var code = el('sm-acc-code');
+    if(code){
+      code.addEventListener('keydown', function(e){
+        if(e.key === 'Enter'){ e.preventDefault(); confirmWith(code.value); }
+      });
+      // Six digits pasted or typed is unambiguous, so do not make them click.
+      code.addEventListener('input', function(){
+        var digits = code.value.replace(/[^0-9]/g, '');
+        if(digits.length === 6){ code.value = digits; confirmWith(digits); }
+      });
+    }
+
+    var resend = el('sm-acc-resend');
+    if(resend) resend.addEventListener('click', function(){
+      sayConfirm('Sending another…');
+      post('/api/account/resend', { email: reads(PENDING_STORE), slug: SM_SLUG, returnTo: here() })
+        .then(function(res){
+          sayConfirm(res.sent === false
+            ? 'On its way. It can take a few minutes.'
+            : 'Sent. Check your email again.');
+        })
+        .catch(function(){ sayConfirm('Could not reach the server.', true); });
+    });
+
+    var abandon = el('sm-acc-abandon');
+    if(abandon) abandon.addEventListener('click', function(){
+      var email = reads(PENDING_STORE);
+      post('/api/account/cancel-signup', { email: email }).catch(function(){});
+      drops(PENDING_STORE);
+      show('sm-acc-choose');
+      say('Stopped. Nothing was kept.');
+      if(el('sm-acc-pass')) el('sm-acc-pass').value = '';
+    });
+
+    var forgot = el('sm-acc-forgot');
+    if(forgot) forgot.addEventListener('click', function(){
+      var email = el('sm-acc-email').value.trim();
+      if(!email){ say('Put your email in first.', true); return; }
+      say('Sending…');
+      post('/api/account/password/request', { email: email, slug: SM_SLUG, returnTo: here() })
+        .then(function(res){ say(res.message || 'If that address has an account, a link is on its way.'); })
+        .catch(function(){ say('Could not reach the server.', true); });
+    });
+
+    var cancelSub = el('sm-acc-cancel');
+    if(cancelSub) cancelSub.addEventListener('click', function(){
+      var sure = window.confirm('Cancel your Pro subscription for this tool? You will not be charged again. You keep Pro until the end of the month you have paid for, and your account stays.');
+      if(!sure) return;
+      var msg = el('sm-acc-cancelmsg');
+      if(msg){ msg.textContent = 'Cancelling…'; msg.className = 'sm-auth-msg'; }
+      cancelSub.disabled = true;
+      post('/api/account/cancel-subscription', { slug: SM_SLUG })
+        .then(function(res){
+          cancelSub.disabled = false;
+          if(msg){ msg.textContent = res.message || res.reason || ''; msg.className = 'sm-auth-msg' + (res.ok ? '' : ' bad'); }
+          if(res.ok){ if(msg) msg.textContent = ''; refresh(); }
+        })
+        .catch(function(){
+          cancelSub.disabled = false;
+          if(msg){ msg.textContent = 'Could not reach the server. Nothing has changed - try again in a moment.'; msg.className = 'sm-auth-msg bad'; }
+        });
+    });
+
+    var out = el('sm-acc-out');
+    if(out) out.addEventListener('click', function(){
+      post('/api/account/signout', {}).catch(function(){});
+      drops(SESSION_STORE);
+      drops('sm_key_' + SM_SLUG);
+      location.reload();
+    });
+
+    refresh();
+  });
+})();</script>
+<script>
+(function(){
+  var form = document.getElementById('sm-feedback');
+  if(!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var email = (document.getElementById('sm-email')||{}).value || '';
+    var note = (document.getElementById('sm-note')||{}).value || '';
+    var status = document.getElementById('sm-status');
+    if(!note.trim()){ status.textContent = 'Write something first.'; return; }
+    status.textContent = 'Sending...';
+
+    // /api/feedback, not /api/track. This used to post to the visit counter,
+    // which records a page view and ignores the email and the message
+    // entirely - so every piece of feedback anybody ever sent was thrown away,
+    // while the page thanked them and said it had reached a person.
+    fetch(SM_FEEDBACK_URL, {
+      method:'POST',
+      headers:{'content-type':'application/json'},
+      body: JSON.stringify({slug: SM_SLUG, email: email, note: note})
+    }).then(function(r){ return r.json(); }).then(function(res){
+      if(res && res.ok === false){
+        status.textContent = res.reason || ('Could not send. Email us instead: ' + SM_CONTACT);
+        return;
+      }
+      status.textContent = (res && res.message) || 'Thank you - that reaches a person.';
+      form.reset();
+    }).catch(function(){
+      status.textContent = 'Could not send. Email us instead: ' + SM_CONTACT;
+    });
+  });
+})();</script>
+<script>
+(function(){
+  var form = document.getElementById('sm-order');
+  if(!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var status = document.getElementById('sm-order-status');
+    var email = (document.getElementById('sm-order-email')||{}).value || '';
+    if(!email){ status.textContent = 'email required'; return; }
+    status.textContent = 'sending...';
+    fetch(SM_ORDER_URL, {
+      method:'POST',
+      headers:{'content-type':'application/json'},
+      body: JSON.stringify({
+        slug: SM_SLUG,
+        email: email,
+        name: (document.getElementById('sm-order-name')||{}).value || '',
+        note: (document.getElementById('sm-order-note')||{}).value || ''
+      })
+    }).then(function(r){ return r.json(); }).then(function(res){
+      if(res.ok){
+        form.innerHTML = '<p class="sub">Thanks - check your email shortly for payment details.</p>';
+      } else {
+        status.textContent = res.error || 'could not send';
+      }
+    }).catch(function(){
+      status.textContent = 'could not send - email ' + SM_CONTACT;
+    });
+  });
+})();</script>
+<script>
+(function(){
+  var link = document.getElementById('sm-buy');
+  if(!link) return;
+
+  var SESSION_STORE = 'sm_session_' + SM_SLUG;
+  var CODE_STORE = 'sm_buying_' + SM_SLUG;
+  var status = document.getElementById('sm-buy-status');
+  var timer = null;
+  var started = 0;
+
+  function reads(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+  function writes(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+  function drops(k){ try { localStorage.removeItem(k); } catch(e){} }
+
+  function say(text, done){
+    if(!status) return;
+    status.hidden = !text;
+    status.textContent = text || '';
+    status.style.color = done ? 'var(--ok, #0a7)' : '';
+  }
+
+  function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+  /**
+   * Their payment landed: turn everything on where they are standing.
+   *
+   * The session token is the real unlock - it is their account, so it follows
+   * them to a phone as well. The licence key is written alongside it so the
+   * tool works even if they later sign out. Reloading is what makes the whole
+   * page agree, rather than trying to repaint each part by hand.
+   */
+  function unlock(data){
+    stop();
+    drops(CODE_STORE);
+    if(data.sessionToken) writes(SESSION_STORE, data.sessionToken);
+    if(data.key) writes('sm_key_' + SM_SLUG, data.key);
+    say('Payment received — everything is unlocked. Thank you.', true);
+    setTimeout(function(){ location.reload(); }, 1200);
+  }
+
+  function poll(code){
+    fetch(SM_API_BASE + '/api/checkout/waiting?code=' + encodeURIComponent(code))
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if(data.status === 'paid') return unlock(data);
+        if(data.status === 'unknown'){ stop(); drops(CODE_STORE); say(data.message); return; }
+        // Give up watching after a while rather than polling this forever. The
+        // email is already on its way, so nothing is lost by stopping.
+        if(Date.now() - started > 20 * 60 * 1000){
+          stop();
+          say('Still waiting. If you have paid, your access is on its way by email — you can close this.');
+          return;
+        }
+        say(data.message);
+      })
+      .catch(function(){});
+  }
+
+  function watch(code){
+    started = Date.now();
+    stop();
+    say('Waiting for the payment to come through…');
+    poll(code);
+    timer = setInterval(function(){ poll(code); }, 4000);
+  }
+
+  /**
+   * Buy.
+   *
+   * An account comes first, then the card. Paying without one worked, but left
+   * the subscription attached to nothing somebody could sign into: the licence
+   * belonged to an email address they may have typed differently at Stripe,
+   * the Pro they had paid for lived in that one browser, and opening the tool
+   * on a phone showed the free version with no way to prove otherwise.
+   *
+   * So: signed in already, go straight to the card form. Not signed in, open
+   * the account card, remember that a purchase was the intent, and continue to
+   * the card form the moment they are in. Nobody is asked to type their email
+   * twice, and the subscription lands on an account that exists.
+   *
+   * The tab is navigated rather than opened: a window.open after an await is
+   * blocked by every popup blocker, because by then the browser no longer
+   * considers it something the person did.
+   */
+  function goToCheckout(){
+    say('Opening the payment page…');
+    fetch(SM_API_BASE + '/api/checkout/start', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-sm-session': reads(SESSION_STORE) || '' },
+      body: JSON.stringify({ slug: SM_SLUG, returnTo: location.href.split('?')[0] })
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if(data && data.ok && data.code) writes(CODE_STORE, data.code);
+        if(data && data.ok && data.payUrl){ location.href = data.payUrl; return; }
+        var href = link.getAttribute('href');
+        if(href && href !== '#'){
+          if(data && data.code) watch(data.code);
+          window.open(href, '_blank', 'noopener');
+          return;
+        }
+        say('Could not open the payment page. Try again in a moment.');
+      })
+      .catch(function(){
+        var href = link.getAttribute('href');
+        if(href && href !== '#'){ window.open(href, '_blank', 'noopener'); return; }
+        say('Could not reach the server. Try again in a moment.');
+      });
+  }
+
+  // Published so the account card can continue to the card form once somebody
+  // has signed in, instead of stranding them back on the page.
+  window.SMbuy = { checkout: goToCheckout };
+
+  link.addEventListener('click', function(e){
+    e.preventDefault();
+
+    if(reads(SESSION_STORE)){ goToCheckout(); return; }
+
+    // Not signed in. Remember that they were on their way to paying, so the
+    // account card can carry straight on to the card form afterwards instead
+    // of dropping them back on the page wondering what happened.
+    try { sessionStorage.setItem('sm_buying_intent_' + SM_SLUG, '1'); } catch(err){}
+
+    // Say something where the click happened, first. The account card can be
+    // most of a page away, and a message that appears only inside it reads as
+    // "the button is broken" - which is exactly how this was reported.
+    say('Sign in or create an account below to continue — it takes a moment.');
+
+    var opened = window.SMaccount && window.SMaccount.open
+      && window.SMaccount.open('Create an account or sign in, and payment opens straight after.');
+
+    if(!opened){
+      // This page has no account card - the pricing page is like that. Send
+      // them to the product itself, where there is one. The intent is already
+      // in sessionStorage, so signing in there carries on to payment.
+      say('Taking you to sign in…');
+      location.href = './?signin=1';
+    }
+  });
+
+  // Came back to the page mid-purchase - carry on waiting where they left off.
+  var pending = reads(CODE_STORE);
+  if(pending) watch(pending);
+})();</script>
+</body>
+</html>
