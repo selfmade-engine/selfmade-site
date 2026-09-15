@@ -1,0 +1,16 @@
+{
+  "name": "Couples Printable Bundle",
+  "slug": "bundle-couples",
+  "kind": "download",
+  "bundle": true,
+  "includes": [
+    "couples-meal-planner-grocery-list",
+    "couples-debt-payoff-planner",
+    "couples-budget-planner",
+    "couples-monthly-bill-tracker"
+  ],
+  "price": 18,
+  "full": 20,
+  "builtAt": "2026-09-15T03:37:16.929Z",
+  "builtBy": "SELFMADE"
+}
