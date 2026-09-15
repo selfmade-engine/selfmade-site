@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://selfmade-api.selfmade-engine.workers.dev/p/warehouse-and-factory-worker-pay-and-hours-checker/sitemap.xml
