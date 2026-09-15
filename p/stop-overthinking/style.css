@@ -140,3 +140,13 @@ th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04
 @media (max-width:620px){.dl-contents{columns:1}}
 .dl-contents li{margin:5px 0;break-inside:avoid}
 .sm-owned-card{border:2px solid var(--accent,#2ea043)}
+.dl-bundle-offer{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border:2px dashed var(--accent,#2ea043)}
+.dl-bundle-offer p{margin:4px 0 0}
+.bd-stack{position:relative;height:300px;max-width:300px;width:100%;margin:0 auto}
+.bd-stack .dl-cover{position:absolute;width:200px;left:calc(var(--i) * 26px);top:calc(var(--i) * 14px);transform:rotate(calc((var(--i) - 1) * 3deg))}
+.bd-save{display:inline-block;margin-left:8px;padding:2px 9px;border-radius:999px;font-size:13px;font-weight:800;color:#04160c;background:var(--accent,#2ea043)}
+.bd-items{display:grid;gap:10px;margin-top:8px}
+.bd-item{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--line,#dde)}
+.bd-item:last-child{border-bottom:0}
+.bd-was{text-decoration:line-through;color:var(--muted,#667);margin-right:8px}
+.bd-dl{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:6px 0}
