@@ -8,16 +8,16 @@
 <meta property="og:title" content="Monthly Bill Tracker — Every bill, every due date, ticked">
 <meta property="og:description" content="Every bill, every due date, ticked off month by month. Printable PDF, 7 pages, instant download.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://selfmade-api.selfmade-engine.workers.dev/p/monthly-bill-tracker/og.png">
+<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/monthly-bill-tracker/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Monthly Bill Tracker — Every bill, every due date, ticked">
 <!-- summary_large_image rather than summary: without a picture a shared link
      renders as a grey rectangle, which costs more clicks than any wording. -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://selfmade-api.selfmade-engine.workers.dev/p/monthly-bill-tracker/og.png">
-<link rel="canonical" href="https://selfmade-api.selfmade-engine.workers.dev/p/monthly-bill-tracker/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Monthly Bill Tracker","description":"Every bill, every due date, ticked off month by month","url":"https://selfmade-api.selfmade-engine.workers.dev/p/monthly-bill-tracker/","image":"https://selfmade-api.selfmade-engine.workers.dev/p/monthly-bill-tracker/og.png","offers":{"@type":"Offer","price":"4.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
+<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/monthly-bill-tracker/og.png">
+<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/monthly-bill-tracker/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Monthly Bill Tracker","description":"Every bill, every due date, ticked off month by month","url":"https://selfmade-engine.github.io/selfmade-site/p/monthly-bill-tracker/","image":"https://selfmade-engine.github.io/selfmade-site/p/monthly-bill-tracker/og.png","offers":{"@type":"Offer","price":"4.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
 <link rel="stylesheet" href="./style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
@@ -50,6 +50,11 @@
   <p class="sub">Thank you for buying Monthly Bill Tracker. Download it as many times as you like, on any device &mdash; just sign in.</p>
   <div class="row"><button id="sm-download">Download the PDF (7 pages)</button></div>
   <output id="sm-download-msg" class="sm-auth-msg" hidden></output>
+</div>
+<div class="card dl-bundle-offer no-print">
+  <div><strong>Save 10% with the bundle</strong>
+  <p class="sub">Get this and 2 more in the Everyday Printable Bundle &mdash; $10.80 for all 3.</p></div>
+  <a class="dl-sample" href="https://selfmade-engine.github.io/selfmade-site/p/bundle-everyone/">See the bundle</a>
 </div>
 
 <div class="card no-print sm-auth" id="sm-account" hidden>
@@ -626,7 +631,7 @@ window.SM = (function(){
       return;
     }
     if(button) button.disabled = true;
-    say('Getting your PDF...');
+    say('Getting your download...');
     fetch(SM_API_BASE + '/api/download?slug=' + encodeURIComponent(SM_SLUG), { headers: { 'x-sm-session': t } })
       .then(function(res){
         if(!res.ok) return res.json().then(function(d){ throw new Error((d && d.reason) || 'The download did not work. Try again in a moment.'); });
