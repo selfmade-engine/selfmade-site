@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://selfmade-api.selfmade-engine.workers.dev/p/freelance-developer-unpaid-invoice-tracker/sitemap.xml
