@@ -8,16 +8,16 @@
 <meta property="og:title" content="Build Real Self-Confidence — A 21-day workbook for trusting">
 <meta property="og:description" content="A 21-day workbook for trusting yourself, speaking up and taking up space. Printable PDF, 14 pages, instant download.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://selfmade-api.selfmade-engine.workers.dev/p/build-real-self-confidence/og.png">
+<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/build-real-self-confidence/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Build Real Self-Confidence — A 21-day workbook for trusting">
 <!-- summary_large_image rather than summary: without a picture a shared link
      renders as a grey rectangle, which costs more clicks than any wording. -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://selfmade-api.selfmade-engine.workers.dev/p/build-real-self-confidence/og.png">
-<link rel="canonical" href="https://selfmade-api.selfmade-engine.workers.dev/p/build-real-self-confidence/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Build Real Self-Confidence","description":"A 21-day workbook for trusting yourself, speaking up and taking up space","url":"https://selfmade-api.selfmade-engine.workers.dev/p/build-real-self-confidence/","image":"https://selfmade-api.selfmade-engine.workers.dev/p/build-real-self-confidence/og.png","offers":{"@type":"Offer","price":"9.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
+<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/build-real-self-confidence/og.png">
+<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/build-real-self-confidence/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Build Real Self-Confidence","description":"A 21-day workbook for trusting yourself, speaking up and taking up space","url":"https://selfmade-engine.github.io/selfmade-site/p/build-real-self-confidence/","image":"https://selfmade-engine.github.io/selfmade-site/p/build-real-self-confidence/og.png","offers":{"@type":"Offer","price":"9.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
 <link rel="stylesheet" href="./style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
@@ -50,6 +50,11 @@
   <p class="sub">Thank you for buying Build Real Self-Confidence. Download it as many times as you like, on any device &mdash; just sign in.</p>
   <div class="row"><button id="sm-download">Download the PDF (14 pages)</button></div>
   <output id="sm-download-msg" class="sm-auth-msg" hidden></output>
+</div>
+<div class="card dl-bundle-offer no-print">
+  <div><strong>Save 10% with the bundle</strong>
+  <p class="sub">Get this and 3 more in the Mindset &amp; Self-Improvement Guide Bundle &mdash; $35.10 for all 4.</p></div>
+  <a class="dl-sample" href="https://selfmade-engine.github.io/selfmade-site/p/bundle-guides/">See the bundle</a>
 </div>
 
 <div class="card no-print sm-auth" id="sm-account" hidden>
@@ -626,7 +631,7 @@ window.SM = (function(){
       return;
     }
     if(button) button.disabled = true;
-    say('Getting your PDF...');
+    say('Getting your download...');
     fetch(SM_API_BASE + '/api/download?slug=' + encodeURIComponent(SM_SLUG), { headers: { 'x-sm-session': t } })
       .then(function(res){
         if(!res.ok) return res.json().then(function(d){ throw new Error((d && d.reason) || 'The download did not work. Try again in a moment.'); });
