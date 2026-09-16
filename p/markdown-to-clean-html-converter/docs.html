@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Markdown to Clean HTML Converter — documentation</title>
 <meta name="description" content="How to use Markdown to Clean HTML Converter.">
 <meta property="og:title" content="Markdown to Clean HTML Converter — documentation">
@@ -16,6 +16,7 @@
      renders as a grey rectangle, which costs more clicks than any wording. -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="og.png">
+
 
 
 <link rel="stylesheet" href="./style.css">
@@ -665,6 +666,9 @@ window.SM = (function(){
     var already = document.getElementById('sm-already-pro');
 
     if(buy) buy.hidden = Boolean(s.pro);
+    // Nobody who has already bought needs a bar asking them to buy.
+    var sticky = document.getElementById('sm-sticky');
+    if(sticky) sticky.hidden = Boolean(s.pro);
     if(already){
       already.hidden = !s.pro;
       already.textContent = (typeof SM_KIND !== 'undefined' && SM_KIND === 'download')

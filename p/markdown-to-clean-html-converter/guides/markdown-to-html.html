@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Markdown to html</title>
 <meta name="description" content="Pasting from editors drags in broken markup and inline styles. Markdown to Clean HTML Converter works it out for you, free, in your browser — nothing to i…">
 <meta property="og:title" content="Markdown to html">
@@ -17,6 +17,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/markdown-to-clean-html-converter/guides/markdown-to-html.html/og.png">
 <link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/markdown-to-clean-html-converter/guides/markdown-to-html.html">
+
 
 <link rel="stylesheet" href="../style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
@@ -663,6 +664,9 @@ window.SM = (function(){
     var already = document.getElementById('sm-already-pro');
 
     if(buy) buy.hidden = Boolean(s.pro);
+    // Nobody who has already bought needs a bar asking them to buy.
+    var sticky = document.getElementById('sm-sticky');
+    if(sticky) sticky.hidden = Boolean(s.pro);
     if(already){
       already.hidden = !s.pro;
       already.textContent = (typeof SM_KIND !== 'undefined' && SM_KIND === 'download')
