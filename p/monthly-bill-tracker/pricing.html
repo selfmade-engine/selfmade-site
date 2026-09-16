@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Monthly Bill Tracker — pricing</title>
 <meta name="description" content="Pricing for Monthly Bill Tracker.">
 <meta property="og:title" content="Monthly Bill Tracker — pricing">
@@ -16,6 +16,7 @@
      renders as a grey rectangle, which costs more clicks than any wording. -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="og.png">
+
 
 
 <link rel="stylesheet" href="./style.css">
@@ -520,6 +521,7 @@ window.SM = (function(){
   var SESSION_STORE = 'sm_session_' + SM_SLUG;
   var PENDING_STORE = 'sm_pending_' + SM_SLUG;
   var IS_DOWNLOAD = (typeof SM_KIND !== 'undefined' && SM_KIND === 'download');
+  var IS_SOFTWARE = (typeof SM_KIND !== 'undefined' && SM_KIND === 'software');
 
   function reads(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
   function writes(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
@@ -649,9 +651,9 @@ window.SM = (function(){
       var row = function(k, v, mono){ return '<div class="sm-acc-row"><span class="k">' + k + '</span><span class="v' + (mono ? ' mono' : '') + '">' + esc(v) + '</span></div>'; };
       stats.innerHTML =
         row('Signed in as', data.account.email || '') +
-        row(IS_DOWNLOAD ? 'This download' : 'This tool', IS_DOWNLOAD ? (mine ? 'Yours' : 'Not bought yet') : (mine ? (cancelled ? 'Pro, ending' : 'Pro') : 'Free')) +
+        row(IS_DOWNLOAD ? 'This download' : IS_SOFTWARE ? 'Subscription' : 'This tool', IS_DOWNLOAD ? (mine ? 'Yours' : 'Not bought yet') : IS_SOFTWARE ? (mine ? (cancelled ? 'Active, ending' : 'Active') : 'Not subscribed') : (mine ? (cancelled ? 'Pro, ending' : 'Pro') : 'Free')) +
         (mine && mine.renews_at && !IS_DOWNLOAD ? row(cancelled ? 'Ends' : 'Renews', String(mine.renews_at).slice(0, 10)) : '') +
-        (mine && mine.key && !IS_DOWNLOAD ? row('Your key', mine.key, true) : '');
+        (mine && mine.key && !IS_DOWNLOAD && !IS_SOFTWARE ? row('Your key', mine.key, true) : '');
     }
 
     // Cancelling belongs here, next to the subscription, not in an email
@@ -687,10 +689,15 @@ window.SM = (function(){
     var already = document.getElementById('sm-already-pro');
 
     if(buy) buy.hidden = Boolean(s.pro);
+    // Nobody who has already bought needs a bar asking them to buy.
+    var sticky = document.getElementById('sm-sticky');
+    if(sticky) sticky.hidden = Boolean(s.pro);
     if(already){
       already.hidden = !s.pro;
       already.textContent = (typeof SM_KIND !== 'undefined' && SM_KIND === 'download')
         ? 'You own this. Your download is at the top of the page.'
+        : (typeof SM_KIND !== 'undefined' && SM_KIND === 'software')
+        ? (s.cancelled ? 'You are subscribed until the end of this month. Your download is at the top of the page.' : 'You are subscribed. Your download is at the top of the page.')
         : s.cancelled
         ? 'You are on Pro until the end of this month.'
         : 'You are on Pro. Everything here is unlocked.';
