@@ -7,10 +7,11 @@
     "couples-meal-planner-grocery-list",
     "couples-debt-payoff-planner",
     "couples-budget-planner",
-    "couples-monthly-bill-tracker"
+    "couples-monthly-bill-tracker",
+    "couples-savings-challenge-pack"
   ],
-  "price": 18,
-  "full": 20,
-  "builtAt": "2026-09-16T19:30:43.130Z",
+  "price": 21.6,
+  "full": 24,
+  "builtAt": "2026-09-18T20:20:43.237Z",
   "builtBy": "SELFMADE"
 }
