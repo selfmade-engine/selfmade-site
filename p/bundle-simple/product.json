@@ -1,0 +1,16 @@
+{
+  "name": "Simple Printable Bundle",
+  "slug": "bundle-simple",
+  "kind": "download",
+  "bundle": true,
+  "includes": [
+    "simple-cleaning-schedule-checklist",
+    "simple-self-care-planner",
+    "simple-debt-payoff-planner",
+    "simple-5-minute-gratitude-journal"
+  ],
+  "price": 17.1,
+  "full": 19,
+  "builtAt": "2026-09-18T17:29:13.169Z",
+  "builtBy": "SELFMADE"
+}
