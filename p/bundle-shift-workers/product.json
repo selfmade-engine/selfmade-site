@@ -6,10 +6,11 @@
   "includes": [
     "shift-worker-habit-tracker",
     "shift-worker-workout-fitness-log",
-    "shift-worker-mood-sleep-tracker"
+    "shift-worker-mood-sleep-tracker",
+    "shift-worker-self-care-planner"
   ],
-  "price": 12.6,
-  "full": 14,
-  "builtAt": "2026-09-18T17:18:19.424Z",
+  "price": 17.1,
+  "full": 19,
+  "builtAt": "2026-09-18T17:40:39.123Z",
   "builtBy": "SELFMADE"
 }
