@@ -1,0 +1,16 @@
+{
+  "name": "Teacher Printable Bundle",
+  "slug": "bundle-teachers",
+  "kind": "download",
+  "bundle": true,
+  "includes": [
+    "teacher-weekly-planner",
+    "teacher-5-minute-gratitude-journal",
+    "teacher-reading-journal-log",
+    "teacher-goal-setting-planner"
+  ],
+  "price": 17.1,
+  "full": 19,
+  "builtAt": "2026-09-18T17:50:41.645Z",
+  "builtBy": "SELFMADE"
+}
