@@ -1,0 +1,15 @@
+{
+  "name": "Shift Worker Printable Bundle",
+  "slug": "bundle-shift-workers",
+  "kind": "download",
+  "bundle": true,
+  "includes": [
+    "shift-worker-habit-tracker",
+    "shift-worker-workout-fitness-log",
+    "shift-worker-mood-sleep-tracker"
+  ],
+  "price": 12.6,
+  "full": 14,
+  "builtAt": "2026-09-18T17:18:19.424Z",
+  "builtBy": "SELFMADE"
+}
