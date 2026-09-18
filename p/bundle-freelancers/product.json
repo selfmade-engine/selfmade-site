@@ -6,10 +6,11 @@
   "includes": [
     "freelancer-budget-planner",
     "freelancer-goal-setting-planner",
-    "freelancer-side-hustle-income-expense-tracker"
+    "freelancer-side-hustle-income-expense-tracker",
+    "freelancer-weekly-planner"
   ],
-  "price": 15.3,
-  "full": 17,
-  "builtAt": "2026-09-15T21:46:30.933Z",
+  "price": 19.8,
+  "full": 22,
+  "builtAt": "2026-09-18T18:55:01.943Z",
   "builtBy": "SELFMADE"
 }
