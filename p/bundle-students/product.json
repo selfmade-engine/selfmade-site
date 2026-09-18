@@ -7,10 +7,11 @@
     "student-habit-tracker",
     "student-study-planner",
     "student-savings-challenge-pack",
-    "student-weekly-planner"
+    "student-weekly-planner",
+    "student-meal-planner-grocery-list"
   ],
-  "price": 17.1,
-  "full": 19,
-  "builtAt": "2026-09-18T17:40:38.115Z",
+  "price": 21.6,
+  "full": 24,
+  "builtAt": "2026-09-18T19:36:03.963Z",
   "builtBy": "SELFMADE"
 }
