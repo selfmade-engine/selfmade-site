@@ -1,0 +1,16 @@
+{
+  "name": "Busy Parent Printable Bundle",
+  "slug": "bundle-parents",
+  "kind": "download",
+  "bundle": true,
+  "includes": [
+    "busy-parent-budget-planner",
+    "busy-parent-weekly-planner",
+    "busy-parent-meal-planner-grocery-list",
+    "busy-parent-habit-tracker"
+  ],
+  "price": 18.9,
+  "full": 21,
+  "builtAt": "2026-09-18T17:07:12.273Z",
+  "builtBy": "SELFMADE"
+}
