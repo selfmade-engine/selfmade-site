@@ -1,0 +1,16 @@
+{
+  "name": "Student Printable Bundle",
+  "slug": "bundle-students",
+  "kind": "download",
+  "bundle": true,
+  "includes": [
+    "student-habit-tracker",
+    "student-study-planner",
+    "student-savings-challenge-pack",
+    "student-weekly-planner"
+  ],
+  "price": 17.1,
+  "full": 19,
+  "builtAt": "2026-09-18T17:40:38.115Z",
+  "builtBy": "SELFMADE"
+}
