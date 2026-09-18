@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://selfmade-api.selfmade-engine.workers.dev/p/pta-or-community-group-organiser-money-tracker/sitemap.xml
+Sitemap: https://selfmade-engine.github.io/selfmade-site/p/pta-or-community-group-organiser-money-tracker/sitemap.xml
