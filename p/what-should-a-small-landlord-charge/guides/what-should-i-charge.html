@@ -3,180 +3,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>What Should a Small Landlord Charge?</title>
-<meta name="description" content="Work backwards from the money you actually need, the days you can actually bill, and the costs that come out first. Free to use, nothing to install, works in your browser.">
-<meta property="og:title" content="What Should a Small Landlord Charge?">
-<meta property="og:description" content="Work backwards from the money you actually need, the days you can actually bill, and the costs that come out first. Free to use, nothing to install, works in your browser.">
+<title>What should I charge?</title>
+<meta name="description" content="Rates get picked by looking at what somebody else charges, and small landlords systematically end up working more hours for less than they meant to. What …">
+<meta property="og:title" content="What should I charge?">
+<meta property="og:description" content="Rates get picked by looking at what somebody else charges, and small landlords systematically end up working more hours for less than they meant to. What …">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/what-should-a-small-landlord-charge/og.png">
+<meta property="og:image" content="https://selfmade-engine.github.io/selfmade-site/p/what-should-a-small-landlord-charge/guides/what-should-i-charge.html/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="What Should a Small Landlord Charge?">
+<meta property="og:image:alt" content="What should I charge?">
 <!-- summary_large_image rather than summary: without a picture a shared link
      renders as a grey rectangle, which costs more clicks than any wording. -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/what-should-a-small-landlord-charge/og.png">
-<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/what-should-a-small-landlord-charge/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"What Should a Small Landlord Charge?","description":"Work backwards from the money you actually need, the days you can actually bill, and the costs that come out first. Free to use, nothing to install, works in your browser.","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"https://selfmade-engine.github.io/selfmade-site/p/what-should-a-small-landlord-charge/","offers":{"@type":"Offer","price":"12.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is it really free?","acceptedAnswer":{"@type":"Answer","text":"Yes. The free version keeps working for as long as you like - it is not a trial. Pro only removes the limit and adds extra views."}},{"@type":"Question","name":"Is what I type sent anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Everything runs in your browser, on your device. Nothing you enter is uploaded or stored by us."}},{"@type":"Question","name":"What does Pro add?","acceptedAnswer":{"@type":"Answer","text":"Save and compare scenarios, Every version in one table, Download the comparison - for $12.00 a month."}},{"@type":"Question","name":"How do I cancel?","acceptedAnswer":{"@type":"Answer","text":"Open your account on this page and press Cancel subscription. You keep Pro until the end of the month you paid for, and nothing more is charged."}},{"@type":"Question","name":"Does it work on my phone?","acceptedAnswer":{"@type":"Answer","text":"Yes - it runs in any modern browser on a phone, tablet or computer. Sign in to use Pro on all of them."}}]}</script>
-<link rel="stylesheet" href="./style.css">
+<meta name="twitter:image" content="https://selfmade-engine.github.io/selfmade-site/p/what-should-a-small-landlord-charge/guides/what-should-i-charge.html/og.png">
+<link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/what-should-a-small-landlord-charge/guides/what-should-i-charge.html">
+
+
+<link rel="stylesheet" href="../style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
 <body>
 <div class="wrap">
 <header class="site">
-  <a class="brand" href="./">What Should a Small Landlord Charge?</a>
-  <nav><a href="./" aria-current="page">Tool</a><a href="./docs.html">Docs</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Upgrade</a></nav>
+  <a class="brand" href="../">What Should a Small Landlord Charge?</a>
+  <nav><a href="./">Tool</a><a href="../docs.html">Docs</a><a href="../pricing.html">Pricing</a></nav>
 </header>
 
-<h1>Work out what to charge</h1>
-<p class="sub">Work backwards from the money you actually need, the days you can actually bill, and the costs that come out first. Free to use, nothing to install, works in your browser.</p>
-<ul class="checks"><li>Built for small landlords</li><li>The problem it solves: rates get picked by looking at what somebody else charges, and small landlords systematically end up working more hours for less than they meant to</li><li>Runs entirely in your browser — your input never leaves the page</li><li>Free to use, with a limit. Pro is $12.00 a month and you can cancel any time.</li></ul>
-<div id="sm-tier" class="tierbar"></div>
-
-<div class="card">
-  <h2>Your situation</h2>
-  <p class="sub">Work backwards from what you need, not forwards from what somebody else charges. One flat, and a boiler that keeps going wrong.</p>
-  <div class="grid cols-3">
-    <div><label for="s-takeHome">What you need to take home a year</label><input id="s-takeHome" type="number" step="1000" min="0" value="30000"></div>
-    <div><label for="s-costs">Business costs a year</label><input id="s-costs" type="number" step="100" min="0" value="4000"></div>
-    <div><label for="s-taxPct">Tax and contributions (%)</label><input id="s-taxPct" type="number" step="1" min="0" max="100" value="26"></div>
-    <div><label for="s-weeksOff">Weeks off a year</label><input id="s-weeksOff" type="number" step="1" min="0" max="52" value="6"></div>
-    <div><label for="s-daysPerWeek">Days you work a week</label><input id="s-daysPerWeek" type="number" step="1" min="1" max="7" value="5"></div>
-    <div><label for="s-billablePct">Share of that actually billable (%)</label><input id="s-billablePct" type="number" step="5" min="1" max="100" value="65"></div>
-    <div><label for="s-hoursPerDay">Hours in a working day</label><input id="s-hoursPerDay" type="number" step="1" min="1" max="24" value="8"></div>
-  </div>
-</div>
-<div class="card">
-  <h2>What you need to charge</h2>
-  <div class="grid cols-3" id="g-stats"></div>
-  <output id="g-verdict"></output>
-</div>
-<div class="card">
-  <h3>Compare scenarios, and keep them <span class="badge pro">PRO</span></h3>
-  <p class="sub">Save the scenarios side by side — four days a week against five, more time off, higher costs — instead of retyping the whole thing each time you want to check one change.</p>
-  <div class="row">
-    <input id="g-name" placeholder="Name this scenario" style="max-width:240px">
-    <button id="g-save" class="secondary">Save it</button>
-    <button id="g-export" class="secondary">Download comparison</button>
-  </div>
-  <div id="g-saved"></div>
-</div>
-<div id="sm-lock" class="lockbox" hidden></div>
-
-<div class="card no-print sm-auth" id="sm-account" hidden>
-
-  <!-- 1. sign in, or start an account -->
-  <div id="sm-acc-choose">
-    <div class="sm-auth-head">
-      <h2 id="sm-acc-title">Sign in</h2>
-      <p class="sub" id="sm-acc-sub">Your account carries Pro with you — this computer, your phone, anywhere you open it.</p>
-    </div>
-
-    <div class="sm-auth-fields">
-      <label for="sm-acc-email">Email</label>
-      <input id="sm-acc-email" type="email" autocomplete="email" placeholder="you@example.com" inputmode="email">
-
-      <label for="sm-acc-pass">Password<span class="sm-hint" id="sm-acc-passhint"></span></label>
-      <input id="sm-acc-pass" type="password" autocomplete="current-password" placeholder="Your password">
-    </div>
-
-    <button id="sm-acc-go" class="sm-auth-primary">Sign in</button>
-
-    <output id="sm-acc-msg" class="sm-auth-msg"></output>
-
-    <div class="sm-auth-alt">
-      <button id="sm-acc-new" class="linkish">Create an account</button>
-      <span class="sm-auth-dot">·</span>
-      <button id="sm-acc-forgot" class="linkish">Forgot password</button>
-    </div>
-  </div>
-
-  <!-- 2. confirm the email -->
-  <div id="sm-acc-confirm" hidden>
-    <div class="sm-auth-head">
-      <h2>Check your email</h2>
-      <p class="sub">We sent a 6-digit code to <strong id="sm-acc-sentto"></strong>. Type it in and you are done.</p>
-    </div>
-
-    <input id="sm-acc-code" class="sm-code" type="text" inputmode="numeric" autocomplete="one-time-code"
-           maxlength="6" placeholder="000000" aria-label="6-digit code from your email">
-
-    <button id="sm-acc-confirmgo" class="sm-auth-primary">Confirm</button>
-
-    <output id="sm-acc-confirmmsg" class="sm-auth-msg"></output>
-
-    <div class="sm-auth-alt">
-      <button id="sm-acc-resend" class="linkish">Send it again</button>
-      <span class="sm-auth-dot">·</span>
-      <button id="sm-acc-abandon" class="linkish sm-danger">Cancel</button>
-    </div>
-    <p class="limit">The code lasts 30 minutes. Cancelling removes the half-made account, so nothing is left behind.</p>
-  </div>
-
-  <!-- 3. signed in -->
-  <div id="sm-acc-signedin" hidden>
-    <div class="sm-acc-rows" id="sm-acc-stats"></div>
-    <div class="row">
-      <button id="sm-acc-out" class="secondary">Sign out</button>
-      <button id="sm-acc-cancel" class="linkish sm-danger" hidden>Cancel subscription</button>
-    </div>
-    <output id="sm-acc-cancelmsg" class="sm-auth-msg"></output>
-    <p class="limit" id="sm-acc-cancelnote" hidden></p>
-    <p class="limit" id="sm-acc-foot">Cancelling stops the next payment. You keep Pro until the end of the month you have already paid for, and your account stays exactly as it is.</p>
-  </div>
-</div>
-
-<div class="card paycard no-print" id="sm-pay">
-  <div class="payhead">
-    <div>
-      <h2>Pro</h2>
-      <p class="sub">The whole calculation, free, as many times as you like. Pro takes the limit off and adds what you need when you do this every week.</p>
-    </div>
-    <div class="payprice"><span class="price">$12.00</span><span class="per">/month</span></div>
-  </div>
-  <ul class="checks pro"><li><strong>Save and compare scenarios</strong><span class="why">Four days a week against five, a rate rise against more time off — side by side, instead of retyping the whole thing and trying to remember the last answer.</span></li><li><strong>Every version in one table</strong><span class="why">The comparison is the decision. Seeing them together is what makes it obvious.</span></li><li><strong>Download the comparison</strong><span class="why">Take it to an accountant, a partner or a bank in something they can open.</span></li></ul>
-  <p class="sm-on-pro" id="sm-already-pro" hidden></p>
-    <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Get Pro — $12.00/month</a></div>
-    <p class="notice" id="sm-buy-note">You will be taken straight to a secure card form. Payment is handled by Stripe — your card details go to them, never to this page. Cancel any time.</p>
-    <p class="notice" id="sm-buy-status" hidden></p>
-  <ul class="sm-trust" aria-label="What to expect"><li>Free version stays free</li><li>Secure checkout with Stripe</li><li>Cancel any time from your account</li></ul>
-  <p class="limit">Keep using the free version for as long as you like — it stays fully working, and it is not a trial.
-  <a href="./pricing.html">See everything in Pro</a></p>
-</div>
-<div class="card">
-  <h2>Who this is for</h2>
-  <p class="sub">small landlords</p>
-  <h2>The problem</h2>
-  <p class="sub">Rates get picked by looking at what somebody else charges, and small landlords systematically end up working more hours for less than they meant to</p>
-  <h2>What it does about it</h2>
-  <p class="sub">Work backwards from the money you actually need, the days you can actually bill, and the costs that come out first</p>
-  
-</div>
-<div class="card"><h2>Guides</h2><ul class="checks"><li><a href="./guides/what-should-i-charge.html">What should I charge?</a></li></ul></div>
-<div class="card sm-faq">
-  <h2>Questions</h2>
-  <details><summary>Is it really free?</summary><p>Yes. The free version keeps working for as long as you like - it is not a trial. Pro only removes the limit and adds extra views.</p></details>
-  <details><summary>Is what I type sent anywhere?</summary><p>No. Everything runs in your browser, on your device. Nothing you enter is uploaded or stored by us.</p></details>
-  <details><summary>What does Pro add?</summary><p>Save and compare scenarios, Every version in one table, Download the comparison - for $12.00 a month.</p></details>
-  <details><summary>How do I cancel?</summary><p>Open your account on this page and press Cancel subscription. You keep Pro until the end of the month you paid for, and nothing more is charged.</p></details>
-  <details><summary>Does it work on my phone?</summary><p>Yes - it runs in any modern browser on a phone, tablet or computer. Sign in to use Pro on all of them.</p></details>
-</div>
-<div class="card sm-end no-print">
-  <h2>Ready when you are</h2>
-  <p class="sub">Keep using the free version, or get Pro for $12.00 a month and cancel whenever you like.</p>
-  <a class="buy" href="#sm-pay">Get Pro — $12.00/month</a>
-</div>
-
-<div class="card no-print">
-  <h2>Did this do what you needed?</h2>
-  <p class="sub">One line of feedback decides what gets built next. Leave an email only if you want a reply.</p>
-  <form id="sm-feedback" class="grid">
-    <div><label for="sm-note">What would make this better?</label><input id="sm-note" name="note" maxlength="500" placeholder="It should also…"></div>
-    <div><label for="sm-email">Email (optional)</label><input id="sm-email" name="email" type="email" placeholder="you@example.com"></div>
-    <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
-  </form>
-</div>
+<h1>What should I charge?</h1>
+<p class="sub">Rates get picked by looking at what somebody else charges, and small landlords systematically end up working more hours for less than they meant to. What …</p>
+<div class="card"><h2>The short answer</h2><p class="sub">Rates get picked by looking at what somebody else charges, and small landlords systematically end up working more hours for less than they meant to. What Should a Small Landlord Charge? works it out for you, free, in your browser — nothing to install and nothing uploaded.</p></div>
+<div class="card"><h2>Why it works backwards</h2><p class="sub">Rates set by looking at what other people charge inherit their mistakes. Starting from what you need to live on and what you can actually bill gives a number that is right for you.</p></div>
+<div class="card"><h2>Why it is worth doing at all</h2><p class="sub">Small landlords. put this off because it feels like admin rather than work. It is not: it is the difference between knowing where you stand and guessing at it, and the guess is always more flattering than the truth.</p></div>
+<div class="card"><h2>Doing it without a tool</h2><p class="sub">You can do all of this on paper or in a spreadsheet, and plenty of people do. The cost is not the arithmetic, it is remembering to do it and keeping the same method every time. A month you forget is a month missing from the total, and you find out about it at the worst possible moment.</p></div>
+<div class="card"><h2>If you would rather it just did it</h2><p class="sub">Open What Should a Small Landlord Charge?, put the numbers in, and read the answer. The free version is enough to try it properly, and Pro takes the limit off.</p></div>
+<div class="card"><h2>Try it</h2><p class="sub">What Should a Small Landlord Charge? does this in your browser, free, with no signup.</p><p><a class="buy" href="../">Open What Should a Small Landlord Charge?</a></p></div>
+<p class="notice">Written by SELFMADE, which also built the tool this page is about. That is a bias worth knowing about while you read it.</p>
 <footer class="site">
   <p>What Should a Small Landlord Charge? — built and operated by SELFMADE.
   Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
@@ -201,9 +62,9 @@ var SM_LICENCE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/licen
 var SM_USE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/use";
 var SM_ACTIVATE_URL = "https://selfmade-api.selfmade-engine.workers.dev/api/activate";
 var SM_API_BASE = "https://selfmade-api.selfmade-engine.workers.dev";
-var SM_DAILY_LIMIT = 10;
-var SM_LIMIT_LABEL = "calculations a day";
-var SM_PITCH = "Pro adds save and compare scenarios, every version in one table, download the comparison and still here next time.";
+var SM_DAILY_LIMIT = 0;
+var SM_LIMIT_LABEL = "uses";
+var SM_PITCH = "";
 var SM_CONTACT = "selfmade.engine@gmail.com";
 // Where the Upgrade button goes, and what it costs. Straight to checkout when
 // there is one, because a pricing page in between is a step people leave at.
@@ -629,159 +490,7 @@ window.SM = (function(){
   };
 })();
 </script>
-<script data-sm="tool">
-function SMN(v){
-  if (typeof v === 'number') return isFinite(v) ? v : 0;
-  var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.\-]/g, ''));
-  return isFinite(x) ? x : 0;
-}
-/**
- * Whole days from today until a date. Negative once it has gone past.
- *
- * Both ends are flattened to midnight first, so "tomorrow" is 1 all day rather
- * than 0 in the evening and 1 in the morning - a countdown that changes with
- * the time of day reads as broken.
- */
-function SMdays(v){
-  if (!v) return 0;
-  var text = String(v).trim();
-  var b = null;
-  // A plain "2026-04-01" is parsed as UTC midnight by the browser, which reads
-  // back as the day BEFORE anywhere west of Greenwich. Somebody typing a date
-  // means that date where they are, so it is built locally instead.
-  //
-  // Split rather than matched, because a regular expression written inside a
-  // template literal has to survive two rounds of escaping and quietly loses
-  // its backslashes if it does not.
-  var bits = text.split('-');
-  if (bits.length === 3 && bits[0].length === 4) {
-    var y = Number(bits[0]), mo = Number(bits[1]), da = Number(bits[2].slice(0, 2));
-    if (y && mo && da) b = new Date(y, mo - 1, da);
-  }
-  if (!b) {
-    var parsed = new Date(text);
-    if (isNaN(parsed.getTime())) return 0;
-    b = new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
-  }
-  if (isNaN(b.getTime())) return 0;
-  var a = new Date(); a.setHours(0,0,0,0);
-  return Math.round((b - a) / 86400000);
-}
-var CUR = "$";
-function SMD(id){ var e = document.getElementById(id); return e; }
-function SMV(id){ var e = SMD(id); return e ? String(e.value == null ? '' : e.value).trim() : ''; }
-function SMmoney(v){
-  var neg = v < 0;
-  var a = Math.abs(Math.round(v * 100) / 100).toFixed(2);
-  return (neg ? '-' : '') + CUR + a.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-function SMnum(v, dp){
-  var d = dp == null ? 2 : dp;
-  var n = Math.round(SMN(v) * Math.pow(10, d)) / Math.pow(10, d);
-  return d === 0 ? String(n) : n.toFixed(d);
-}
-function SMesc(s){
-  return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
-    return c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : '&quot;';
-  });
-}
-function SMtable(head, rows){
-  return '<table><tr>' + head.map(function(h){ return '<th>' + h + '</th>'; }).join('') + '</tr>' +
-    rows.map(function(r){ return '<tr>' + r.map(function(c){ return '<td>' + c + '</td>'; }).join('') + '</tr>'; }).join('') +
-    '</table>';
-}
-function SMstat(k, v, note){
-  return '<div class="stat"><div class="k">' + k + '</div><div class="v">' + v + '</div>' +
-    (note ? '<div class="k" style="text-transform:none;letter-spacing:0;margin-top:4px">' + note + '</div>' : '') + '</div>';
-}
-/** A dropdown stores its numeric value; the table should show the words. */
-function SMlabel(f, v){
-  if (f && f.options && f.options.length && typeof f.options[0] === 'object') {
-    for (var i = 0; i < f.options.length; i++) {
-      if (String(f.options[i].value) === String(v)) return f.options[i].label;
-    }
-  }
-  return v;
-}
-function SMtoday(){ return new Date().toISOString().slice(0, 10); }
-function SMfmtDate(d){
-  var x = (d instanceof Date) ? d : new Date(d);
-  if (isNaN(x.getTime())) return String(d || '');
-  return x.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
-}
-(function(){
-  var SETTINGS = [{"id":"takeHome","label":"What you need to take home a year"},{"id":"costs","label":"Business costs a year"},{"id":"taxPct","label":"Tax and contributions (%)"},{"id":"weeksOff","label":"Weeks off a year"},{"id":"daysPerWeek","label":"Days you work a week"},{"id":"billablePct","label":"Share of that actually billable (%)"},{"id":"hoursPerDay","label":"Hours in a working day"}];
-
-  function compute(){
-    var T = {};
-    T.takeHome = SMN(SMV('s-takeHome'));
-    T.costs = SMN(SMV('s-costs'));
-    T.taxPct = SMN(SMV('s-taxPct'));
-    T.weeksOff = SMN(SMV('s-weeksOff'));
-    T.daysPerWeek = SMN(SMV('s-daysPerWeek'));
-    T.billablePct = SMN(SMV('s-billablePct'));
-    T.hoursPerDay = SMN(SMV('s-hoursPerDay'));
-    var rows = [];
-    T.beforeTax = SMN(T.takeHome) / ( 1 - SMN(T.taxPct) / 100 );
-    T.turnover = SMN(T.takeHome) / ( 1 - SMN(T.taxPct) / 100 ) + SMN(T.costs);
-    T.workDays = ( 52 - SMN(T.weeksOff) ) * SMN(T.daysPerWeek);
-    T.billableDays = SMN(T.workDays) * SMN(T.billablePct) / 100;
-    T.dayRate = SMN(T.billableDays) > 0 ? SMN(T.turnover) / SMN(T.billableDays) : 0;
-    T.hourRate = SMN(T.hoursPerDay) > 0 && SMN(T.billableDays) > 0 ? SMN(T.turnover) / SMN(T.billableDays) / SMN(T.hoursPerDay) : 0;
-    return T;
-  }
-
-  function paint(){
-    var T = compute();
-    SMD('g-stats').innerHTML = [
-      SMstat("You must invoice", SMmoney(T.turnover), "a year, to take home what you wanted"),
-      SMstat("Billable days", SMnum(T.billableDays, 0), "the rest is quoting, admin and travel"),
-      SMstat("Your day rate", SMmoney(T.dayRate), ""),
-      SMstat("Your hourly rate", SMmoney(T.hourRate), "")
-    ].join('');
-    var out = [];
-    var rows = [];
-    out.push("To take home what you want, after tax and after your costs, you need to invoice " + SMmoney(T.turnover) + " a year.");
-    out.push("You have " + SMnum(T.billableDays, 0) + " genuinely billable days in a year — not " + SMnum(T.workDays, 0) + ", because quoting, admin, travel and chasing money are all unpaid.");
-    out.push("So your rate is " + SMmoney(T.dayRate) + " a day, or " + SMmoney(T.hourRate) + " an hour.");
-    if (SMN(T.billablePct) > 80) out.push("One thing worth checking: you have said more than 80% of your days are billable. Very few self-employed people manage that once quoting, invoicing and travel are counted. If that number is optimistic, your real rate needs to be higher than the one above.");
-    if (SMN(T.hourRate) > 0) out.push("If that number feels too high to say out loud, that is the useful part. It is what the work actually has to be worth. The answer is usually to charge it and lose the jobs that were never paying, not to lower it.");
-    SMD('g-verdict').textContent = out.join('\n\n');
-  }
-
-  if (SMD('s-takeHome')) { SMD('s-takeHome').addEventListener('input', paint); SMD('s-takeHome').addEventListener('change', paint); }
-  if (SMD('s-costs')) { SMD('s-costs').addEventListener('input', paint); SMD('s-costs').addEventListener('change', paint); }
-  if (SMD('s-taxPct')) { SMD('s-taxPct').addEventListener('input', paint); SMD('s-taxPct').addEventListener('change', paint); }
-  if (SMD('s-weeksOff')) { SMD('s-weeksOff').addEventListener('input', paint); SMD('s-weeksOff').addEventListener('change', paint); }
-  if (SMD('s-daysPerWeek')) { SMD('s-daysPerWeek').addEventListener('input', paint); SMD('s-daysPerWeek').addEventListener('change', paint); }
-  if (SMD('s-billablePct')) { SMD('s-billablePct').addEventListener('input', paint); SMD('s-billablePct').addEventListener('change', paint); }
-  if (SMD('s-hoursPerDay')) { SMD('s-hoursPerDay').addEventListener('input', paint); SMD('s-hoursPerDay').addEventListener('change', paint); }
-
-  function paintSaved(){
-    var list = SM.load('scenarios');
-    if (!list.length) { SMD('g-saved').innerHTML = '<p class="sub">Nothing saved yet.</p>'; return; }
-    SMD('g-saved').innerHTML = SMtable(['Scenario'].concat(["You must invoice","Billable days","Your day rate","Your hourly rate"]),
-      list.map(function(s){
-        return [SMesc(s.name)].concat([{"id":"turnover","money":true},{"id":"billableDays","money":false},{"id":"dayRate","money":true},{"id":"hourRate","money":true}]
-          .map(function(t){ return t.money ? SMmoney(s.values[t.id]) : SMnum(s.values[t.id]); }));
-      }));
-  }
-  SMD('g-save').addEventListener('click', function(){
-    var name = SMV('g-name');
-    if (!name) { SMD('g-name').placeholder = 'name it first'; return; }
-    var list = SM.load('scenarios');
-    list.push({ name: name, values: compute() });
-    if (SM.save('scenarios', list)) { SMD('g-name').value = ''; paintSaved(); }
-  });
-  SMD('g-export').addEventListener('click', function(){
-    var list = SM.load('scenarios');
-    var ids = ["beforeTax","turnover","workDays","billableDays","dayRate","hourRate"];
-    SM.exportCsv("landlord--what-to-charge.csv", [['Scenario'].concat(["Needed before tax","You must invoice","Working days","Billable days","Your day rate","Your hourly rate"])].concat(
-      list.map(function(s){ return [s.name].concat(ids.map(function(id){ return SMnum(s.values[id]); })); })));
-  });
-
-  paint(); paintSaved();
-})();</script>
+<script data-sm="tool"></script>
 <script>
 (function(){
   var SESSION_STORE = 'sm_session_' + SM_SLUG;
