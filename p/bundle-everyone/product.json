@@ -6,10 +6,11 @@
   "includes": [
     "savings-challenge-pack",
     "monthly-bill-tracker",
-    "cleaning-schedule-checklist"
+    "cleaning-schedule-checklist",
+    "budget-planner"
   ],
-  "price": 10.8,
-  "full": 12,
-  "builtAt": "2026-09-17T02:11:42.760Z",
+  "price": 16.2,
+  "full": 18,
+  "builtAt": "2026-09-18T18:22:47.820Z",
   "builtBy": "SELFMADE"
 }
