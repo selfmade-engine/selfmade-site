@@ -5,33 +5,151 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Terms of Service — SELFMADE</title>
 <style>
-:root{--bg:#f6f7f9;--card:#fff;--text:#14171a;--muted:#5b6470;--line:#e6e8eb;--accent:#1f6feb}
-@media (prefers-color-scheme:dark){:root{--bg:#0f1216;--card:#161a1f;--text:#e9edf2;--muted:#99a3b0;--line:#252b33}}
+:root{
+  --bg:#faf7f2; --card:#ffffff; --card-2:#f3efe7; --text:#1d1b17; --muted:#655f55; --line:#e4ddd0;
+  --accent:#0b6b4f; --accent-ink:#ffffff; --accent-soft:#e2f0ea; --focus:#0a58ca;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --radius:14px;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#12110f; --card:#1b1a17; --card-2:#24221e; --text:#efeae0; --muted:#a9a294; --line:#34312b;
+  --accent:#5fd3a6; --accent-ink:#06231a; --accent-soft:#17352b; --focus:#8ab4ff;
+}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-.wrap{max-width:760px;margin:0 auto;padding:40px 20px 80px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:32px 28px;margin-bottom:20px}
-h1{font-size:28px;margin:0 0 6px;letter-spacing:-.02em}
-h2{font-size:18px;margin:30px 0 8px}
-h2:first-of-type{margin-top:8px}
-p,li{color:var(--text)}
-.sub{color:var(--muted);margin:0 0 4px}
-.updated{color:var(--muted);font-size:14px;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--sans)}
 a{color:var(--accent)}
-ul{padding-left:20px}
-li{margin:6px 0}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:6px}
+h1,h2,h3{text-wrap:balance;letter-spacing:-.015em}
+p{text-wrap:pretty}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px 72px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:18px 0;border-bottom:1px solid var(--line)}
+.wordmark{font:700 20px/1 var(--serif);letter-spacing:.04em;color:var(--text);text-decoration:none}
+.top nav{display:flex;gap:4px 18px;flex-wrap:wrap}
+.top nav a{font-size:14.5px;color:var(--muted);text-decoration:none;padding:6px 0}
+.top nav a:hover{color:var(--text)}
+.crumbs{font-size:13.5px;color:var(--muted);margin:18px 0 0}
+.crumbs a{color:var(--muted)}
+.hero{padding:44px 0 26px;max-width:760px}
+.hero h1{font:700 clamp(32px,6vw,52px)/1.08 var(--serif);margin:0 0 14px}
+.hero .lede{font-size:clamp(17px,2.3vw,19.5px);color:var(--muted);margin:0 0 22px;max-width:60ch}
+.cta-row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-block;padding:13px 22px;border-radius:10px;font-weight:650;font-size:16px;text-decoration:none;border:1px solid transparent;cursor:pointer;font-family:inherit}
+.btn-main{background:var(--accent);color:var(--accent-ink)}
+.btn-quiet{background:var(--card);color:var(--text);border-color:var(--line)}
+.btn:hover{filter:brightness(1.06)}
+.promises{list-style:none;display:flex;flex-wrap:wrap;gap:6px 20px;padding:0;margin:22px 0 0;font-size:14px;color:var(--muted)}
+.promises li{display:flex;align-items:center;gap:7px}
+.promises li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;margin:0 0 20px}
+h2.sec{font:700 clamp(22px,3.4vw,28px)/1.2 var(--serif);margin:44px 0 6px}
+.sec-sub{color:var(--muted);margin:0 0 16px;max-width:66ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0;padding:0;list-style:none}
+.chips a{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--text);text-decoration:none;font-size:14.5px}
+.chips a:hover{border-color:var(--accent)}
+.chips .n{color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums}
+.chip-label{font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 0}
+.find{padding:20px}
+.findrow{display:flex;align-items:center;gap:12px;background:var(--bg);
+  border:2px solid var(--line);border-radius:12px;padding:0 16px}
+.findrow:focus-within{border-color:var(--accent)}
+.findicon{width:22px;height:22px;flex:none;stroke:var(--muted);stroke-width:2.2;fill:none;stroke-linecap:round}
+.findrow:focus-within .findicon{stroke:var(--accent)}
+.find input{flex:1;min-width:0;font:500 19px/1.4 inherit;color:var(--text);background:none;
+  border:0;padding:16px 0;-webkit-appearance:none}
+.find input::placeholder{color:var(--muted);font-weight:400}
+.find input:focus{outline:none}
+.count{color:var(--muted);font-size:14px;margin:10px 2px 0}
+.none{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 18px;color:var(--muted)}
+@media (max-width:520px){.find input{font-size:17px;padding:14px 0}.findrow{padding:0 13px}}
+.tools{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));margin-top:8px}
+a.tool{display:grid;grid-template-rows:auto auto 1fr auto;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  text-decoration:none;color:var(--text);overflow:hidden;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}
+a.tool:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.08)}
+/* display:grid on the card beats the browser's own [hidden] rule, so hiding
+   one from JavaScript does nothing unless this says so explicitly. */
+a.tool[hidden]{display:none}
+/* The name comes first in the page - it is what a screen reader should say
+   first - and the cover is lifted above it for everybody looking. */
+a.tool .cover{order:-1;grid-row:1}
+a.tool strong{display:block;font-size:16.5px;line-height:1.3;margin:14px 16px 4px}
+a.tool .why{display:block;color:var(--muted);font-size:14px;line-height:1.45;margin:0 16px}
+a.tool .foot{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:12px 16px 14px;font-size:13.5px;color:var(--muted)}
+a.tool .cost{font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}
+.cover{display:flex;flex-direction:column;justify-content:flex-end;gap:5px;aspect-ratio:16/9;padding:14px 16px;background:var(--ink,#1e2a3a);color:#fff;position:relative;overflow:hidden}
+.cover::before{content:"";position:absolute;right:-34px;top:-34px;width:120px;height:120px;border-radius:50%;border:1.5px solid var(--hl,#5eead4);opacity:.55}
+.cover::after{content:"";position:absolute;left:16px;top:16px;width:34px;height:4px;border-radius:2px;background:var(--hl,#5eead4)}
+.cover .kind{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--hl,#5eead4);position:relative}
+.art{position:absolute;right:18px;bottom:-14px;display:block}
+.art-sheet{width:74px;height:98px;background:#fff;border-radius:4px;transform:rotate(-6deg);box-shadow:0 8px 18px rgba(0,0,0,.35)}
+.art-sheet i{position:absolute;left:10px;right:10px;top:12px;bottom:12px;background:
+  linear-gradient(var(--hl,#5eead4),var(--hl,#5eead4)) 0 0/38% 4px no-repeat,
+  linear-gradient(#1b2430,#1b2430) 0 10px/70% 5px no-repeat,
+  repeating-linear-gradient(transparent 0 8px,#cfd6df 8px 9px) 0 24px/100% 100% no-repeat}
+.art-stack{box-shadow:0 8px 18px rgba(0,0,0,.35),-9px -5px 0 -1px rgba(255,255,255,.75),-18px -10px 0 -2px rgba(255,255,255,.5)}
+.art-win{width:112px;height:80px;bottom:-10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);border-radius:8px 8px 0 0}
+.art-win::before{content:"";position:absolute;left:9px;top:8px;width:26px;height:6px;border-radius:3px;background:
+  radial-gradient(circle at 3px 3px,var(--hl,#5eead4) 3px,transparent 3.5px),
+  radial-gradient(circle at 13px 3px,rgba(255,255,255,.5) 3px,transparent 3.5px),
+  radial-gradient(circle at 23px 3px,rgba(255,255,255,.5) 3px,transparent 3.5px)}
+.art-win i{position:absolute;left:10px;height:7px;border-radius:3px;background:rgba(255,255,255,.3)}
+.art-win i:nth-child(1){top:26px;width:62%}
+.art-win i:nth-child(2){top:41px;width:44%}
+.art-win i:nth-child(3){top:56px;width:30%;background:var(--hl,#5eead4)}
+.more{margin:14px 0 0}
+.more button{background:none;border:1px solid var(--line);border-radius:10px;padding:10px 16px;font:inherit;font-size:14.5px;color:var(--text);cursor:pointer}
+.more button:hover{border-color:var(--accent)}
+.prose{max-width:68ch}
+.prose p{margin:0 0 12px}
+.prose h2{font:700 20px/1.25 var(--serif);margin:22px 0 6px}
+.steps3{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:6px}
+.steps3 div{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.steps3 b{display:block;margin-bottom:4px}
+.steps3 span{color:var(--muted);font-size:14.5px}
+.signup{background:var(--accent-soft);border-color:transparent}
+.signup h2{font:700 22px/1.2 var(--serif);margin:0 0 6px}
+.signup p{margin:0 0 14px;color:var(--text);max-width:60ch}
+.signup form{display:flex;gap:8px;flex-wrap:wrap}
+.signup input[type=email]{flex:1 1 240px;min-width:0;padding:13px 14px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit}
+.signup .small{font-size:13px;color:var(--muted);margin:10px 0 0}
+.signup output{display:block;font-size:14.5px;margin-top:10px;min-height:1.4em}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.faq details{border-top:1px solid var(--line);padding:13px 0}
+.faq details:first-of-type{border-top:0}
+.faq summary{cursor:pointer;font-weight:650;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--muted);font-weight:400}
+.faq details[open] summary::after{content:"\2212"}
+.faq p{margin:8px 0 0;color:var(--muted)}
+.runby{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.runby h2{font:700 21px/1.25 var(--serif);margin:0 0 4px}
+.runby p{margin:0;color:var(--muted);max-width:58ch}
+.links{margin-top:34px;padding-top:20px;border-top:1px solid var(--line);font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 18px}
+.links a{color:var(--muted)}
+footer{color:var(--muted);font-size:13.5px;padding:14px 0 0}
+
+.doc{max-width:760px;margin:0 auto;padding:28px 0 0}
+.doc .card{padding:32px 28px}
+.doc h1{font:700 30px/1.15 var(--serif);margin:0 0 6px}
+.doc h2{font-size:18px;margin:30px 0 8px}
+.doc h2:first-of-type{margin-top:8px}
+.updated{color:var(--muted);font-size:14px;margin:0}
+.doc ul{padding-left:20px}
+.doc li{margin:6px 0}
 .back{display:inline-block;margin-bottom:20px;color:var(--muted);text-decoration:none;font-size:14px}
 .back:hover{color:var(--accent)}
-footer{color:var(--muted);font-size:14px;text-align:center;padding:10px 0 0}
 </style>
 </head>
 <body>
 <div class="wrap">
-<a class="back" href="./">&larr; Back</a>
+<div class="doc">
+<a class="back" href="./">&larr; Back to the shop</a>
 
 <div class="card">
   <h1>Terms of Service</h1>
-  <p class="updated">Last updated 28 September 2026</p>
+  <p class="updated">Last updated 10 November 2026</p>
 
   <h2>What you are getting</h2>
   <p>Each tool is a calculator or tracker that runs in your browser. There is a free
@@ -94,6 +212,7 @@ footer{color:var(--muted);font-size:14px;text-align:center;padding:10px 0 0}
   We answer every email.</p>
 </div>
 <footer>SELFMADE</footer>
+</div>
 </div>
 </body>
 </html>
