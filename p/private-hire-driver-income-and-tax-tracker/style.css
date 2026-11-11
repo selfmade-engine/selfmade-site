@@ -1,11 +1,13 @@
 :root{
-  --bg:#0b0d10; --panel:#14181d; --panel-2:#1b2027; --line:#2a313a;
-  --text:#e7ecf2; --muted:#9aa7b6; --accent:#4ade80; --accent-2:#38bdf8; --danger:#f87171;
+  --bg:#12110f; --panel:#1b1a17; --panel-2:#24221e; --line:#34312b;
+  --text:#efeae0; --muted:#a9a294; --accent:#5fd3a6; --accent-2:#8ab4ff; --danger:#f87171;
   --radius:14px; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --on-accent:#06231a;
 }
 @media (prefers-color-scheme:light){:root{
-  --bg:#f6f8fb; --panel:#ffffff; --panel-2:#f0f3f7; --line:#dde3ea;
-  --text:#111820; --muted:#5b6775; --accent:#059669; --accent-2:#0369a1;
+  --bg:#faf7f2; --panel:#ffffff; --panel-2:#f3efe7; --line:#e4ddd0;
+  --text:#1d1b17; --muted:#655f55; --accent:#0b6b4f; --accent-2:#0a58ca; --on-accent:#ffffff;
 }}
 *{box-sizing:border-box}
 a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px;border-radius:6px}
@@ -21,7 +23,7 @@ header.site .brand{font-weight:700;letter-spacing:-.02em;font-size:18px;text-dec
 header.site nav{display:flex;gap:14px;flex-wrap:wrap}
 header.site nav a{font-size:14px;text-decoration:none;color:var(--muted)}
 header.site nav a:hover,header.site nav a[aria-current]{color:var(--text)}
-h1{font-size:clamp(26px,5vw,40px);line-height:1.15;letter-spacing:-.03em;margin:28px 0 10px}
+h1{font-family:var(--serif);font-size:clamp(28px,5vw,42px);line-height:1.12;letter-spacing:-.02em;margin:28px 0 10px}
 h2{font-size:20px;margin:32px 0 10px;letter-spacing:-.01em}
 h3{font-size:16px;margin:20px 0 6px}
 .sub{color:var(--muted);font-size:17px;max-width:62ch;margin:0 0 20px}
@@ -35,14 +37,14 @@ label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bot
 input,select,textarea{width:100%;padding:11px 12px;background:var(--panel-2);color:var(--text);border:1px solid var(--line);border-radius:10px;font:inherit;font-size:15px}
 input:focus,select:focus,textarea:focus{outline:2px solid var(--accent-2);outline-offset:1px}
 textarea{min-height:150px;font-family:var(--mono);font-size:13px}
-button{appearance:none;border:0;border-radius:10px;padding:12px 18px;font:inherit;font-weight:600;cursor:pointer;background:var(--accent);color:#04140b}
+button{appearance:none;border:0;border-radius:10px;padding:12px 18px;font:inherit;font-weight:600;cursor:pointer;background:var(--accent);color:var(--on-accent)}
 button.secondary{background:var(--panel-2);color:var(--text);border:1px solid var(--line)}
 .tierbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--muted);
   background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin:16px 0}
 .tierbar.pro{border-color:var(--accent);color:var(--text)}
 .tierbar.spent{border-color:var(--danger)}
 .tierbar .dim{color:var(--muted)}
-.badge.pro{background:var(--accent);color:#04140b;border-color:transparent}
+.badge.pro{background:var(--accent);color:var(--on-accent);border-color:transparent}
 .lockbox{position:relative;background:var(--panel-2);border:1px solid var(--accent-2);border-radius:12px;padding:16px 44px 16px 16px;margin:16px 0;font-size:14px}
 /* A way to close it. It used to appear and stay, which on a phone meant it
    covered the thing somebody was trying to use. */
@@ -64,12 +66,12 @@ button.secondary{background:var(--panel-2);color:var(--text);border:1px solid va
 .per{font-size:15px;font-weight:600;color:var(--muted);letter-spacing:0}
 .limit{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px;margin-top:12px}
 .card.featured{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
-.badge-pro{background:var(--accent);color:#04140b;border-color:transparent}
+.badge-pro{background:var(--accent);color:var(--on-accent);border-color:transparent}
 ul.checks.pro li{color:var(--text)}
 ul.checks.pro .why{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
-.buy{display:inline-block;background:var(--accent);color:#04140b;padding:14px 26px;border-radius:10px;font-weight:700;font-size:17px;text-decoration:none}
+.buy{display:inline-block;background:var(--accent);color:var(--on-accent);padding:14px 26px;border-radius:10px;font-weight:700;font-size:17px;text-decoration:none}
 /* The Upgrade button in the header: present on every page, never in the way. */
-.navbuy{background:var(--accent);color:#04140b!important;padding:7px 14px;border-radius:8px;font-weight:700;margin-left:4px}
+.navbuy{background:var(--accent);color:var(--on-accent)!important;padding:7px 14px;border-radius:8px;font-weight:700;margin-left:4px}
 .navbuy:hover{filter:brightness(1.08)}
 /* The plan card. Bordered rather than loud - it should read as an option, not a demand. */
 .paycard{border-color:var(--accent)}
@@ -128,6 +130,28 @@ table{width:100%;border-collapse:collapse;font-size:14px;overflow-x:auto;display
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
 th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
 @media print{header.site,footer.site,.no-print{display:none!important}body{background:#fff;color:#000}.card{border-color:#ccc}}
+
+.sm-crumbs{font-size:13px;color:var(--muted);margin:14px 0 0}
+.sm-crumbs a{color:var(--muted)}
+.sm-related h2{margin-top:0}
+.sm-related-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-top:10px}
+.sm-related a.sm-rel{display:block;text-decoration:none;color:var(--text);background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:14px}
+.sm-related a.sm-rel:hover{border-color:var(--accent)}
+.sm-related .sm-rel-kind{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sm-related .sm-rel-name{display:block;font-weight:700;margin:4px 0 2px}
+.sm-related .sm-rel-cost{display:block;font-size:13.5px;color:var(--muted)}
+.sm-related .sm-all{display:inline-block;margin-top:14px;font-size:14.5px}
+.dl-buy{padding:11px 20px;font-size:16px}
+.sm-share{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin:18px 0;font-size:14px;color:var(--muted)}
+.sm-share a,.sm-share button{display:inline-block;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--text);font:inherit;font-size:13.5px;font-weight:600;text-decoration:none;cursor:pointer}
+.sm-share a:hover,.sm-share button:hover{border-color:var(--accent)}
+.signup{background:var(--panel-2)}
+.signup h2{margin-top:0}
+.signup form{display:flex;gap:8px;flex-wrap:wrap;align-items:stretch}
+.signup input[type=email]{flex:1 1 240px;width:auto;min-width:0;background:var(--panel)}
+.signup .small{font-size:13px;color:var(--muted);margin:10px 0 0}
+.signup output{background:none;border:0;padding:0;margin-top:10px;min-height:1.4em;font-family:inherit;font-size:14.5px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
 .sm-trust{list-style:none;display:flex;flex-wrap:wrap;gap:6px 18px;padding:0;margin:12px 0 0;font-size:13px;color:var(--muted,#667)}
 .sm-trust li{display:flex;align-items:center;gap:6px}
