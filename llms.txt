@@ -163,6 +163,10 @@ Key facts:
 - [Electrician Vehicle Cost Tracker](https://selfmade-engine.github.io/selfmade-site/p/electrician-vehicle-cost-tracker/): Free browser tool. Log each trip and what it earned, take the real cost of running the vehicle off it, and see what you actually made. Free · Pro $9.00/mo.
 - [Family Carer Fair Share Calculator](https://selfmade-engine.github.io/selfmade-site/p/family-carer-fair-share-calculator/): Free browser tool. Work out a split in proportion to what each person actually earns, so the same share of income goes in rather than the same amount. Free · Pro $9.00/mo.
 
+## The software that runs this shop
+
+- [SELFMADE Agent](https://selfmade-engine.github.io/selfmade-site/p/selfmade-agent/): the software that researches, builds, publishes and markets these products. Sold as a monthly subscription.
+
 ## Policies
 
 - [Privacy](https://selfmade-engine.github.io/selfmade-site/privacy.html)
