@@ -19,6 +19,7 @@
 <link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/bundle-simple/">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Simple Printable Bundle","description":"5 printable PDFs: Simple Cleaning Schedule & Checklist, Simple Self-Care Planner, Simple Debt Payoff Planner, Simple 5-Minute Gratitude Journal, Simple Workout & Fitness Log.","url":"https://selfmade-engine.github.io/selfmade-site/p/bundle-simple/","image":"https://selfmade-engine.github.io/selfmade-site/p/bundle-simple/og.png","offers":{"@type":"Offer","price":"21.60","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is in the bundle?","acceptedAnswer":{"@type":"Answer","text":"5 PDFs, each also sold on its own page. Together they cost 10% less than buying them one by one."}},{"@type":"Question","name":"How do I get the files?","acceptedAnswer":{"@type":"Answer","text":"Straight after paying, a download button appears for each one on this page. Sign in on any device to download them again."}},{"@type":"Question","name":"Can I just buy one of them?","acceptedAnswer":{"@type":"Answer","text":"Yes. Every PDF in the bundle has its own page, with a free sample, and can be bought on its own."}},{"@type":"Question","name":"What if a file does not work?","acceptedAnswer":{"@type":"Answer","text":"Reply to your receipt and you get your money back."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"SELFMADE","item":"https://selfmade-engine.github.io/selfmade-site/"},{"@type":"ListItem","position":2,"name":"Simple, uncluttered planners","item":"https://selfmade-engine.github.io/selfmade-site/shop/simple-planners/"},{"@type":"ListItem","position":3,"name":"Simple Printable Bundle","item":"https://selfmade-engine.github.io/selfmade-site/p/bundle-simple/"}]}</script>
 <link rel="stylesheet" href="./style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
@@ -28,6 +29,7 @@
   <a class="brand" href="./">Simple Printable Bundle</a>
   <nav><a href="./" aria-current="page">Overview</a><a href="./docs.html">What’s inside</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Buy</a></nav>
 </header>
+<p class="sm-crumbs no-print"><a href="https://selfmade-engine.github.io/selfmade-site/">SELFMADE</a> &rsaquo; <a href="https://selfmade-engine.github.io/selfmade-site/shop/simple-planners/">Simple, uncluttered planners</a> &rsaquo; Simple Printable Bundle</p>
 
 <div class="dl-hero">
   <div class="bd-stack"><div class="dl-cover" style="--i:0;--dl-ink:#1f2a44;--dl-accent:#f5b942" aria-hidden="true">
@@ -42,7 +44,7 @@
     <p class="sub">5 printable PDFs for anyone who finds busy, cluttered planners overwhelming, together for 10% less than buying them one by one.</p>
     <ul class="checks"><li>Simple Cleaning Schedule &amp; Checklist</li><li>Simple Self-Care Planner</li><li>Simple Debt Payoff Planner</li><li>Simple 5-Minute Gratitude Journal</li><li>Simple Workout &amp; Fitness Log</li></ul>
     <p class="dl-meta">5 PDFs &middot; instant download &middot; <span class="bd-was">$24.00</span> <strong>$21.60</strong><span class="bd-save">Save $2.40</span></p>
-    <div class="dl-actions"><a href="#sm-pay">Get all 5 &mdash; $21.60</a></div>
+    <div class="dl-actions"><a class="buy dl-buy" href="#sm-pay">Get all 5 &mdash; $21.60</a></div>
   </div>
 </div>
 <div class="card sm-owned-card no-print" id="sm-owned" hidden>
@@ -126,7 +128,7 @@
   <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Buy all 5 &mdash; $21.60</a></div>
   <p class="notice" id="sm-buy-note">You go straight to a secure card form. Payment is handled by Stripe &mdash; your card details never touch this page. Afterwards you come back here and every download appears, and the receipt email has a link too.</p>
   <p class="notice" id="sm-buy-status" hidden></p>
-  <ul class="sm-trust" aria-label="What to expect"><li>Every PDF, instantly</li><li>Secure checkout with Stripe</li><li>Money back if a file does not work</li></ul>
+  <ul class="sm-trust" aria-label="What to expect"><li>Every PDF, instantly</li><li>Secure checkout with Stripe</li><li>Money back within 30 days if it is not as described</li></ul>
 </div>
 <div class="card">
   <h2>What&rsquo;s in the bundle</h2>
@@ -164,8 +166,72 @@
     <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
   </form>
 </div>
+<div class="card signup" id="sm-list">
+  <h2>Not ready to buy? Take the free sample pack</h2>
+  <p>Five of the most-used planners as free samples you can print today, then a few short emails on using them and a note when a new one is made. One click to stop.</p>
+  <form id="sm-list-form" novalidate>
+    <label for="sm-list-email" style="position:absolute;left:-9999px">Your email address</label>
+    <input id="sm-list-email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required>
+    <span class="hp" aria-hidden="true"><label>Leave this empty <input id="sm-list-hp" tabindex="-1" autocomplete="off"></label></span>
+    <button class="btn btn-main" type="submit">Send me the samples</button>
+  </form>
+  <output id="sm-list-msg" aria-live="polite"></output>
+  <p class="small">Only your email address is kept, and only for this. Never sold or shared.</p>
+</div>
+<script>
+(function(){
+  var form = document.getElementById('sm-list-form');
+  if (!form) return;
+  var msg = document.getElementById('sm-list-msg');
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var email = document.getElementById('sm-list-email').value.trim();
+    if (document.getElementById('sm-list-hp').value) { msg.textContent = 'Thank you.'; return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.textContent = 'That does not look like an email address.'; return; }
+    msg.textContent = 'Sending...';
+    fetch("https://selfmade-api.selfmade-engine.workers.dev/api/order", { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ slug: '~list', email: email, note: 'SUBSCRIBE ' + "bundle-simple" }) })
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if (res && res.ok === false) { msg.textContent = res.reason || 'That did not go through. Try again in a minute.'; return; }
+        msg.textContent = 'Done. The samples are on their way to ' + email + ' - give it a few minutes, and check spam if it is shy.';
+        form.reset();
+      })
+      .catch(function(){ msg.textContent = 'That did not go through. Try again in a minute.'; });
+  });
+})();
+</script>
+<div class="sm-share no-print">
+  <span>Know somebody who needs this?</span>
+  <button type="button" id="sm-copy" data-link="https://selfmade-engine.github.io/selfmade-site/p/bundle-simple/?utm_source=share">Copy the link</button>
+  <a href="https://wa.me/?text=Simple%20Printable%20Bundle%20-%204%20printables%20for%20people%20who%20like%20things%20simple%20together%2C%20for%2010%25%20less%20than%20buying%20them%20separately%20https%3A%2F%2Fselfmade-engine.github.io%2Fselfmade-site%2Fp%2Fbundle-simple%2F%3Futm_source%3Dshare" target="_blank" rel="noopener">WhatsApp</a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fselfmade-engine.github.io%2Fselfmade-site%2Fp%2Fbundle-simple%2F%3Futm_source%3Dshare" target="_blank" rel="noopener">Facebook</a>
+  <a href="https://www.pinterest.com/pin/create/button/?url=https%3A%2F%2Fselfmade-engine.github.io%2Fselfmade-site%2Fp%2Fbundle-simple%2F%3Futm_source%3Dpinterest&amp;media=https%3A%2F%2Fselfmade-engine.github.io%2Fselfmade-site%2Fp%2Fbundle-simple%2Fpin.png&amp;description=Simple%20Printable%20Bundle%20-%204%20printables%20for%20people%20who%20like%20things%20simple%20together%2C%20for%2010%25%20less%20than%20buying%20them%20separately" target="_blank" rel="noopener">Pinterest</a>
+  <a href="mailto:?subject=Simple%20Printable%20Bundle&amp;body=Simple%20Printable%20Bundle%20-%204%20printables%20for%20people%20who%20like%20things%20simple%20together%2C%20for%2010%25%20less%20than%20buying%20them%20separately%0A%0Ahttps%3A%2F%2Fselfmade-engine.github.io%2Fselfmade-site%2Fp%2Fbundle-simple%2F%3Futm_source%3Dshare" target="_blank" rel="noopener">Email</a>
+</div>
+<script>
+(function(){
+  var b = document.getElementById('sm-copy');
+  if (!b) return;
+  b.addEventListener('click', function(){
+    var link = b.getAttribute('data-link');
+    function done(){ b.textContent = 'Copied'; setTimeout(function(){ b.textContent = 'Copy the link'; }, 2000); }
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(link).then(done, function(){ window.prompt('Copy this link', link); }); }
+    else { window.prompt('Copy this link', link); }
+  });
+})();
+</script>
+<div class="card sm-related no-print">
+  <h2>More for simple, uncluttered planners</h2>
+  <div class="sm-related-grid">
+    <a class="sm-rel" href="https://selfmade-engine.github.io/selfmade-site/p/simple-cleaning-schedule-checklist/"><span class="sm-rel-kind">Printable PDF</span><span class="sm-rel-name">Simple Cleaning Schedule &amp; Checklist</span><span class="sm-rel-cost">$4.00</span></a>
+    <a class="sm-rel" href="https://selfmade-engine.github.io/selfmade-site/p/savings-challenge-pack/"><span class="sm-rel-kind">Printable PDF</span><span class="sm-rel-name">Savings Challenge Pack</span><span class="sm-rel-cost">$4.00</span></a>
+    <a class="sm-rel" href="https://selfmade-engine.github.io/selfmade-site/p/simple-self-care-planner/"><span class="sm-rel-kind">Printable PDF</span><span class="sm-rel-name">Simple Self-Care Planner</span><span class="sm-rel-cost">$5.00</span></a>
+  </div>
+  <a class="sm-all" href="https://selfmade-engine.github.io/selfmade-site/shop/simple-planners/">See all 11 &rarr;</a>
+</div>
 <footer class="site">
-  <p>Simple Printable Bundle — built and operated by SELFMADE.
+  <p>Simple Printable Bundle — built and operated by <a href="https://selfmade-engine.github.io/selfmade-site/">SELFMADE</a>.
   Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
   <p>A digital download &mdash; nothing is shipped. The PDF is yours to keep.</p>
   <!-- Small, at the bottom, on every page. Stripe expects a customer to be
@@ -174,9 +240,32 @@
   <p class="legal"><a href="https://selfmade-engine.github.io/selfmade-site/privacy.html">Privacy</a>
   · <a href="https://selfmade-engine.github.io/selfmade-site/terms.html">Terms &amp; refunds</a>
   · <a href="./pricing.html">Pricing</a>
+  · <a href="https://selfmade-engine.github.io/selfmade-site/">The whole shop</a>
   · Payments handled by Stripe. Card details never touch this page.</p>
 </footer>
 </div>
+<script>
+(function(){
+  try {
+    var q = new URLSearchParams(location.search);
+    if (q.get('owner') === '1') { localStorage.setItem('sm_owner', '1'); }
+    if (localStorage.getItem('sm_owner') === '1' || navigator.webdriver) return;
+    var key = 'sm_seen_' + "bundle-simple";
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, '1');
+    var from = 'direct';
+    var tagged = (q.get('utm_source') || '').toLowerCase().replace(/[^a-z0-9._-]/g, '').slice(0, 40);
+    if (tagged) { from = 'utm:' + tagged; }
+    else if (document.referrer) {
+      var host = new URL(document.referrer).hostname.replace(/^www\./, '');
+      if (host && host !== location.hostname) from = host.slice(0, 60);
+      else if (host === location.hostname) from = 'shop';
+    }
+    fetch("https://selfmade-api.selfmade-engine.workers.dev/api/track", { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ slug: "bundle-simple", referrer: from }), keepalive: true }).catch(function(){});
+  } catch (err) {}
+})();
+</script>
 <script>
 var SM_SLUG = "bundle-simple";
 var SM_KIND = "download";
