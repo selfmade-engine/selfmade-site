@@ -19,6 +19,7 @@
 <link rel="canonical" href="https://selfmade-engine.github.io/selfmade-site/p/build-real-self-confidence/">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Build Real Self-Confidence","description":"A 21-day workbook for trusting yourself, speaking up and taking up space","url":"https://selfmade-engine.github.io/selfmade-site/p/build-real-self-confidence/","image":"https://selfmade-engine.github.io/selfmade-site/p/build-real-self-confidence/og.png","offers":{"@type":"Offer","price":"9.00","priceCurrency":"USD","availability":"https://schema.org/InStock"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What exactly do I get?","acceptedAnswer":{"@type":"Answer","text":"A PDF of Build Real Self-Confidence - 14 pages. It downloads straight after paying, and the receipt email has a link too. Nothing is posted to you."}},{"@type":"Question","name":"Can I print it more than once?","acceptedAnswer":{"@type":"Answer","text":"Yes. Print as many copies as you need for yourself - a fresh page every month, for example."}},{"@type":"Question","name":"What paper does it print on?","acceptedAnswer":{"@type":"Answer","text":"US Letter or A4. Choose \"fit to page\" when printing and it lines up on either."}},{"@type":"Question","name":"Can I fill it in on a tablet?","acceptedAnswer":{"@type":"Answer","text":"Yes. Open the PDF in any note-taking app that lets you write on PDFs, and use a stylus or your finger."}},{"@type":"Question","name":"Can I see it before buying?","acceptedAnswer":{"@type":"Answer","text":"Yes - download the free sample on this page. It is the real thing, just fewer pages."}},{"@type":"Question","name":"What if something is wrong with the file?","acceptedAnswer":{"@type":"Answer","text":"Reply to your receipt and you get your money back if it will not download, will not open, or is not what this page describes."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"SELFMADE","item":"https://selfmade-engine.github.io/selfmade-site/"},{"@type":"ListItem","position":2,"name":"Habits & mindset","item":"https://selfmade-engine.github.io/selfmade-site/shop/habits-and-mindset/"},{"@type":"ListItem","position":3,"name":"Build Real Self-Confidence","item":"https://selfmade-engine.github.io/selfmade-site/p/build-real-self-confidence/"}]}</script>
 <link rel="stylesheet" href="./style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
 </head>
@@ -28,6 +29,7 @@
   <a class="brand" href="./">Build Real Self-Confidence</a>
   <nav><a href="./" aria-current="page">Overview</a><a href="./docs.html">What’s inside</a><a href="./pricing.html">Pricing</a><a href="#sm-account" id="sm-navsignin">Sign in</a><a class="navbuy" id="sm-navbuy" href="./pricing.html">Buy</a></nav>
 </header>
+<p class="sm-crumbs no-print"><a href="https://selfmade-engine.github.io/selfmade-site/">SELFMADE</a> &rsaquo; <a href="https://selfmade-engine.github.io/selfmade-site/shop/habits-and-mindset/">Habits &amp; mindset</a> &rsaquo; Build Real Self-Confidence</p>
 
 <div class="dl-hero">
   <div class="dl-cover" style="--dl-ink:#3a0f24;--dl-accent:#ff8fab" aria-hidden="true">
@@ -40,9 +42,12 @@
     <p class="sub">A 21-day workbook for trusting yourself, speaking up and taking up space.</p>
     <ul class="checks"><li>Eight chapters on how confidence is actually built</li><li>A written exercise after every chapter</li><li>A 21-day courage challenge and a confidence ladder</li><li>Print it, or fill it in on a tablet</li></ul>
     <p class="dl-meta">PDF &middot; 14 pages &middot; instant download &middot; print at home or fill in on a tablet</p>
+    <!-- The thing the page is for is the filled button; trying it first is the
+         outlined one beside it. They used to be the other way round, with
+         buying as a text link, so the eye went to the free sample and stopped. -->
     <div class="dl-actions">
+      <a class="buy dl-buy" href="#sm-pay">Get the full workbook &mdash; $9.00</a>
       <a class="dl-sample" href="./sample.pdf" download>Free sample (5 pages)</a>
-      <a href="#sm-pay">Get the full workbook &mdash; $9.00</a>
     </div>
   </div>
 </div>
@@ -132,7 +137,7 @@
   <div class="row"><a class="buy" id="sm-buy" data-sm-buy="1" href="#" rel="noopener">Buy the PDF &mdash; $9.00</a></div>
   <p class="notice" id="sm-buy-note">You go straight to a secure card form. Payment is handled by Stripe &mdash; your card details never touch this page. Afterwards you come back here and the download appears, and the receipt email has a link too.</p>
   <p class="notice" id="sm-buy-status" hidden></p>
-  <ul class="sm-trust" aria-label="What to expect"><li>Instant download - nothing is shipped</li><li>Secure checkout with Stripe</li><li>Money back if the file does not work</li></ul>
+  <ul class="sm-trust" aria-label="What to expect"><li>Instant download - nothing is shipped</li><li>Secure checkout with Stripe</li><li>Money back within 30 days if it is not as described</li></ul>
 </div>
 <div class="card">
   <h2>A look inside</h2>
@@ -192,8 +197,72 @@
     <div class="row"><button type="submit">Send feedback</button><span id="sm-status" class="badge"></span></div>
   </form>
 </div>
+<div class="card signup" id="sm-list">
+  <h2>Not ready to buy? Take the free sample pack</h2>
+  <p>Five of the most-used planners as free samples you can print today, then a few short emails on using them and a note when a new one is made. One click to stop.</p>
+  <form id="sm-list-form" novalidate>
+    <label for="sm-list-email" style="position:absolute;left:-9999px">Your email address</label>
+    <input id="sm-list-email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required>
+    <span class="hp" aria-hidden="true"><label>Leave this empty <input id="sm-list-hp" tabindex="-1" autocomplete="off"></label></span>
+    <button class="btn btn-main" type="submit">Send me the samples</button>
+  </form>
+  <output id="sm-list-msg" aria-live="polite"></output>
+  <p class="small">Only your email address is kept, and only for this. Never sold or shared.</p>
+</div>
+<script>
+(function(){
+  var form = document.getElementById('sm-list-form');
+  if (!form) return;
+  var msg = document.getElementById('sm-list-msg');
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var email = document.getElementById('sm-list-email').value.trim();
+    if (document.getElementById('sm-list-hp').value) { msg.textContent = 'Thank you.'; return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.textContent = 'That does not look like an email address.'; return; }
+    msg.textContent = 'Sending...';
+    fetch("https://selfmade-api.selfmade-engine.workers.dev/api/order", { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ slug: '~list', email: email, note: 'SUBSCRIBE ' + "build-real-self-confidence" }) })
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if (res && res.ok === false) { msg.textContent = res.reason || 'That did not go through. Try again in a minute.'; return; }
+        msg.textContent = 'Done. The samples are on their way to ' + email + ' - give it a few minutes, and check spam if it is shy.';
+        form.reset();
+      })
+      .catch(function(){ msg.textContent = 'That did not go through. Try again in a minute.'; });
+  });
+})();
+</script>
+<div class="sm-share no-print">
+  <span>Know somebody who needs this?</span>
+  <button type="button" id="sm-copy" data-link="https://selfmade-engine.github.io/selfmade-site/p/build-real-self-confidence/?utm_source=share">Copy the link</button>
+  <a href="https://wa.me/?text=Build%20Real%20Self-Confidence%20-%20A%2021-day%20workbook%20that%20builds%20confidence%20the%20way%20it%20is%20actually%20built%20https%3A%2F%2Fselfmade-engine.github.io%2Fselfmade-site%2Fp%2Fbuild-real-self-confidence%2F%3Futm_source%3Dshare" target="_blank" rel="noopener">WhatsApp</a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fselfmade-engine.github.io%2Fselfmade-site%2Fp%2Fbuild-real-self-confidence%2F%3Futm_source%3Dshare" target="_blank" rel="noopener">Facebook</a>
+  <a href="https://www.pinterest.com/pin/create/button/?url=https%3A%2F%2Fselfmade-engine.github.io%2Fselfmade-site%2Fp%2Fbuild-real-self-confidence%2F%3Futm_source%3Dpinterest&amp;media=https%3A%2F%2Fselfmade-engine.github.io%2Fselfmade-site%2Fp%2Fbuild-real-self-confidence%2Fpin.png&amp;description=Build%20Real%20Self-Confidence%20-%20A%2021-day%20workbook%20that%20builds%20confidence%20the%20way%20it%20is%20actually%20built" target="_blank" rel="noopener">Pinterest</a>
+  <a href="mailto:?subject=Build%20Real%20Self-Confidence&amp;body=Build%20Real%20Self-Confidence%20-%20A%2021-day%20workbook%20that%20builds%20confidence%20the%20way%20it%20is%20actually%20built%0A%0Ahttps%3A%2F%2Fselfmade-engine.github.io%2Fselfmade-site%2Fp%2Fbuild-real-self-confidence%2F%3Futm_source%3Dshare" target="_blank" rel="noopener">Email</a>
+</div>
+<script>
+(function(){
+  var b = document.getElementById('sm-copy');
+  if (!b) return;
+  b.addEventListener('click', function(){
+    var link = b.getAttribute('data-link');
+    function done(){ b.textContent = 'Copied'; setTimeout(function(){ b.textContent = 'Copy the link'; }, 2000); }
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(link).then(done, function(){ window.prompt('Copy this link', link); }); }
+    else { window.prompt('Copy this link', link); }
+  });
+})();
+</script>
+<div class="card sm-related no-print">
+  <h2>More for habits &amp; mindset</h2>
+  <div class="sm-related-grid">
+    <a class="sm-rel" href="https://selfmade-engine.github.io/selfmade-site/p/bundle-guides/"><span class="sm-rel-kind">Bundle</span><span class="sm-rel-name">Mindset &amp; Self-Improvement Guide Bundle</span><span class="sm-rel-cost">$51.30</span></a>
+    <a class="sm-rel" href="https://selfmade-engine.github.io/selfmade-site/p/money-mindset-your-first-real-budget/"><span class="sm-rel-kind">Workbook PDF</span><span class="sm-rel-name">Money Mindset &amp; Your First Real Budget</span><span class="sm-rel-cost">$12.00</span></a>
+    <a class="sm-rel" href="https://selfmade-engine.github.io/selfmade-site/p/student-habit-tracker/"><span class="sm-rel-kind">Printable PDF</span><span class="sm-rel-name">Student Habit Tracker</span><span class="sm-rel-cost">$5.00</span></a>
+  </div>
+  <a class="sm-all" href="https://selfmade-engine.github.io/selfmade-site/shop/habits-and-mindset/">See all 18 &rarr;</a>
+</div>
 <footer class="site">
-  <p>Build Real Self-Confidence — built and operated by SELFMADE.
+  <p>Build Real Self-Confidence — built and operated by <a href="https://selfmade-engine.github.io/selfmade-site/">SELFMADE</a>.
   Questions go to <a href="mailto:selfmade.engine@gmail.com">selfmade.engine@gmail.com</a>.</p>
   <p>A digital download &mdash; nothing is shipped. The PDF is yours to keep.</p>
   <!-- Small, at the bottom, on every page. Stripe expects a customer to be
@@ -202,9 +271,32 @@
   <p class="legal"><a href="https://selfmade-engine.github.io/selfmade-site/privacy.html">Privacy</a>
   · <a href="https://selfmade-engine.github.io/selfmade-site/terms.html">Terms &amp; refunds</a>
   · <a href="./pricing.html">Pricing</a>
+  · <a href="https://selfmade-engine.github.io/selfmade-site/">The whole shop</a>
   · Payments handled by Stripe. Card details never touch this page.</p>
 </footer>
 </div>
+<script>
+(function(){
+  try {
+    var q = new URLSearchParams(location.search);
+    if (q.get('owner') === '1') { localStorage.setItem('sm_owner', '1'); }
+    if (localStorage.getItem('sm_owner') === '1' || navigator.webdriver) return;
+    var key = 'sm_seen_' + "build-real-self-confidence";
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, '1');
+    var from = 'direct';
+    var tagged = (q.get('utm_source') || '').toLowerCase().replace(/[^a-z0-9._-]/g, '').slice(0, 40);
+    if (tagged) { from = 'utm:' + tagged; }
+    else if (document.referrer) {
+      var host = new URL(document.referrer).hostname.replace(/^www\./, '');
+      if (host && host !== location.hostname) from = host.slice(0, 60);
+      else if (host === location.hostname) from = 'shop';
+    }
+    fetch("https://selfmade-api.selfmade-engine.workers.dev/api/track", { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ slug: "build-real-self-confidence", referrer: from }), keepalive: true }).catch(function(){});
+  } catch (err) {}
+})();
+</script>
 <script>
 var SM_SLUG = "build-real-self-confidence";
 var SM_KIND = "download";
